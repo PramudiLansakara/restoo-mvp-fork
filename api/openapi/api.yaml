@@ -1,0 +1,806 @@
+openapi: 3.0.1
+info:
+  title: Restoo API
+  description: "API document for Restoo app"
+  termsOfService: "http://swagger.io/terms/"
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: "http://swagger.io"
+servers:
+  - url: "http://localhost:3001/api/"
+  - url: "https://restoo-backend.herokuapp.com/api/"
+tags:
+  - name: Auth
+    description: Everything about authendication
+  - name: Waiter
+    description: Everything about waiters
+  - name: Event
+    description: Everything about events
+  - name: FoodCategory
+    description: Food category related
+  - name: Admin
+    description: Admin related endpoints
+  - name: Order
+    description: Order related endpoints
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Logs user into the system
+      operationId: login
+      requestBody:
+        description: The login object
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Login"
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LogRes"
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Register user/admin/waiter into the system
+      operationId: regiter
+      requestBody:
+        description: The register object
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Register"
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisterRes"
+  /waiters/list:
+    get:
+      tags:
+        - Waiter
+      summary: getting the list of waiters
+      operationId: get-waiter-list
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: list of waiters
+  /events/new:
+    post:
+      description: Creates a new event
+      summary: Creates a new event
+      tags:
+        - Event
+      security:
+        - bearerAuth: []
+      operationId: createEvent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventSchema"
+      responses:
+        "201":
+          $ref: "#/components/schemas/EventSchema"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
+          $ref: "#/components/responses/UnknownError"
+  /food/category:
+    post:
+      description: Creates a new food category
+      summary: Creates a new food category
+      operationId: createFoodCategory
+      tags:
+        - Admin
+        - FoodCategory
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Create food category
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateFoodSchema"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdSchema"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
+          $ref: "#/components/responses/UnknownError"
+  "/food/category/{id}":
+    put:
+      description: Updates a food category
+      summary: Updates a food category
+      operationId: updateFoodCategory
+      parameters:
+        - $ref: "#/components/parameters/IdPathParam"
+      tags:
+        - Admin
+        - FoodCategory
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Create food category
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateFoodSchema"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
+          $ref: "#/components/responses/UnknownError"
+    delete:
+      description: Deletes a food category
+      summary: Deletes a food category
+      operationId: deleteFoodCategory
+      parameters:
+        - $ref: "#/components/parameters/IdPathParam"
+      tags:
+        - Admin
+        - FoodCategory
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
+          $ref: "#/components/responses/UnknownError"
+  "/food/category/list":
+    get:
+      description: Get all categories
+      summary: Get all categories
+      operationId: getFoodCategories
+      tags:
+        - FoodCategory
+      responses:
+        "200":
+          $ref: "#/components/responses/FoodCategoryListing"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
+          $ref: "#/components/responses/UnknownError"
+  "/order/new":
+    post:
+      description: Creates a new order
+      summary: Creates a new order
+      tags:
+        - User
+        - Order
+      security:
+        - bearerAuth: []
+      operationId: createOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOrderSchema"
+      responses:
+        "201":
+          $ref: "#/components/responses/OrderCreatedResponse"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
+          $ref: "#/components/responses/UnknownError"
+  "/order/list":
+    get:
+      description: List all orders
+      summary: List all orders
+      security:
+        - bearerAuth: []
+      tags:
+        - Waiter
+        - Admin
+        - Order
+      operationId: listOrders
+      parameters:
+        - $ref: "#/components/parameters/LimitQueryParam"
+        - $ref: "#/components/parameters/OffsetQueryParam"
+        - $ref: "#/components/parameters/OrderStatusQueryParam"
+        - $ref: "#/components/parameters/SortQueryParam"
+        - $ref: "#/components/parameters/UserIdQueryParam"
+        - $ref: "#/components/parameters/WaiterIdQueryParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/OrderLisitingResponse"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
+          $ref: "#/components/responses/UnknownError"
+  "/order/list/my":
+    get:
+      description: List my orders
+      summary: List my orders
+      security:
+        - bearerAuth: []
+      tags:
+        - User
+        - Order
+      operationId: listMyOrders
+      parameters:
+        - $ref: "#/components/parameters/LimitQueryParam"
+        - $ref: "#/components/parameters/OffsetQueryParam"
+        - $ref: "#/components/parameters/OrderStatusQueryParam"
+        - $ref: "#/components/parameters/SortQueryParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/OrderLisitingResponse"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
+          $ref: "#/components/responses/UnknownError"
+  "/order/{id}":
+    get:
+      description: Get order
+      summary: Get order
+      security:
+        - bearerAuth: []
+      tags:
+        - User
+        - Order
+      operationId: getOrder
+      parameters:
+        - $ref: "#/components/parameters/IdPathParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/OrderViewResponse"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
+          $ref: "#/components/responses/UnknownError"
+  "/order/{id}/selfassign":
+    put:
+      description: Self assign waiter to order by id
+      summary: Self assign waiter to order by id
+      security:
+        - bearerAuth: []
+      tags:
+        - Order
+        - Waiter
+      operationId: selfAssignWaiterToOrder
+      parameters:
+        - $ref: "#/components/parameters/IdPathParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
+          $ref: "#/components/responses/UnknownError"
+  "/order/{id}/status":
+    put:
+      description: Change status of an order
+      summary: Change status of an order
+      security:
+        - bearerAuth: []
+      tags:
+        - Order
+        - Admin
+        - Waiter
+      operationId: changeOrderStatus
+      externalDocs:
+        url: https://github.com/syetalabs/Restoo_Backend/blob/main/docs/diagrams/Order-State.png
+      parameters:
+        - $ref: "#/components/parameters/IdPathParam"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  $ref: "#/components/schemas/OrderStatusEnum"
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "500":
+          $ref: "#/components/responses/UnknownError"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/APIError"
+    OkResponse:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MessageResponse"
+    UnknownError:
+      description: Unknown Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/APIError"
+    ValidationError:
+      description: ValidationError Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/APIError"
+    FoodCategoryListing:
+      description: Food category listing
+      content:
+        application/json:
+          schema:
+            properties:
+              categories:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FoodCategoryListingSchema"
+    OrderCreatedResponse:
+      description: order created
+      content:
+        application/json:
+          schema:
+            properties:
+              order:
+                $ref: "#/components/schemas/OrderCreatedResponse"
+    OrderLisitingResponse:
+      description: order list
+      content:
+        application/json:
+          schema:
+            properties:
+              total:
+                type: integer
+                description: total orders
+                example: 10
+              orders:
+                type: array
+                items:
+                  allOf:
+                    - $ref: "#/components/schemas/OrderBase"
+                  properties:
+                    customer:
+                      type: string
+                      example: 5ff2ae9a4e797a001e87fcdb
+    OrderViewResponse:
+      description: Order View
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/OrderView"
+  parameters:
+    IdPathParam:
+      in: path
+      name: id
+      schema:
+        type: string
+      required: true
+    UserIdQueryParam:
+      in: query
+      name: userId
+      schema:
+        type: string
+      required: false
+    WaiterIdQueryParam:
+      in: query
+      name: waiterId
+      schema:
+        type: string
+      required: false
+    OrderStatusQueryParam:
+      in: query
+      name: status
+      schema:
+        type: string
+        enum:
+          - waiting
+          - accepted
+          - preparing
+          - served
+          - completed
+    OffsetQueryParam:
+      in: query
+      name: offset
+      description: Offset the result
+      schema:
+        type: integer
+        example: 1
+    LimitQueryParam:
+      in: query
+      name: limit
+      description: Limit the returned number of results
+      schema:
+        type: integer
+        example: 10
+    SortQueryParam:
+      in: query
+      name: sort
+      description: Sort the result
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+  schemas:
+    Id:
+      type: string
+      example: 5ff2b5b81dd33e00ebad1269
+      description: id resource
+    UserRole:
+      type: string
+      enum:
+        - admin
+        - waiter
+        - user
+    UserPartial:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Kasun
+          description: Name of user
+        role:
+          $ref: "#/components/schemas/UserRole"
+        _id:
+          $ref: "#/components/schemas/Id"
+    OrderView:
+      allOf:
+        - $ref: "#/components/schemas/OrderBase"
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                $ref: "#/components/schemas/Id"
+              item:
+                $ref: "#/components/schemas/FoodIteam"
+              quantity:
+                type: integer
+                description: quantity of item
+                example: 1
+    FoodIteam:
+      type: object
+      properties:
+        _id:
+          $ref: "#/components/schemas/Id"
+        name:
+          type: string
+          description: name of item
+          example: apple
+        category:
+          $ref: "#/components/schemas/Id"
+        description:
+          type: string
+          description: description of category
+          example: an apple
+        price:
+          type: number
+          description: price of item
+          example: 10.5
+    CreateOrderItemSchema:
+      type: object
+      properties:
+        item:
+          type: string
+          example: 5ff2b5b81dd33e00ebad1269
+          description: item id
+        quantity:
+          type: integer
+          example: 1
+          description: quantity of item
+    CreateOrderSchema:
+      type: object
+      properties:
+        note:
+          type: string
+          nullable: true
+          example: prepare soon
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreateOrderItemSchema"
+    OrderStatusEnum:
+      type: string
+      description: status of order
+      enum:
+        - waiting
+        - accepted
+        - preparing
+        - served
+        - completed
+        - cancelled
+    OrderBase:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id of order
+          example: 5ffd8dc6faa662038750c4a6
+        status:
+          $ref: "#/components/schemas/OrderStatusEnum"
+        note:
+          type: string
+          description: note
+          example: do it quickly
+        placedAt:
+          type: string
+          description: order placed at
+          example: 2021-01-12T11:53:42.602Z
+        acceptedAt:
+          type: string
+          description: order accepted at
+          example: 2021-01-12T11:53:42.602Z
+        servedAt:
+          type: string
+          description: order served at
+          example: 2021-01-12T11:53:42.602Z
+        completedAt:
+          type: string
+          description: order completed at
+          example: 2021-01-12T11:53:42.602Z
+        cancelledAt:
+          type: string
+          description: order cancelled at
+          example: 2021-01-12T11:53:42.602Z
+        total:
+          type: integer
+          format: int32
+          description: total price
+          example: 120
+        table:
+          type: integer
+          description: table no
+          example: 14
+        reference:
+          type: string
+          description: order referenece
+          example: 2PrWIV2-_arrAfC_QEf5X
+    OrderCreatedResponse:
+      allOf:
+        - $ref: "#/components/schemas/OrderBase"
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+                example: 5ffd8dc6faa662038750c4a7
+              item:
+                type: string
+                description: item name
+                example: 5ffd72990bc926001f9c124b
+              quantity:
+                type: integer
+                description: quantity of order
+                format: int32
+                example: 10
+        customer:
+          type: string
+          example: 5ff2ae9a4e797a001e87fcdb
+    CreateFoodSchema:
+      type: object
+      description: Create food
+      properties:
+        name:
+          type: string
+          example: Drink
+        description:
+          type: string
+          example: All cold drinks
+          maximum: 500
+      required:
+        - name
+    UpdateFoodSchema:
+      type: object
+      description: Create food
+      properties:
+        name:
+          type: string
+          example: Drink
+        description:
+          type: string
+          example: All cold drinks
+          maximum: 500
+    FoodCategoryListingSchema:
+      type: object
+      description: Category
+      properties:
+        _id:
+          type: string
+          example: 5ff2b5b81dd33e00ebad1269
+        name:
+          type: string
+          example: 1 drink
+        description:
+          type: string
+          example: all about drinks
+    EventSchema:
+      type: object
+      description: Create event
+      properties:
+        name:
+          type: string
+          example: DJ night
+        description:
+          type: string
+          example: All cool events
+        date:
+          type: string
+          example: "2021-09-26"
+        bannerImg:
+          type: string
+          example: "http//test.com/test.img"
+        time:
+          type: string
+          example: "12PM"
+      required:
+        - name
+    IdSchema:
+      type: object
+      description: Id of a resource
+      properties:
+        id:
+          type: string
+          example: 60059261520e82006464f273
+    LogRes:
+      type: object
+      description: user object with token role and other main user properties
+      properties:
+        message:
+          type: string
+        token:
+          type: string
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            email:
+              type: string
+            createdAt:
+              type: string
+            role:
+              type: string
+    Login:
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+          example: user@shop.com
+        password:
+          type: string
+          example: password
+    Register:
+      required:
+        - email
+        - password
+        - name
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+          default: user
+          enum:
+            - user
+            - waiter
+            - admin
+    RegisterRes:
+      type: object
+      description: user object with token role and other main user properties
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        createdAt:
+          type: string
+        role:
+          type: string
+          enum:
+            - user
+            - admin
+            - waiter
+    MessageResponse:
+      type: object
+      description: message
+      properties:
+        message:
+          type: string
+          example: ok
+    APIError:
+      type: object
+      description: Error object from API
+      properties:
+        message:
+          type: string
+          example: invalid token
+        extra:
+          type: string
+          format: nullable
+        errors:
+          type: object
+          properties:
+            name:
+              type: string
+              example: APIError
+            message:
+              type: string
+              example: invalid token
+            status:
+              type: integer
+              format: int32
+              example: 401
+            extra:
+              type: string
+              format: nullable

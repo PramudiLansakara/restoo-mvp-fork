@@ -1,0 +1,26 @@
+version: "3"
+services:
+  api:
+    build: .
+    environment:
+      - MONGO_URI=mongodb://mongo/restoo
+    ports:
+      - 3001:3001
+    depends_on:
+      - mongo
+    working_dir: /app
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    command: npm run dev:docker
+
+  mongo:
+    image: mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo:/data/db
+
+volumes:
+  mongo:
+  node_modules:

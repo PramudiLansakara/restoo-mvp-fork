@@ -1,0 +1,78 @@
+h1 {
+  color: var(--v-primary-base);
+  font-size: 30px;
+}
+h2 {
+  color: var(--v-primary-base);
+  font-size: 25px;
+}
+h3 {
+  color: var(--v-primary-base);
+  font-size: 20px;
+}
+h4 {
+  color: var(--v-primary-base);
+  font-size: 18px;
+}
+h5 {
+  color: var(--v-primary-base);
+  font-size: 15px;
+}
+.banner {
+  max-width: 100%;
+  position: relative;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+.sub-title-name {
+  width: 100%;
+  position: absolute;
+  letter-spacing: 10px;
+  top: 200px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: 300;
+  color: white;
+}
+.address {
+  width: 100%;
+  position: absolute;
+  letter-spacing: 10px;
+  top: 400px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: 300;
+  color: white;
+}
+.title-name {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+  font-weight: bolder;
+  color: white;
+}
+.item-title-name {
+  font-size: 60px ;
+  font-weight: bolder;
+  color: black;
+}
+.list-item-name {
+  letter-spacing: 10px ;
+  font-size: 20px ;
+  font-weight: bold ;
+  color: black;
+}
+.v-icon {
+  color: var(--v-primary-darken1) !important;
+}
+.v-btn {
+  color: var(--v-primary-lighten1) !important;
+}
+.v-speed-dial__list{
+  align-items: flex-end !important;
+}

@@ -1,0 +1,26 @@
+{
+  "name": "damas-lounge",
+  "version": "1.0.0",
+  "private": "true",
+  "description": "Restoo app for Damas Lounge",
+  "main": "api/src/index.js",
+  "scripts": {
+    "start": "cd api && yarn start",
+    "build": "bash ./scripts/build.sh",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syetalabs/damas-lounge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/syetalabs/damas-lounge/issues"
+  },
+  "homepage": "https://github.com/syetalabs/damas-lounge#readme",
+  "engines": {
+    "node": "14.x"
+  }
+}

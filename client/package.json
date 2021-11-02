@@ -1,0 +1,28 @@
+{
+  "name": "restoo-front",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "engines": {
+    "node": "14.x"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.13.6",
+    "@nuxtjs/i18n": "^7.0.3",
+    "cookieparser": "^0.1.0",
+    "dayjs": "^1.10.6",
+    "js-cookie": "^2.2.1",
+    "nanoid": "^3.1.29",
+    "nuxt": "^2.15.3",
+    "socket.io-client": "^4.2.0",
+    "vue-socket.io-extended": "^4.2.0",
+    "vuetify-dialog": "^2.0.16",
+    "@nuxtjs/vuetify": "^1.12.1"
+  },
+  "devDependencies": {}
+}
