@@ -90,7 +90,7 @@
 import payments from "@/util/payments";
 
 export default {
-  middleware: "redirectIfNotAuth",
+  // middleware: "redirectIfNotAuth",
   data() {
     return {
       paymentDetails: {

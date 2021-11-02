@@ -5,7 +5,7 @@
 <script>
 export default {
   mounted() {
-    this.$store.dispatch("table/TableNumber", this.$route.query.table);
+    // this.$store.dispatch("table/TableNumber", this.$route.query.table);
     this.$router.push({ name: "home" });
   },
 };

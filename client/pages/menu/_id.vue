@@ -40,7 +40,7 @@
           </h5>
         </v-row>
       </div>
-      <!-- <div>
+      <div>
         <v-row align="center">
           <v-btn fab small class="mx-2" @click="decreaseQuantity">
             <v-icon color="primary darken-1" large>mdi-minus</v-icon>
@@ -52,9 +52,9 @@
             <v-icon color="primary lighten-1" large>mdi-plus</v-icon>
           </v-btn>
         </v-row>
-      </div> -->
+      </div>
     </v-row>
-    <!-- <v-btn
+    <v-btn
       @click="addToCart"
       large
       rounded
@@ -67,7 +67,7 @@
         mdi-food
       </v-icon>
       <h3 class="white--text">Add to plate</h3>
-    </v-btn> -->
+    </v-btn>
   </v-container>
 </template>
 

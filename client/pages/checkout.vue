@@ -68,7 +68,7 @@ import CartItemCard from "../components/Checkout/CartItemCard.vue";
 import { mapGetters } from "vuex";
 
 export default {
-  middleware: "redirectIfNotAuth",
+  // middleware: "redirectIfNotAuth",
   components: { CartItemCard },
   data() {
     return {

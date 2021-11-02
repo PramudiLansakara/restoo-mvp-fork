@@ -7,6 +7,11 @@
           <!-- <v-btn icon v-bind="attrs" v-on="on">
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn> -->
+          <v-btn icon :to="'/checkout'">
+            <v-badge color="danger" :content="cartCount">
+              <v-icon large>mdi-food-fork-drink</v-icon>
+            </v-badge>
+          </v-btn>
           <v-btn icon v-bind="attrs" v-on="on" v-on:click="resetNotification">
             <v-badge color="danger" :content="count" :value="count">
               <v-icon color="primary darken-1" large>mdi-bell</v-icon>
@@ -14,7 +19,7 @@
           </v-btn>
         </template>
 
-        <v-list flat >
+        <v-list flat>
           <v-list-item
             v-for="notification of notifications"
             :key="notification.userToken"
@@ -63,7 +68,8 @@
       </v-list>
     </v-menu> -->
     </v-app-bar>
-    <v-navigation-drawer fixed
+    <v-navigation-drawer
+      fixed
       v-model="drawer"
       :src="require('../assets/images/drawer.png')"
       height="100%"
@@ -98,16 +104,20 @@ export default {
   data() {
     return {
       menuItems: menu,
-      drawer: false
+      drawer: false,
     };
   },
   computed: {
-    ...mapGetters("notification", {
-      count: "getNotificationsCount"
+    
+    ...mapGetters("cart", {
+      cartCount: "getCartItemCount"
     }),
     ...mapGetters("notification", {
-      notifications: "getNotifications"
-    })
+      count: "getNotificationsCount",
+    }),
+    ...mapGetters("notification", {
+      notifications: "getNotifications",
+    }),
   },
   sockets: {
     connect() {
@@ -116,16 +126,16 @@ export default {
     requestStatus(val) {
       console.log(val);
       this.$store.dispatch("notification/addNotification", val);
-    }
+    },
   },
   methods: {
     handleLogout() {
       this.$store.dispatch("login/logoutUser");
     },
-    resetNotification(){
+    resetNotification() {
       this.$store.dispatch("notification/resetNotification");
-    }
-  }
+    },
+  },
 };
 </script>
 
