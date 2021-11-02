@@ -1,2 +1,2 @@
 # damas-lounge
-Restoo app for Damas Lounge
+MVP for Restoo
