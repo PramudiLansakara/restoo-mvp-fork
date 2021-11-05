@@ -4,7 +4,7 @@ import i18n from "./config/i18n";
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   target: 'static',
-  ssr:false,
+  ssr: false,
 
   head: {
     titleTemplate: "%s - Mezomia",
@@ -27,7 +27,7 @@ export default {
   plugins: ["~/plugins/axios", "~/plugins/filters", {
     src: '~/plugins/socket-io.js',
     ssr: false,                    // <-- this line is required
-  },],
+  }, { src: '~/plugins/vue-stripe.js', ssr: false },],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -43,7 +43,12 @@ export default {
     "@nuxtjs/axios",
     "vuetify-dialog/nuxt",
     "@nuxtjs/i18n",
+    '@nuxtjs/dotenv',
   ],
+
+  env: {
+    STRIPE_PK: process.env.STRIPE_PK,
+  },
 
   i18n: {
     defaultLocale: "de",

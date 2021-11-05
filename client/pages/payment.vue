@@ -68,6 +68,15 @@
     </v-row>
     <v-row>
       <v-col cols="12">
+ <stripe-checkout
+      ref="checkoutRef"
+      :pk="pk"
+      :lineItems="items"
+      mode="payment"
+      :successUrl="successUrl"
+      :cancelUrl="cancelUrl"
+    />
+
         <v-btn
           large
           rounded
@@ -81,6 +90,9 @@
         >
           <h3 class="white--text">Checkout</h3>
         </v-btn>
+
+        
+    <!-- <button @click="check">Checkout</button> -->
       </v-col>
     </v-row>
   </v-container>
@@ -92,13 +104,22 @@ import payments from "@/util/payments";
 export default {
   // middleware: "redirectIfNotAuth",
   data() {
+        this.pk = process.env.STRIPE_PK;
     return {
       paymentDetails: {
         orderType: null,
         paymentMethod: null
       },
       payments: payments,
-      loading: false
+      loading: false,
+      items: [
+        {
+          price: 'price_1Js6DtEhEKYau5wJQOA2akM7',
+          quantity: 1,
+        },
+      ],
+      successUrl: 'http://localhost:3000',
+      cancelUrl: 'http://localhost:3000',
     };
   },
   computed: {
@@ -118,10 +139,12 @@ export default {
         this.$store
           .dispatch("cart/newOrder")
           .then(() => {
-            this.$dialog.message.success("Successfully ordered!", {
-              position: "top-right"
-            });
-            this.$router.push({ name: "review" });
+                  this.$refs.checkoutRef.redirectToCheckout();
+
+            // this.$dialog.message.success("Successfully ordered!", {
+            //   position: "top-right"
+            // });
+            // this.$router.push({ name: "review" });
           })
           .catch(error => {
             this.loading = false;
@@ -133,7 +156,10 @@ export default {
       } else {
         this.$router.push({ name: "login", query: { redirect: "/payment" } });
       }
-    }
+    },
+    check () {
+      this.$refs.checkoutRef.redirectToCheckout();
+    },
   }
 };
 </script>
