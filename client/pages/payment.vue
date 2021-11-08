@@ -68,15 +68,11 @@
     </v-row>
     <v-row>
       <v-col cols="12">
- <stripe-checkout
-      ref="checkoutRef"
-      :pk="pk"
-      :lineItems="items"
-      mode="payment"
-      :successUrl="successUrl"
-      :cancelUrl="cancelUrl"
-    />
-
+    <stripe-checkout
+          ref="checkoutRef"
+          :pk="pk"
+          session-id="cs_test_b1fOJ1PCF3LNmsUN3Shl8zgxNgQhCh4V5gmOxHtxlwTbWPK50atakmdlTh"
+        />
         <v-btn
           large
           rounded
@@ -112,12 +108,15 @@ export default {
       },
       payments: payments,
       loading: false,
-      items: [
-        {
-          price: 'price_1Js6DtEhEKYau5wJQOA2akM7',
-          quantity: 1,
+      line_items: [{
+        price_data: {
+            currency: 'usd',
+            unit_amount: 4000,
+            product_data: {
+              name: 'Food',
+            },
         },
-      ],
+      }],
       successUrl: 'http://localhost:3000',
       cancelUrl: 'http://localhost:3000',
     };
