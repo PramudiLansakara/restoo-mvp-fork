@@ -9,9 +9,9 @@ export default [
       ["mdi-format-list-bulleted-square", "Categories", "/menu/categories"]
     ]
   ],
-  // ["mdi-clipboard-edit-outline", "Orders", "/orders", []],
+  ["mdi-clipboard-edit-outline", "Orders", "/orders", []],
   ["mdi-tag-outline", "Events", "/events", []],
-  // ["mdi-table-chair", "Reservations", "/reservations", []],
+  ["mdi-table-chair", "Reservations", "/reservations", []],
   ["mdi-table-furniture", "Tables", "/tables", []]
 
 ];
