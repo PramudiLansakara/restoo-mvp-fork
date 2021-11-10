@@ -121,7 +121,7 @@ exports.getSession = async (req, res, next) => {
       cancel_url: 'http://localhost:3000',
     });
 
-    return res.status(httpStatus.CREATED).json({ id: session });
+    return res.status(httpStatus.CREATED).json({ id: session.id });
   } catch (err) {
     next(err);
   }

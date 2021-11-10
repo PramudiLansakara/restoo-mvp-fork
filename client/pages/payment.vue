@@ -71,7 +71,7 @@
     <stripe-checkout
           ref="checkoutRef"
           :pk="pk"
-          session-id="cs_test_b1xgi4UNFjJqWlM3yMkZzPqthMyPRfNtkWzwegCCqkOZnGJUKGihJnw8pU"
+          :session-id="sessionId"
         />
         <v-btn
           large
@@ -96,6 +96,7 @@
 
 <script>
 import payments from "@/util/payments";
+import { mapGetters } from "vuex";
 
 export default {
   // middleware: "redirectIfNotAuth",
@@ -108,6 +109,7 @@ export default {
       },
       payments: payments,
       loading: false,
+      // sessionId:'',
     };
   },
   computed: {
@@ -117,18 +119,20 @@ export default {
       } else {
         return true;
       }
-    }
+    },
+     ...mapGetters("payment", {
+      sessionId: "getSessionId"
+    }),
   },
   methods: {
     checkout() {
       if (this.$store.state.auth.authToken) {
         this.loading = true;
         this.$store.dispatch("cart/updateCartItem", this.paymentDetails);
-        this.$store
-          .dispatch("cart/newOrder")
+        this.$store.dispatch("cart/newOrder")
           .then(() => {
+              console.log(this.sessionId)
                   this.$refs.checkoutRef.redirectToCheckout();
-
             // this.$dialog.message.success("Successfully ordered!", {
             //   position: "top-right"
             // });
