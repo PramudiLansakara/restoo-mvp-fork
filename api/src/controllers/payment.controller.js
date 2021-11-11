@@ -91,25 +91,20 @@ exports.getSession = async (req, res, next) => {
     const { id } = req.params;
     const lineItems = [];
     const order = await Order
-      .findOne({ _id: id })
-      .populate({ path: 'items.item', select: '-__v -todaySpecial' })
-      .populate({ path: 'customer', select: 'name role' })
-      .populate({ path: 'waiter', select: 'name role' }
-      );
+      .findOne({ _id: id });
 
-    order.items.map((item) => {
-      const unitAmount=item.item.price*100;
+    order.items.map((ptoduct) => {
+      const unitAmount=ptoduct.price*100;
       const oneItem ={
         price_data: {
           currency: 'eur',
           unit_amount: unitAmount,
           product_data: {
-            name: item.item.name,
+            name: ptoduct.name,
           },
         },
-        quantity: item.quantity,
+        quantity: ptoduct.quantity,
       }
-      // console.log(oneItem)
       lineItems.push(oneItem);
     });
 
@@ -117,7 +112,7 @@ exports.getSession = async (req, res, next) => {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: 'http://localhost:3000',
+      success_url: 'http://localhost:3000/thank-you',
       cancel_url: 'http://localhost:3000',
     });
 

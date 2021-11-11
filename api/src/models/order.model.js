@@ -27,6 +27,12 @@ const schema = new Schema({
     quantity: {
       type: Number,
     },
+    price: {
+      type: Number,
+    },
+    name: {
+      type: String,
+    },
   }],
   status: {
     type: String,

@@ -9,6 +9,8 @@ module.exports = {
       items: Joi.array().items(Joi.object({
         item: Joi.objectId().required(),
         quantity: Joi.number().integer().required(),
+        price: Joi.number().required(),
+        name: Joi.string().required(),
       })).min(1).required(),
     },
   },
