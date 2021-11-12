@@ -77,7 +77,7 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title>
-            <h2>DAMAS LOUNGE</h2>
+            <h2>Restoo</h2>
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>

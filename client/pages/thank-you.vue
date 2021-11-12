@@ -24,7 +24,7 @@
           color="primary lighten-1"
           class="py-7"
         >
-          <h3 class="white--text">Go To Menu</h3>
+          <h3 class="white--text">Go To Home</h3>
         </v-btn>
       </v-col>
     </v-row>
@@ -38,15 +38,9 @@ export default {
     return {
     };
   },
-  sockets: {
-    connect() {
-      console.log("socket connected");
-    },
-  },
   methods: {
     clickButton() {
-      // this.$socket.client is `socket.io-client` instance
-      this.$socket.client.emit("table-scan", "14", "Order");
+      this.$router.push({ name: "home" });
     },
   },
 };

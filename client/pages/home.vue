@@ -29,7 +29,7 @@
       </v-row>
       <v-row>
         <v-col cols="12" align="center">
-          <h1>DAMAS LOUNGE</h1>
+          <h1>Hello 😍</h1>
         </v-col>
       </v-row>
       <div v-if="topDeals.length > 0">
