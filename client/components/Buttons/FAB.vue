@@ -33,7 +33,7 @@
           >
         </v-card>
         <v-btn fab :color="button.color" @click="callWaiter(button)">
-          <img height="30" :src="require('~/assets/images/' + button.icon)" />
+          <img height="60" :src="require('~/assets/images/' + button.icon)" />
         </v-btn>
       </v-list-item>
     </v-speed-dial>
@@ -57,11 +57,12 @@ export default {
           icon: "order.svg",
           message: "Order Confirm",
         },
-        // {
-        //   title: "Pay",
-        //   color: "success",
-        //   icon: "order.svg",
-        // },
+        {
+          title: "Pay",
+          color: "success",
+          icon: "pay.svg",
+          message: "Order Confirm",
+        },
         {
           title: "Change Coal",
           color: "danger",
