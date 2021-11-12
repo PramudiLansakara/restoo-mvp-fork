@@ -58,9 +58,9 @@
                 <tbody>
                   <tr v-for="item in order.items" :key="item._id">
                     <td>{{ item.item._id }}</td>
-                    <td>{{ item.item.name }}</td>
+                    <td>{{ item.name }}</td>
                     <td class="text-center">{{ item.quantity }}</td>
-                    <td class="text-center">{{ item.item.price }} $</td>
+                    <td class="text-center">{{ item.price }} $</td>
                   </tr>
                 </tbody>
               </template>

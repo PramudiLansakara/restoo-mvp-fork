@@ -36,14 +36,7 @@ exports.placeOrder = async (req, res, next) => {
       throw new APIError('Invalid items', httpStatus.BAD_REQUEST);
     }
 
-    const total = items.reduce((tot, item) => {
-      const ix = itemsObjects.find((i) => i._id.toString() === item.item);
-      if (!ix) {
-        return tot;
-      }
-
-      return tot + ix.price * item.quantity;
-    }, 0);
+    const total = items.reduce((tot, item) => tot + item.price * item.quantity, 0);
 
     const reference = await generateOrderRef();
 
@@ -141,7 +134,7 @@ exports.viewOrder = async (req, res, next) => {
       .populate({ path: 'items.item', select: '-__v -todaySpecial' })
       .populate({ path: 'customer', select: 'name role' })
       .populate({ path: 'waiter', select: 'name role' });
-
+      console.log(order);
     return res.json({ order });
   } catch (err) {
     next(err);
