@@ -134,7 +134,6 @@ exports.viewOrder = async (req, res, next) => {
       .populate({ path: 'items.item', select: '-__v -todaySpecial' })
       .populate({ path: 'customer', select: 'name role' })
       .populate({ path: 'waiter', select: 'name role' });
-      console.log(order);
     return res.json({ order });
   } catch (err) {
     next(err);

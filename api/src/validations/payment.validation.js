@@ -5,7 +5,6 @@ module.exports = {
   create: {
     body: {
       order: Joi.objectId().required(),
-      totalAmount: Joi.number().required(),
       paymentMethod: Joi.string().required(),
       status: Joi.string().allow(null).valid(
         'unpaid',

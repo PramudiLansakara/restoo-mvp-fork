@@ -4,29 +4,60 @@ const Order = require('../models/order.model');
 const Payment = require('../models/payment.model');
 const APIError = require('../utils/APIError');
 
-const stripe = Stripe('sk_test_51Js3YUEhEKYau5wJnBdGxvbZFRGG28OzdbHfQ51P6VhRvwywCn4HTsn3brRM0377wfsECgreyHbe4ZCsHe2xOyNr00nwZxQ4q6');
+const stripe = Stripe(process.env.STRIPE_SK);
+// const endpointSecret = 'whsec_KLIDTHhPVZc7O2aLyp9ZW4jwiovTz9gz';
 
 exports.create = async (req, res, next) => {
   try {
-    const { paymentMethod, totalAmount, status, order } = req.body;
+    const {paymentMethod, totalAmount, status, order} = req.body;
+
     const placedOrder = await Order
       .findOne({ _id: order })
       .populate({ path: 'items.item', select: '-__v -todaySpecial' })
       .populate({ path: 'customer', select: 'name role' })
-      .populate({ path: 'waiter', select: 'name role' }
-      );
+      .populate({ path: 'waiter', select: 'name role' });
     if (!placedOrder) {
       throw new APIError('Order not found', httpStatus.NOT_FOUND);
     }
 
     const result = await Payment.create({
       paymentMethod,
-      totalAmount,
+      totalAmount: placedOrder.total,
       status,
       order,
       paidAt: new Date(),
     });
     return res.status(httpStatus.CREATED).json({ id: result._id });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.createHook = async (req, res, next) => {
+  try {
+    const event = req.body;
+    const eventData = event.data.object;
+
+    if (event.type === 'checkout.session.completed') {
+      const placedOrder = await Order
+        .findOne({ _id: eventData.client_reference_id })
+        .populate({ path: 'items.item', select: '-__v -todaySpecial' })
+        .populate({ path: 'customer', select: 'name role' })
+        .populate({ path: 'waiter', select: 'name role' });
+      if (!placedOrder) {
+        throw new APIError('Order not found', httpStatus.NOT_FOUND);
+      }
+      const result = await Payment.create({
+        paymentMethod: 'card',
+        totalAmount: placedOrder.total,
+        status: eventData.payment_status,
+        order: eventData.client_reference_id,
+        paidAt: new Date()
+      });
+      return res.status(httpStatus.CREATED).json({ paymentId: result._id });
+    }
+
+    return res.status(httpStatus.OK).json({ event: event.type });
   } catch (err) {
     next(err);
   }
@@ -114,6 +145,7 @@ exports.getSession = async (req, res, next) => {
       mode: 'payment',
       success_url: 'http://localhost:3000/thank-you',
       cancel_url: 'http://localhost:3000',
+      client_reference_id: id,
     });
 
     return res.status(httpStatus.CREATED).json({ id: session.id });

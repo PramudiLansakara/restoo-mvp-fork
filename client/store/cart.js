@@ -92,7 +92,7 @@ export const actions = {
     try {
       // console.log(order);
       const response = await this.$axios.$post("order/new", state.order);
-      const session = await this.$axios.$get(`payment/${response.order._id}`);
+      const session = await this.$axios.$get(`payment/session/${response.order._id}`);
       commit("review/ADD_ITEMS", state.order.items, { root: true });
       commit("payment/SAVE_SESSION", session.id, { root: true });
       commit("EMPTY_CART");
