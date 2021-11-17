@@ -5,18 +5,8 @@ export default [
     title: "Cash"
   },
   {
-    value: "paypal",
-    image: "paypal.svg",
-    title: "Pay Pal"
-  },
-  {
-    value: "visa",
-    image: "visa.svg",
-    title: "Visa"
-  },
-  {
-    value: "master",
+    value: "card",
     image: "master.svg",
-    title: "Master Card"
+    title: "Card"
   }
 ];

@@ -9,6 +9,13 @@ const schema = new Schema({
   orderType: {
     type: String,
   },
+  paymentMethod: {
+    type: String,
+    enum: [
+      'cash',
+      'card',
+    ],
+  },
   reference: {
     type: String,
     unique: true,

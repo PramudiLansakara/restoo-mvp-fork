@@ -24,7 +24,7 @@ async function generateOrderRef() {
 exports.placeOrder = async (req, res, next) => {
   try {
     const { user } = req;
-    const { note = null, orderType = null, items } = req.body;
+    const { note = null, orderType = null, paymentMethod,  items } = req.body;
 
     const itemsObjects = await FoodItem.find({
       _id: {
@@ -45,6 +45,7 @@ exports.placeOrder = async (req, res, next) => {
       note,
       orderType,
       items,
+      paymentMethod,
       placedAt: new Date(),
       customer: user._id,
       total,
@@ -134,7 +135,6 @@ exports.viewOrder = async (req, res, next) => {
       .populate({ path: 'items.item', select: '-__v -todaySpecial' })
       .populate({ path: 'customer', select: 'name role' })
       .populate({ path: 'waiter', select: 'name role' });
-      console.log(order);
     return res.json({ order });
   } catch (err) {
     next(err);

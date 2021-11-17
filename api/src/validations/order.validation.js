@@ -5,7 +5,11 @@ module.exports = {
   placeOrder: {
     body: {
       note: Joi.string().allow('', null).optional(),
-      orderType: Joi.string().allow('', null).optional(),
+      orderType: Joi.string().allow('', null).required(),
+      paymentMethod: Joi.string().allow('', null).valid(
+        'cash',
+        'card',
+      ).required(),
       items: Joi.array().items(Joi.object({
         item: Joi.objectId().required(),
         quantity: Joi.number().integer().required(),
