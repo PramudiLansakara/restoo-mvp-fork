@@ -131,12 +131,27 @@ export default {
         this.$store.dispatch("cart/updateCartItem", this.paymentDetails);
         this.$store.dispatch("cart/newOrder")
           .then(() => {
+            if(this.paymentDetails.paymentMethod == 'card'){
               console.log(this.sessionId)
-                  this.$refs.checkoutRef.redirectToCheckout();
-            // this.$dialog.message.success("Successfully ordered!", {
-            //   position: "top-right"
-            // });
-            // this.$router.push({ name: "review" });
+              this.$refs.checkoutRef.redirectToCheckout();
+            }
+            else{
+              this.$store.dispatch("payment/newPayment")
+                .then(() => {
+
+                    this.$dialog.message.success("Successfully paid!", {
+                    position: "top-right"
+                    });
+                    this.$router.push({ name: "thank-you" });
+                })
+                .catch(error => {
+                  this.loading = false;
+                  console.log(error);
+                  this.$dialog.message.error(error.response.data.message, {
+                    position: "top-right"
+                  });
+                });
+            }
           })
           .catch(error => {
             this.loading = false;
@@ -148,9 +163,6 @@ export default {
       } else {
         this.$router.push({ name: "login", query: { redirect: "/payment" } });
       }
-    },
-    check () {
-      this.$refs.checkoutRef.redirectToCheckout();
     },
   }
 };

@@ -9,7 +9,7 @@ const stripe = Stripe(process.env.STRIPE_SK);
 
 exports.create = async (req, res, next) => {
   try {
-    const {paymentMethod, totalAmount, status, order} = req.body;
+    const {paymentMethod, status, order} = req.body;
 
     const placedOrder = await Order
       .findOne({ _id: order })
@@ -48,7 +48,7 @@ exports.createHook = async (req, res, next) => {
         throw new APIError('Order not found', httpStatus.NOT_FOUND);
       }
       const result = await Payment.create({
-        paymentMethod: 'card',
+        paymentMethod: placedOrder.paymentMethod,
         totalAmount: placedOrder.total,
         status: eventData.payment_status,
         order: eventData.client_reference_id,

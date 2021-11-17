@@ -92,9 +92,14 @@ export const actions = {
     try {
       // console.log(order);
       const response = await this.$axios.$post("order/new", state.order);
+      if(state.order.paymentMethod == 'card'){
       const session = await this.$axios.$get(`payment/session/${response.order._id}`);
+        commit("payment/SAVE_SESSION", session.id, { root: true });
+      }else{
+        const payment = {status: 'paid', order: response.order._id, paymentMethod: state.order.paymentMethod}
+        commit("payment/ADD_PAYMENT", payment, { root: true });
+      }
       commit("review/ADD_ITEMS", state.order.items, { root: true });
-      commit("payment/SAVE_SESSION", session.id, { root: true });
       commit("EMPTY_CART");
       // console.log(session.id)
       return response;
