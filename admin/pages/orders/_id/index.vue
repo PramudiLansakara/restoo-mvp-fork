@@ -36,23 +36,25 @@
           </v-col>
         </v-row>
         <v-row>
+          <v-col cols="12" md="3">
+            <h5 class="mb-3">Order Type</h5>
+            {{ order.orderType }}
+          </v-col>
+          <v-col cols="12" md="3">
+            <h5 class="mb-3">Payment Method</h5>
+            {{ order.paymentMethod }}
+          </v-col>
+        </v-row>
+        <v-row>
           <v-col cols="12">
             <v-simple-table>
               <template v-slot:default>
                 <thead>
                   <tr>
-                    <th class="text-left">
-                      Item ID
-                    </th>
-                    <th class="text-left">
-                      Item Name
-                    </th>
-                    <th class="text-center">
-                      Quantity
-                    </th>
-                    <th class="text-center">
-                      Price
-                    </th>
+                    <th class="text-left">Item ID</th>
+                    <th class="text-left">Item Name</th>
+                    <th class="text-center">Quantity</th>
+                    <th class="text-center">Price</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -77,7 +79,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <div class="form-btn ma-5">
-          <v-btn color="black--text" @click="cancel">{{$t("Cancel")}}</v-btn>
+          <v-btn color="black--text" @click="cancel">{{ $t("Cancel") }}</v-btn>
         </div>
       </v-card-actions>
     </v-card>
@@ -91,7 +93,7 @@ export default {
   middleware: "redirectIfNotAuth",
   data() {
     return {
-      items: statusList
+      items: statusList,
     };
   },
   async asyncData({ store, error, params }) {
@@ -107,7 +109,7 @@ export default {
   methods: {
     cancel() {
       this.$router.push({
-        name: "orders"
+        name: "orders",
       });
     },
     onChangeStatus(item) {
@@ -115,18 +117,18 @@ export default {
       this.$store
         .dispatch("order/changeStatus", item)
         .then(() => {
-          this.$dialog.message.success(this.$t('Success Message'), {
-            position: "top-right"
+          this.$dialog.message.success(this.$t("Success Message"), {
+            position: "top-right",
           });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           this.$dialog.message.error(error.response.data.message, {
-            position: "top-right"
+            position: "top-right",
           });
         });
-    }
-  }
+    },
+  },
 };
 </script>
 
