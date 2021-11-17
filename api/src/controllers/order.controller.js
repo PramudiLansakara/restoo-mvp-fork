@@ -24,7 +24,7 @@ async function generateOrderRef() {
 exports.placeOrder = async (req, res, next) => {
   try {
     const { user } = req;
-    const { note = null, orderType = null, items } = req.body;
+    const { note = null, orderType = null, paymentMethod,  items } = req.body;
 
     const itemsObjects = await FoodItem.find({
       _id: {
@@ -45,6 +45,7 @@ exports.placeOrder = async (req, res, next) => {
       note,
       orderType,
       items,
+      paymentMethod,
       placedAt: new Date(),
       customer: user._id,
       total,
