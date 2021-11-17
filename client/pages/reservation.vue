@@ -140,6 +140,18 @@
           </v-row>
         </v-col>
         <v-col cols="12" md="3">
+          <h5 class="mb-3">Number of Persons</h5>
+          <v-text-field
+            v-model="reservation.personCount"
+            class="rounded-sm"
+            filled
+            dense
+            rounded
+            required
+            :rules="rules.personRules"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" md="3">
           <h5 class="mb-3">Note</h5>
           <v-text-field
             v-model="reservation.note"
@@ -188,17 +200,19 @@ export default {
           .substr(0, 10),
         from: null,
         to: null,
-        note: ""
+        personCount: "",
+        note: "",
       },
       rules: {
-        nameRules: [v => !!v || "Name is required"],
+        nameRules: [(v) => !!v || "Name is required"],
         emailRules: [
-          v => !!v || "E-mail is required",
-          v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+          (v) => !!v || "E-mail is required",
+          (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
         ],
-        dateRules: [v => !!v || "Date is required"],
-        timeRules: [v => !!v || "Time is required"]
-      }
+        dateRules: [(v) => !!v || "Date is required"],
+        timeRules: [(v) => !!v || "Time is required"],
+        personsRules: [(v) => !!v || "Number is required"],
+      },
     };
   },
   methods: {
@@ -211,21 +225,21 @@ export default {
           .dispatch("reservation/newReservation", this.reservation)
           .then(() => {
             this.$dialog.message.success("Successfully reservation added!", {
-              position: "top-right"
+              position: "top-right",
             });
             this.$refs.form.reset();
             this.$router.push({ name: "home" });
           })
-          .catch(error => {
+          .catch((error) => {
             this.loading = false;
             console.log(error);
             this.$dialog.message.error(error.response.data.message, {
-              position: "top-right"
+              position: "top-right",
             });
           });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
