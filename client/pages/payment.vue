@@ -109,7 +109,6 @@ export default {
       },
       payments: payments,
       loading: false,
-      // sessionId:'',
     };
   },
   computed: {
@@ -122,6 +121,9 @@ export default {
     },
      ...mapGetters("payment", {
       sessionId: "getSessionId"
+    }),
+    ...mapGetters("cart", {
+      orderId: "getOrderId"
     }),
   },
   methods: {

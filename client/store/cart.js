@@ -6,7 +6,8 @@ export const state = () => ({
     orderType: "",
     paymentMethod: ""
   },
-  total: 0
+  total: 0,
+  orderId:""
 });
 
 export const getters = {
@@ -22,6 +23,9 @@ export const getters = {
       total += item.price * item.quantity;
     });
     return total;
+  },
+  getOrderId(state) {
+    return state.orderId;
   }
 };
 
@@ -51,6 +55,17 @@ export const mutations = {
       state.order.orderType = item.orderType;
       state.order.paymentMethod = item.paymentMethod;
     }
+  },
+  SAVE_ORDER_ID(state, id) {
+    state.orderId = id;
+    console.log(state.orderId);
+  },
+  RESTORE_ORDER(state, order) {
+    state.order.items = order.items;
+    state.order.note = order.note;
+    state.order.orderType = order.orderType;
+    state.order.paymentMethod = order.paymentMethod;
+    state.total = order.total;
   }
 };
 
@@ -90,8 +105,14 @@ export const actions = {
   },
   async newOrder({ commit, state }) {
     try {
+      let response={};
       // console.log(order);
-      const response = await this.$axios.$post("order/new", state.order);
+      if(state.orderId){
+        response = await this.$axios.$get(`order/${state.orderId}`);
+      }else{
+        response = await this.$axios.$post("order/new", state.order);
+      }
+      
       if(state.order.paymentMethod == 'card'){
       const session = await this.$axios.$get(`payment/session/${response.order._id}`);
         commit("payment/SAVE_SESSION", session.id, { root: true });
@@ -107,5 +128,49 @@ export const actions = {
       console.log(error);
       throw error;
     }
-  }
+  },
+  // async makePayment({ commit, state }) {
+  //   try {
+  //     const response={};
+  //     // console.log(order);
+  //     if(state.orderId){
+  //       this.response = await this.$axios.$get(`order/${state.orderId}`);
+  //     }else{
+  //       this.response = await this.$axios.$post("order/new", state.order);
+  //     }
+  //     console.log(response);
+  //     if(state.order.paymentMethod == 'card'){
+  //     const session = await this.$axios.$get(`payment/session/${response.order._id}`);
+  //       commit("payment/SAVE_SESSION", session.id, { root: true });
+  //     }else{
+  //       const payment = {status: 'paid', order: response.order._id, paymentMethod: state.order.paymentMethod}
+  //       commit("payment/ADD_PAYMENT", payment, { root: true });
+  //     }
+  //     commit("review/ADD_ITEMS", state.order.items, { root: true });
+  //     commit("EMPTY_CART");
+  //     // console.log(session.id)
+  //     return response;
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw error;
+  //   }
+  // },
+  saveOrderId({ commit }, id) {
+    commit("SAVE_ORDER_ID", id);
+    console.log(id);
+  },
+  async restoreOrder({ commit, state }) {
+    try {
+      
+      const response = await this.$axios.$get(`order/${state.orderId}`);
+            console.log(response.order);
+      commit("RESTORE_ORDER", response.order);
+      
+      // console.log(session.id)
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
 };

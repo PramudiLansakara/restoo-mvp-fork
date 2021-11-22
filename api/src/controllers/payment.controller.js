@@ -5,7 +5,7 @@ const Payment = require('../models/payment.model');
 const APIError = require('../utils/APIError');
 
 const stripe = Stripe(process.env.STRIPE_SK);
-// const endpointSecret = 'whsec_KLIDTHhPVZc7O2aLyp9ZW4jwiovTz9gz';
+const frontendUrl = process.env.FRONTEND_URL
 
 exports.create = async (req, res, next) => {
   try {
@@ -143,8 +143,8 @@ exports.getSession = async (req, res, next) => {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: 'http://localhost:3000/thank-you',
-      cancel_url: 'http://localhost:3000',
+      success_url: `${frontendUrl}thank-you?id=${id}&status=success`,
+      cancel_url: `${frontendUrl}thank-you?id=${id}&status=failed`,
       client_reference_id: id,
     });
 
