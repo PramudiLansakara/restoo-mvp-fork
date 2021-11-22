@@ -227,3 +227,19 @@ exports.changeOrderStatus = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.update = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const update = req.body;
+
+    const order = await Order.findByIdAndUpdate(id, update);
+    if (!order) {
+      throw new APIError('order not found', httpStatus.NOT_FOUND);
+    }
+
+    return res.status(httpStatus.OK).json({ order });
+  } catch (err) {
+    next(err);
+  }
+};

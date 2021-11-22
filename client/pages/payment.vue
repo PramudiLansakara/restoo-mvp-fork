@@ -144,7 +144,7 @@ export default {
                     this.$dialog.message.success("Successfully paid!", {
                     position: "top-right"
                     });
-                    this.$router.push({ name: "thank-you" });
+                    this.$router.push({ name: "thank-you" , query: { status: 'success' }});
                 })
                 .catch(error => {
                   this.loading = false;

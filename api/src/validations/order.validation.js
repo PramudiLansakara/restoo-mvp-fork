@@ -75,4 +75,23 @@ module.exports = {
       ).required(),
     },
   },
+  update: {
+    params: {
+      id: Joi.objectId().required(),
+    },
+    body: {
+      note: Joi.string().allow('', null).optional(),
+      orderType: Joi.string().allow('', null).optional(),
+      paymentMethod: Joi.string().allow('', null).valid(
+        'cash',
+        'card',
+      ).optional(),
+      items: Joi.array().items(Joi.object({
+        item: Joi.objectId().required(),
+        quantity: Joi.number().integer().required(),
+        price: Joi.number().required(),
+        name: Joi.string().required(),
+      })).optional(),
+    },
+  },
 };

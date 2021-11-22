@@ -73,8 +73,6 @@ export default {
   },
   async fetch() {
     try {
-      console.log(this.$route.query.id);
-      console.log(this.$route.query.status);
       this.status= this.$route.query.status;
       if(this.status=='failed'){
         this.$store.dispatch("cart/saveOrderId", this.$route.query.id);
