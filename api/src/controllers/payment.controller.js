@@ -5,17 +5,22 @@ const Payment = require('../models/payment.model');
 const APIError = require('../utils/APIError');
 
 const stripe = Stripe(process.env.STRIPE_SK);
-const frontendUrl = process.env.FRONTEND_URL
+const frontendUrl = process.env.FRONTEND_URL;
+
+async function getPlacedOrder(order) {
+  const placedOrder = await Order
+    .findOne({ _id: order })
+    .populate({ path: 'items.item', select: '-__v -todaySpecial' })
+    .populate({ path: 'customer', select: 'name role' })
+    .populate({ path: 'waiter', select: 'name role' });
+  return placedOrder;
+}
 
 exports.create = async (req, res, next) => {
   try {
-    const {paymentMethod, status, order} = req.body;
+    const { paymentMethod, status, order } = req.body;
+    const placedOrder = await getPlacedOrder(order);
 
-    const placedOrder = await Order
-      .findOne({ _id: order })
-      .populate({ path: 'items.item', select: '-__v -todaySpecial' })
-      .populate({ path: 'customer', select: 'name role' })
-      .populate({ path: 'waiter', select: 'name role' });
     if (!placedOrder) {
       throw new APIError('Order not found', httpStatus.NOT_FOUND);
     }
@@ -23,6 +28,7 @@ exports.create = async (req, res, next) => {
     const result = await Payment.create({
       paymentMethod,
       totalAmount: placedOrder.total,
+      currency: 'eur',
       status,
       order,
       paidAt: new Date(),
@@ -33,26 +39,23 @@ exports.create = async (req, res, next) => {
   }
 };
 
-exports.createHook = async (req, res, next) => {
+exports.createdHook = async (req, res, next) => {
   try {
     const event = req.body;
     const eventData = event.data.object;
 
     if (event.type === 'checkout.session.completed') {
-      const placedOrder = await Order
-        .findOne({ _id: eventData.client_reference_id })
-        .populate({ path: 'items.item', select: '-__v -todaySpecial' })
-        .populate({ path: 'customer', select: 'name role' })
-        .populate({ path: 'waiter', select: 'name role' });
+      const placedOrder = await getPlacedOrder(eventData.client_reference_id);
       if (!placedOrder) {
         throw new APIError('Order not found', httpStatus.NOT_FOUND);
       }
       const result = await Payment.create({
         paymentMethod: placedOrder.paymentMethod,
         totalAmount: placedOrder.total,
+        currency: eventData.currency,
         status: eventData.payment_status,
         order: eventData.client_reference_id,
-        paidAt: new Date()
+        paidAt: new Date(),
       });
       return res.status(httpStatus.CREATED).json({ paymentId: result._id });
     }
@@ -107,7 +110,7 @@ exports.setStatus = async (req, res, next) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    const payment = await Payment.findByIdAndUpdate(id, {$set:{status: status}})
+    const payment = await Payment.findByIdAndUpdate(id, { $set: { status } });
     if (!payment) {
       throw new APIError('Payment not found', httpStatus.NOT_FOUND);
     }
@@ -117,26 +120,24 @@ exports.setStatus = async (req, res, next) => {
   }
 };
 
-exports.getSession = async (req, res, next) => {
+exports.createStripePaymentSession = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const lineItems = [];
     const order = await Order
       .findOne({ _id: id });
 
-    order.items.map((ptoduct) => {
-      const unitAmount=ptoduct.price*100;
-      const oneItem ={
+    const lineItems = order.items.map((product) => {
+      const unitAmount = product.price * 100;
+      return {
         price_data: {
           currency: 'eur',
           unit_amount: unitAmount,
           product_data: {
-            name: ptoduct.name,
+            name: product.name,
           },
         },
-        quantity: ptoduct.quantity,
-      }
-      lineItems.push(oneItem);
+        quantity: product.quantity,
+      };
     });
 
     const session = await stripe.checkout.sessions.create({

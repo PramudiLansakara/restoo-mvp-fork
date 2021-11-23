@@ -9,6 +9,9 @@ const schema = new Schema({
   totalAmount: {
     type: Number,
   },
+  currency: {
+    type: String,
+  },
   status: {
     type: String,
     default: 'unpaid',

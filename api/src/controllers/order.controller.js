@@ -46,6 +46,7 @@ exports.placeOrder = async (req, res, next) => {
       orderType,
       items,
       paymentMethod,
+      currency: 'eur',
       placedAt: new Date(),
       customer: user._id,
       total,

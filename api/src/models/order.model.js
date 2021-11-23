@@ -16,6 +16,9 @@ const schema = new Schema({
       'card',
     ],
   },
+  currency: {
+    type: String,
+  },
   reference: {
     type: String,
     unique: true,

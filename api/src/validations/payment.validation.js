@@ -25,7 +25,7 @@ module.exports = {
       ).optional(),
     },
   },
-  getSession: {
+  createStripePaymentSession: {
     params: {
       id: Joi.objectId().required(),
     },
