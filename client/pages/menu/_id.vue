@@ -34,9 +34,7 @@
           </div>
 
           <h5 class="text-decoration-line-through secondary--text pl-3">
-            <div v-if="ItemDetails.todaySpecial">
-             {{ ItemDetails.price }}€
-            </div>
+            <div v-if="ItemDetails.todaySpecial">{{ ItemDetails.price }}€</div>
           </h5>
         </v-row>
       </div>
@@ -63,9 +61,7 @@
       color="primary lighten-1"
       class="py-7 mt-16"
     >
-      <v-icon left color="white" size="25px">
-        mdi-food
-      </v-icon>
+      <v-icon left color="white" size="25px"> mdi-food </v-icon>
       <h3 class="white--text">Add to plate</h3>
     </v-btn>
   </v-container>
@@ -106,7 +102,9 @@ export default {
       this.cartItem = {
         _id: this.ItemDetails._id,
         quantity: this.cartItem.quantity,
-        price: this.ItemDetails.price,
+        price: this.ItemDetails.todaySpecial
+          ? this.ItemDetails.discountPrice
+          : this.ItemDetails.price,
         name: this.ItemDetails.name,
       };
       this.$store.dispatch("cart/addItemToCart", this.cartItem);

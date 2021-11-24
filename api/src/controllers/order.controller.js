@@ -24,7 +24,7 @@ async function generateOrderRef() {
 exports.placeOrder = async (req, res, next) => {
   try {
     const { user } = req;
-    const { note = null, orderType = null, items } = req.body;
+    const { note = null, orderType = null, paymentMethod,  items } = req.body;
 
     const itemsObjects = await FoodItem.find({
       _id: {
@@ -36,14 +36,7 @@ exports.placeOrder = async (req, res, next) => {
       throw new APIError('Invalid items', httpStatus.BAD_REQUEST);
     }
 
-    const total = items.reduce((tot, item) => {
-      const ix = itemsObjects.find((i) => i._id.toString() === item.item);
-      if (!ix) {
-        return tot;
-      }
-
-      return tot + ix.price * item.quantity;
-    }, 0);
+    const total = items.reduce((tot, item) => tot + item.price * item.quantity, 0);
 
     const reference = await generateOrderRef();
 
@@ -52,6 +45,8 @@ exports.placeOrder = async (req, res, next) => {
       note,
       orderType,
       items,
+      paymentMethod,
+      currency: 'eur',
       placedAt: new Date(),
       customer: user._id,
       total,
@@ -141,7 +136,6 @@ exports.viewOrder = async (req, res, next) => {
       .populate({ path: 'items.item', select: '-__v -todaySpecial' })
       .populate({ path: 'customer', select: 'name role' })
       .populate({ path: 'waiter', select: 'name role' });
-
     return res.json({ order });
   } catch (err) {
     next(err);
@@ -230,6 +224,22 @@ exports.changeOrderStatus = async (req, res, next) => {
     await stateAction(status, order);
 
     return res.status(httpStatus.OK).json({ message: 'ok' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.update = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const update = req.body;
+
+    const order = await Order.findByIdAndUpdate(id, update);
+    if (!order) {
+      throw new APIError('order not found', httpStatus.NOT_FOUND);
+    }
+
+    return res.status(httpStatus.OK).json({ order });
   } catch (err) {
     next(err);
   }

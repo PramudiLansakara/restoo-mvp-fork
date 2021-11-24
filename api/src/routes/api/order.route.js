@@ -14,6 +14,8 @@ router.get('/list/my', validator(validations.listMyOrders), auth('user'), contro
 
 router.get('/:id', validator(validations.viewMyOrder), auth(), controller.viewOrder);
 
+router.put('/:id', validator(validations.update), auth(), controller.update);
+
 router.put('/:id/status', validator(validations.changeOrderStatus), auth('waiter', 'admin'), controller.changeOrderStatus);
 
 router.put('/:id/selfassign', validator(validations.selfAssignWaiter), auth('waiter'), controller.selfAssignWaiter);

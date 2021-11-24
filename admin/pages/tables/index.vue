@@ -5,14 +5,14 @@
         ><h2>{{ $t("Tables") }}</h2></v-toolbar-title
       >
       <v-spacer></v-spacer>
-      <v-col lg="2" md="2" sm="12">
+      <!-- <v-col lg="2" md="2" sm="12">
         <h5>{{ $t("All Table Status") }}</h5>
         <v-chip
           :color="allTables.status | getColorByStatus"
           text-color="white"
           >{{ allTables.status }}</v-chip
         >
-      </v-col>
+      </v-col> -->
       <v-col lg="3" md="3" sm="12">
         <h5>{{ $t("Change Status") }}</h5>
         <v-select

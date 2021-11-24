@@ -48,7 +48,7 @@ export default {
   modules: ["@nuxtjs/axios", "vuetify-dialog/nuxt", "@nuxtjs/i18n"],
 
   i18n: {
-    defaultLocale: "de",
+    defaultLocale: "en",
     vueI18n: i18n
   },
 

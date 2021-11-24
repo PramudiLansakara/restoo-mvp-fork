@@ -1,0 +1,33 @@
+const Joi = require('joi');
+Joi.objectId = require('joi-objectid')(Joi);
+
+module.exports = {
+  create: {
+    body: {
+      orderId: Joi.objectId().required(),
+      paymentMethod: Joi.string().required(),
+      status: Joi.string().allow(null).valid(
+        'unpaid',
+        'paid',
+        'cancelled',
+      ).optional(),
+    },
+  },
+  update: {
+    params: {
+      id: Joi.objectId().required(),
+    },
+    body: {
+      status: Joi.string().allow(null).valid(
+        'unpaid',
+        'paid',
+        'cancelled',
+      ).optional(),
+    },
+  },
+  createStripePaymentSession: {
+    params: {
+      id: Joi.objectId().required(),
+    },
+  },
+};

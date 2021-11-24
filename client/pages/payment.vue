@@ -68,6 +68,11 @@
     </v-row>
     <v-row>
       <v-col cols="12">
+    <stripe-checkout
+          ref="checkoutRef"
+          :pk="pk"
+          :session-id="sessionId"
+        />
         <v-btn
           large
           rounded
@@ -81,6 +86,9 @@
         >
           <h3 class="white--text">Checkout</h3>
         </v-btn>
+
+        
+    <!-- <button @click="check">Checkout</button> -->
       </v-col>
     </v-row>
   </v-container>
@@ -88,17 +96,19 @@
 
 <script>
 import payments from "@/util/payments";
+import { mapGetters } from "vuex";
 
 export default {
   // middleware: "redirectIfNotAuth",
   data() {
+        this.pk = process.env.STRIPE_PK;
     return {
       paymentDetails: {
         orderType: null,
         paymentMethod: null
       },
       payments: payments,
-      loading: false
+      loading: false,
     };
   },
   computed: {
@@ -108,20 +118,42 @@ export default {
       } else {
         return true;
       }
-    }
+    },
+     ...mapGetters("payment", {
+      sessionId: "getSessionId"
+    }),
+    ...mapGetters("cart", {
+      orderId: "getOrderId"
+    }),
   },
   methods: {
     checkout() {
       if (this.$store.state.auth.authToken) {
         this.loading = true;
         this.$store.dispatch("cart/updateCartItem", this.paymentDetails);
-        this.$store
-          .dispatch("cart/newOrder")
+        this.$store.dispatch("cart/newOrder")
           .then(() => {
-            this.$dialog.message.success("Successfully ordered!", {
-              position: "top-right"
-            });
-            this.$router.push({ name: "review" });
+            if(this.paymentDetails.paymentMethod == 'card'){
+              console.log(this.sessionId)
+              this.$refs.checkoutRef.redirectToCheckout();
+            }
+            else{
+              this.$store.dispatch("payment/newPayment")
+                .then(() => {
+
+                    this.$dialog.message.success("Successfully paid!", {
+                    position: "top-right"
+                    });
+                    this.$router.push({ name: "thank-you" , query: { status: 'success' }});
+                })
+                .catch(error => {
+                  this.loading = false;
+                  console.log(error);
+                  this.$dialog.message.error(error.response.data.message, {
+                    position: "top-right"
+                  });
+                });
+            }
           })
           .catch(error => {
             this.loading = false;
@@ -133,7 +165,7 @@ export default {
       } else {
         this.$router.push({ name: "login", query: { redirect: "/payment" } });
       }
-    }
+    },
   }
 };
 </script>

@@ -24,4 +24,5 @@ module.exports = {
     region: process.env.AWS_REGION,
   },
   mediaPrefix: process.env.MEDIA_PREFIX,
+  stripeSK: process.env.STRIPE_SK,
 };
