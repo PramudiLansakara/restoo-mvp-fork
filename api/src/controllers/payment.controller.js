@@ -1,10 +1,9 @@
-const Stripe = require('stripe');
 const httpStatus = require('http-status');
 const Order = require('../models/order.model');
 const Payment = require('../models/payment.model');
 const APIError = require('../utils/APIError');
+const stripe = require('../services/stripe');
 
-const stripe = Stripe(process.env.STRIPE_SK);
 const frontendUrl = process.env.FRONTEND_URL;
 
 async function getPlacedOrder(orderId) {
