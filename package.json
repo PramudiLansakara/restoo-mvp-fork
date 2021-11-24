@@ -1,8 +1,8 @@
 {
-  "name": "damas-lounge",
+  "name": "restoo-mvp",
   "version": "1.0.0",
   "private": "true",
-  "description": "Restoo app for Damas Lounge",
+  "description": "Restoo MVP",
   "main": "api/src/index.js",
   "scripts": {
     "start": "cd api && yarn start",
@@ -11,15 +11,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/syetalabs/damas-lounge.git"
+    "url": "git+https://github.com/syetalabs/restoo-mvp.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/syetalabs/damas-lounge/issues"
+    "url": "https://github.com/syetalabs/restoo-mvp/issues"
   },
-  "homepage": "https://github.com/syetalabs/damas-lounge#readme",
+  "homepage": "https://github.com/syetalabs/restoo-mvp#readme",
   "engines": {
     "node": "14.x"
   }
