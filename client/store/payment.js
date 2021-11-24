@@ -2,7 +2,7 @@ export const state = () => ({
   sessionId:"",
   payment: {
     status: "",
-    order: "",
+    orderId: "",
     paymentMethod: ""
   }
 });

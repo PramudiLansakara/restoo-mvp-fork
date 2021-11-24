@@ -4,7 +4,7 @@ Joi.objectId = require('joi-objectid')(Joi);
 module.exports = {
   create: {
     body: {
-      order: Joi.objectId().required(),
+      orderId: Joi.objectId().required(),
       paymentMethod: Joi.string().required(),
       status: Joi.string().allow(null).valid(
         'unpaid',

@@ -7,9 +7,9 @@ const APIError = require('../utils/APIError');
 const stripe = Stripe(process.env.STRIPE_SK);
 const frontendUrl = process.env.FRONTEND_URL;
 
-async function getPlacedOrder(order) {
+async function getPlacedOrder(orderId) {
   const placedOrder = await Order
-    .findOne({ _id: order })
+    .findOne({ _id: orderId })
     .populate({ path: 'items.item', select: '-__v -todaySpecial' })
     .populate({ path: 'customer', select: 'name role' })
     .populate({ path: 'waiter', select: 'name role' });
@@ -18,8 +18,8 @@ async function getPlacedOrder(order) {
 
 exports.create = async (req, res, next) => {
   try {
-    const { paymentMethod, status, order } = req.body;
-    const placedOrder = await getPlacedOrder(order);
+    const { paymentMethod, status, orderId } = req.body;
+    const placedOrder = await getPlacedOrder(orderId);
 
     if (!placedOrder) {
       throw new APIError('Order not found', httpStatus.NOT_FOUND);
@@ -30,7 +30,7 @@ exports.create = async (req, res, next) => {
       totalAmount: placedOrder.total,
       currency: 'eur',
       status,
-      order,
+      orderId,
       paidAt: new Date(),
     });
     return res.status(httpStatus.CREATED).json({ id: result._id });

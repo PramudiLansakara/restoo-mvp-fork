@@ -110,7 +110,7 @@ export const actions = {
       const session = await this.$axios.$get(`payment/session/${response.order._id}`);
         commit("payment/SAVE_SESSION", session.id, { root: true });
       }else{
-        const payment = {status: 'paid', order: response.order._id, paymentMethod: state.order.paymentMethod}
+        const payment = {status: 'paid', orderId: response.order._id, paymentMethod: state.order.paymentMethod}
         commit("payment/ADD_PAYMENT", payment, { root: true });
       }
       commit("review/ADD_ITEMS", state.order.items, { root: true });
