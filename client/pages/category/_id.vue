@@ -2,13 +2,13 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <h2>{{ $t("Our Menu") }} 🥗</h2>
+        <h2>{{ name }}</h2>
       </v-col>
     </v-row>
     <v-row cols="12" justify="center">
       <v-chip-group active-class="blue-grey lighten-4">
         <CategoryChip
-          @getCategoryId="getFoodItemListByCategory($event)"
+          @getCategoryId="getFoodItemListByCategory(category)"
           :category="category"
           v-for="category of categories"
           :key="category._id"
@@ -29,23 +29,25 @@
 import MenuItemCard from "../../components/Menu/MenuItemCard.vue";
 export default {
   components: { MenuItemCard },
-  async asyncData({ store }) {
+  async asyncData({ store, params }) {
     const categories = await store.dispatch("food/getFoodCategoryList");
-    // const menuItems = await store.dispatch("food/getFoodItemList");
     const menuItems = await store.dispatch(
-        "food/getFoodItemListByCategory",
-        categories[0]._id
-      );
-    return { categories, menuItems };
+      "food/getFoodItemListByCategory",
+      params.id
+    );
+    const name = params.name;
+    return { menuItems, categories, name };
   },
+
   methods: {
-    async getFoodItemListByCategory(categoryId) {
+    async getFoodItemListByCategory(category) {
+      this.name = category.name;
       this.menuItems = await this.$store.dispatch(
         "food/getFoodItemListByCategory",
-        categoryId
+        category._id
       );
-    }
-  }
+    },
+  },
 };
 </script>
 
