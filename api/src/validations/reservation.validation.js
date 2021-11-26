@@ -9,6 +9,7 @@ module.exports = {
       reservationDate: Joi.date().required(),
       from: Joi.string().required(),
       to: Joi.string().required(),
+      personCount: Joi.string().required(),
     },
   },
   updateReservationRequest: {
@@ -19,6 +20,7 @@ module.exports = {
       reservationDate: Joi.date().required(),
       from: Joi.string().required(),
       to: Joi.string().required(),
+      personCount: Joi.string().required(),
     },
   },
   changeReservationStatus: {

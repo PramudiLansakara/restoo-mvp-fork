@@ -20,6 +20,9 @@ const reservationSchema = new Schema({
   to: {
     type: String,
   },
+  personCount: {
+    type: String,
+  },
   note: {
     type: String,
   },
