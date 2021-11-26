@@ -11,6 +11,7 @@ const imageRouter = require('./images.route');
 const reservationRouter = require('./reservations.route');
 const tablesRouter = require('./tables.route');
 const paymentRouter = require('./payment.route');
+const mailRouter = require('./mail.route');
 
 router.get('/status', (_req, res) => {
   res.send({ status: 'OK' });
@@ -35,5 +36,7 @@ router.use('/reservations', reservationRouter);
 router.use('/table', tablesRouter);
 
 router.use('/payment', paymentRouter);
+
+router.use('/mail', mailRouter);
 
 module.exports = router;
