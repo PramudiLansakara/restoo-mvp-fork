@@ -1,5 +1,5 @@
 <template>
-  <v-footer :absolute="!fixed" app>
+  <v-footer>
     <span
       >Alle Preise inkl. Mwst und Bedienung. Zusatzstoffe und Allergene sind an
       der Theke einzusehen.</span

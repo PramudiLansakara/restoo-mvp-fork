@@ -15,16 +15,11 @@
       </div>
       <img width="100%" src="../assets/images/home.png" />
 
-    </div> -->
+    </div>-->
     <v-container fluid>
       <v-row>
         <v-col cols="12" align="center">
-          <img
-            height="250"
-            width="350"
-            src="../assets/images/home.jpg"
-            class="rounded-xl mt-10"
-          />
+          <img height="250" width="350" src="../assets/images/home.jpg" class="rounded-xl mt-10" />
         </v-col>
       </v-row>
       <v-row>
@@ -48,13 +43,7 @@
           </v-col>
         </v-row>
         <v-row justify="center" class="mb-7">
-          <v-btn
-            :to="'menu/top-deals'"
-            rounded
-            large
-            outlined
-            color="primary lighten-1"
-          >
+          <v-btn :to="'menu/top-deals'" rounded large outlined color="primary lighten-1">
             <h4 class="primary--text text--lighten-1">{{ $t("View More") }}</h4>
           </v-btn>
         </v-row>
@@ -81,22 +70,21 @@
             <h4>{{ $t("Our Menu") }}</h4>
           </v-col>
         </v-row>
-        <v-row>
-          <MenuItemCard
-            :menuItem="menuItem"
-            v-for="menuItem of menuItems"
-            :key="menuItem._id"
-          />
+        <v-row cols="12" justify="center">
+          <v-chip-group active-class="blue-grey lighten-4">
+            <CategoryChip
+              @getCategoryId="viewCategoryList(category)"
+              :category="category"
+              v-for="category of categories"
+              :key="category._id"
+            />
+          </v-chip-group>
         </v-row>
-        <v-row justify="center" class="mb-7">
-          <v-btn
-            :to="'menu/all'"
-            rounded
-            large
-            class="mt-5"
-            outlined
-            color="primary lighten-1"
-          >
+        <v-row>
+          <MenuItemCard :menuItem="menuItem" v-for="menuItem of menuItems" :key="menuItem._id" />
+        </v-row>
+        <v-row justify="center" class="mb-5">
+          <v-btn :to="'menu/all'" rounded large class="mt-5" outlined color="primary lighten-1">
             <h4 class="primary--text text--lighten-1">{{ $t("View More") }}</h4>
           </v-btn>
         </v-row>
@@ -118,11 +106,20 @@ export default {
   },
 
   async asyncData({ store }) {
+    const categories = await store.dispatch("food/getFoodCategoryList");
     const events = await store.dispatch("event/getEventList");
     const menu = await store.dispatch("food/getFoodItemList");
-    //console.log(menuItems[0].category);
     const menuItems = menu.slice(0, 5);
-    return { menuItems, events };
+    return { menuItems, events,categories };
+  },
+  methods: {
+    viewCategoryList(category) {
+      console.log(category);
+      this.$router.push({
+        name: "category-id",
+        params: { id: category._id, name: category.name },
+      });
+    },
   },
 };
 </script>
