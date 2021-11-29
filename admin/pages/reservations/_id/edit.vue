@@ -64,6 +64,18 @@
                 ></v-date-picker>
               </v-menu>
             </v-col>
+            <v-col cols="12" md="3">
+              <h5 class="mb-3">Persons</h5>
+              <v-text-field
+                v-model="reservation.personCount"
+                class="rounded-sm"
+                filled
+                dense
+                rounded
+                required
+                :rules="rules.countRules"
+              ></v-text-field>
+            </v-col>
           </v-row>
           <v-row>
             <v-col cols="12" md="2">
@@ -188,7 +200,8 @@ export default {
           v => /.+@.+\..+/.test(v) || "E-mail must be valid"
         ],
         dateRules: [v => !!v || "Date is required"],
-        timeRules: [v => !!v || "Time is required"]
+        timeRules: [v => !!v || "Time is required"],
+        countRules: [v => !!v || "Count is required"]
       }
     };
   },

@@ -1,7 +1,9 @@
 <template>
   <v-container fluid>
     <v-toolbar flat>
-      <v-toolbar-title><h2>Reservation Details</h2></v-toolbar-title>
+      <v-toolbar-title>
+        <h2>Reservation Details</h2>
+      </v-toolbar-title>
     </v-toolbar>
     <v-card class="elevation-1">
       <v-card-text>
@@ -34,14 +36,17 @@
           </v-row>
           <v-row>
             <v-col cols="12" md="2">
+              <h5 class="mb-3">Persons</h5>
+              {{ reservation.personCount }}
+            </v-col>
+            <v-col cols="12" md="2">
               <h5 class="mb-3">Reservation Status</h5>
               <v-chip
                 :color="reservation.reservationStatus | getColorByStatus"
                 text-color="white"
-                >{{ reservation.reservationStatus }}</v-chip
-              >
+              >{{ reservation.reservationStatus }}</v-chip>
             </v-col>
-            <v-col cols="12" md="3">
+            <v-col cols="12" md="2">
               <h5 class="mb-3">Change Status</h5>
               <v-select
                 v-model="reservation.reservationStatus"
@@ -54,7 +59,7 @@
                 :items="items"
               ></v-select>
             </v-col>
-            <v-col cols="12" md="3">
+            <v-col cols="12" md="2">
               <h5 class="mb-3">Table Number</h5>
               <v-text-field
                 v-model="reservation.tableNumber"
@@ -68,13 +73,7 @@
             </v-col>
             <v-col cols="12" md="3">
               <h5 class="mb-3">Note</h5>
-              <v-text-field
-                v-model="reservation.adminNote"
-                class="rounded-sm"
-                filled
-                dense
-                rounded
-              ></v-text-field>
+              <v-text-field v-model="reservation.adminNote" class="rounded-sm" filled dense rounded></v-text-field>
             </v-col>
           </v-row>
         </v-form>
@@ -87,9 +86,8 @@
             color="primary lighten-1 white--text"
             @click="sendEmail"
             :loading="loading"
-            >Send Email</v-btn
-          >
-          <v-btn color="black--text" @click="cancel">{{$t("Cancel")}}</v-btn>
+          >Send Email</v-btn>
+          <v-btn color="black--text" @click="cancel">{{ $t("Cancel") }}</v-btn>
         </div>
       </v-card-actions>
     </v-card>
