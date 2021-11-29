@@ -6,6 +6,7 @@ const router = express.Router();
 const controller = require('../../controllers/mailServer.controller');
 // const validations = require('../../validations/payment.validation');
 
-router.get('/', controller.sendMail);
+router.get('/', controller.getMail);
+router.post('/', controller.sendMail);
 
 module.exports = router;
