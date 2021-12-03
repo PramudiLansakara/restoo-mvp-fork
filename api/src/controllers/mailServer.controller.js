@@ -12,7 +12,6 @@ exports.sendMail = async (req, res, next) => {
       views: { root: './emails', options: { extension: 'ejs' } },
       message: {
         preview: false,
-        from: 'samaratungajs@gmail.com',
       },
       // uncomment below to send emails in development/test env:
       send: true,
