@@ -44,7 +44,8 @@
               <v-chip
                 :color="reservation.reservationStatus | getColorByStatus"
                 text-color="white"
-              >{{ reservation.reservationStatus }}</v-chip>
+                >{{ reservation.reservationStatus }}</v-chip
+              >
             </v-col>
             <v-col cols="12" md="2">
               <h5 class="mb-3">Change Status</h5>
@@ -73,7 +74,13 @@
             </v-col>
             <v-col cols="12" md="3">
               <h5 class="mb-3">Note</h5>
-              <v-text-field v-model="reservation.adminNote" class="rounded-sm" filled dense rounded></v-text-field>
+              <v-text-field
+                v-model="reservation.adminNote"
+                class="rounded-sm"
+                filled
+                dense
+                rounded
+              ></v-text-field>
             </v-col>
           </v-row>
         </v-form>
@@ -86,7 +93,8 @@
             color="primary lighten-1 white--text"
             @click="sendEmail"
             :loading="loading"
-          >Send Email</v-btn>
+            >Send Email</v-btn
+          >
           <v-btn color="black--text" @click="cancel">{{ $t("Cancel") }}</v-btn>
         </div>
       </v-card-actions>
@@ -107,12 +115,12 @@ export default {
       reservation: {
         reservationStatus: "",
         tableNumber: "",
-        adminNote: ""
+        adminNote: "",
       },
       rules: {
-        statusRules: [v => !!v || "Status is required"],
-        tableRules: [v => !!v || "Table Number is required"]
-      }
+        statusRules: [(v) => !!v || "Status is required"],
+        tableRules: [(v) => !!v || "Table Number is required"],
+      },
     };
   },
   async asyncData({ store, error, params }) {
@@ -131,18 +139,20 @@ export default {
   methods: {
     cancel() {
       this.$router.push({
-        name: "orders"
+        name: "orders",
       });
     },
     sendEmail() {
+      this.reservation.receiverEmail = this.reservation.email;
+      this.reservation.note = this.reservation.adminNote;
       console.log(this.reservation);
       const validate = this.$refs.form.validate();
       if (validate) {
         this.loading = true;
         this.$store
-          .dispatch("reservation/changeReservationStatus", this.reservation)
+          .dispatch("reservation/sendEmail", this.reservation)
           .then(() => {
-            this.$dialog.message.success("Successfully reservation added!", {
+            this.$dialog.message.success("Successfully email sent!", {
               position: "top-right"
             });
             this.$refs.form.reset();
@@ -162,18 +172,18 @@ export default {
       this.$store
         .dispatch("order/changeStatus", item)
         .then(() => {
-          this.$dialog.message.success(this.$t('Success Message'), {
-            position: "top-right"
+          this.$dialog.message.success(this.$t("Success Message"), {
+            position: "top-right",
           });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           this.$dialog.message.error(error.response.data.message, {
-            position: "top-right"
+            position: "top-right",
           });
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

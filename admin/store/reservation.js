@@ -56,5 +56,15 @@ export const actions = {
       console.log(error);
       throw error;
     }
-  }
+  },
+  async sendEmail(_, reservation) {
+    try {
+      // console.log(order);
+      const response = await this.$axios.$post("mail/reservationFeedback", reservation);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
 };
