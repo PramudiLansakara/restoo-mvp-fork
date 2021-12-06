@@ -10,9 +10,7 @@ exports.sendMail = async (req, res, next) => {
     } = req.body;
     const email = new Email({
       views: { root: './emails', options: { extension: 'ejs' } },
-      message: {
-        preview: false,
-      },
+      preview: false,
       // uncomment below to send emails in development/test env:
       send: true,
       transport: transporter,
@@ -25,7 +23,7 @@ exports.sendMail = async (req, res, next) => {
       },
       locals: {
         name,
-        reservationDate,
+        reservationDate: reservationDate.toISOString().slice(0, 10),
         from,
         to,
         personCount,
