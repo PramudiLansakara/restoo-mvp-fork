@@ -1,7 +1,9 @@
 <template>
   <v-container fluid>
     <v-toolbar flat>
-      <v-toolbar-title><h2>Reservation Details</h2></v-toolbar-title>
+      <v-toolbar-title>
+        <h2>Reservation Details</h2>
+      </v-toolbar-title>
     </v-toolbar>
     <v-card class="elevation-1">
       <v-card-text>
@@ -34,6 +36,10 @@
           </v-row>
           <v-row>
             <v-col cols="12" md="2">
+              <h5 class="mb-3">Persons</h5>
+              {{ reservation.personCount }}
+            </v-col>
+            <v-col cols="12" md="2">
               <h5 class="mb-3">Reservation Status</h5>
               <v-chip
                 :color="reservation.reservationStatus | getColorByStatus"
@@ -41,7 +47,7 @@
                 >{{ reservation.reservationStatus }}</v-chip
               >
             </v-col>
-            <v-col cols="12" md="3">
+            <v-col cols="12" md="2">
               <h5 class="mb-3">Change Status</h5>
               <v-select
                 v-model="reservation.reservationStatus"
@@ -54,7 +60,7 @@
                 :items="items"
               ></v-select>
             </v-col>
-            <v-col cols="12" md="3">
+            <v-col cols="12" md="2">
               <h5 class="mb-3">Table Number</h5>
               <v-text-field
                 v-model="reservation.tableNumber"
@@ -89,7 +95,7 @@
             :loading="loading"
             >Send Email</v-btn
           >
-          <v-btn color="black--text" @click="cancel">{{$t("Cancel")}}</v-btn>
+          <v-btn color="black--text" @click="cancel">{{ $t("Cancel") }}</v-btn>
         </div>
       </v-card-actions>
     </v-card>
@@ -109,12 +115,12 @@ export default {
       reservation: {
         reservationStatus: "",
         tableNumber: "",
-        adminNote: ""
+        adminNote: "",
       },
       rules: {
-        statusRules: [v => !!v || "Status is required"],
-        tableRules: [v => !!v || "Table Number is required"]
-      }
+        statusRules: [(v) => !!v || "Status is required"],
+        tableRules: [(v) => !!v || "Table Number is required"],
+      },
     };
   },
   async asyncData({ store, error, params }) {
@@ -133,18 +139,20 @@ export default {
   methods: {
     cancel() {
       this.$router.push({
-        name: "orders"
+        name: "orders",
       });
     },
     sendEmail() {
+      this.reservation.receiverEmail = this.reservation.email;
+      this.reservation.note = this.reservation.adminNote;
       console.log(this.reservation);
       const validate = this.$refs.form.validate();
       if (validate) {
         this.loading = true;
         this.$store
-          .dispatch("reservation/changeReservationStatus", this.reservation)
+          .dispatch("reservation/sendEmail", this.reservation)
           .then(() => {
-            this.$dialog.message.success("Successfully reservation added!", {
+            this.$dialog.message.success("Successfully email sent!", {
               position: "top-right"
             });
             this.$refs.form.reset();
@@ -164,18 +172,18 @@ export default {
       this.$store
         .dispatch("order/changeStatus", item)
         .then(() => {
-          this.$dialog.message.success(this.$t('Success Message'), {
-            position: "top-right"
+          this.$dialog.message.success(this.$t("Success Message"), {
+            position: "top-right",
           });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           this.$dialog.message.error(error.response.data.message, {
-            position: "top-right"
+            position: "top-right",
           });
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

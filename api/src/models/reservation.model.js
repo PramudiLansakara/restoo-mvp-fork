@@ -9,7 +9,6 @@ const reservationSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
   },
   reservationDate: {
     type: Date,
@@ -18,6 +17,9 @@ const reservationSchema = new Schema({
     type: String,
   },
   to: {
+    type: String,
+  },
+  personCount: {
     type: String,
   },
   note: {
@@ -34,11 +36,11 @@ const reservationSchema = new Schema({
   },
   adminNote: {
     type: String,
-    default: 'N/A',
+    default: ' ',
   },
   tableNumber: {
     type: String,
-    default: 'N/A',
+    default: ' ',
   },
 }, {
   timestamps: false,
