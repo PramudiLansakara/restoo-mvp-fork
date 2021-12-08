@@ -36,11 +36,11 @@ const reservationSchema = new Schema({
   },
   adminNote: {
     type: String,
-    default: 'N/A',
+    default: ' ',
   },
   tableNumber: {
     type: String,
-    default: 'N/A',
+    default: ' ',
   },
 }, {
   timestamps: false,
