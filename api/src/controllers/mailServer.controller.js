@@ -3,7 +3,7 @@ const Email = require('email-templates');
 const path = require('path');
 const transporter = require('../services/transporter');
 
-exports.sendMail = async (req, res, next) => {
+exports.sendFeedbackMail = async (req, res, next) => {
   try {
     const {
       receiverEmail, name, reservationDate, from, to, personCount, note, reservationStatus,
