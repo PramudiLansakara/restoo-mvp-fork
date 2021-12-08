@@ -111,10 +111,10 @@ padding:15px 30px 15px 30px!important;
 <td valign="top" align="center" style="padding:0;Margin:0;width:522px">
 <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 <tr style="border-collapse:collapse">
-<td align="left" style="padding:0;Margin:0;padding-bottom:5px;padding-top:20px"><h3 style="Margin:0;line-height:22px;mso-line-height-rule:exactly;font-family:'source sans pro', 'helvetica neue', helvetica, arial, sans-serif;font-size:18px;font-style:normal;font-weight:bold;color:#333333">Hello customer,</h3></td>
+<td align="left" style="padding:0;Margin:0;padding-bottom:5px;padding-top:20px"><h3 style="Margin:0;line-height:22px;mso-line-height-rule:exactly;font-family:'source sans pro', 'helvetica neue', helvetica, arial, sans-serif;font-size:18px;font-style:normal;font-weight:bold;color:#333333">Hi <%= name %>,</h3></td>
 </tr>
 <tr style="border-collapse:collapse">
-<td align="left" style="padding:0;Margin:0;padding-top:5px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'source sans pro', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;font-size:16px">We regret to inform you that we are unable to accept your reservation request for [2020]<br>We remain at your service for any future bookings you might wish to make.</p></td>
+<td align="left" style="padding:0;Margin:0;padding-top:5px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'source sans pro', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;font-size:16px">We regret to inform you that we are unable to accept your reservation request for <%= reservationDate %>.<br>We remain at your service for any future bookings you might wish to make.</p></td>
 </tr>
 <tr style="border-collapse:collapse">
 <td align="left" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'source sans pro', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;font-size:16px"><strong>Restoo Team.</strong></p></td>
@@ -130,7 +130,7 @@ padding:15px 30px 15px 30px!important;
 <td align="center" valign="top" style="padding:0;Margin:0;width:530px">
 <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 <tr style="border-collapse:collapse">
-<td align="left" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'source sans pro', 'helvetica neue', helvetica, arial, sans-serif;line-height:23px;color:#808080;font-size:15px"><strong>Your Booking Details</strong><br>Name&nbsp; :&nbsp; ja<br>Booked for&nbsp;&nbsp;:&nbsp;&nbsp;ja<br>Requested time&nbsp; :&nbsp;&nbsp;ja<br>Reservation date&nbsp; :&nbsp;&nbsp;ja<br>Reservation status&nbsp; :&nbsp;&nbsp;ja<br></p></td>
+<td align="left" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'source sans pro', 'helvetica neue', helvetica, arial, sans-serif;line-height:23px;color:#808080;font-size:15px"><strong>Your Booking Details</strong><br>Name&nbsp; :&nbsp; <%= name %><br>Booked for&nbsp;&nbsp;:&nbsp;&nbsp;<%= personCount %><br>Requested time&nbsp; :&nbsp;&nbsp; From <%= from %> To <%= to %><br>Reservation date&nbsp; :&nbsp;&nbsp;<%= reservationDate %><br>Reservation status&nbsp; :&nbsp;&nbsp;<%= reservationStatus %><br></p></td>
 </tr>
 </table></td>
 </tr>
