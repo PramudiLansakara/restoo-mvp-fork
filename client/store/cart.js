@@ -35,7 +35,8 @@ export const mutations = {
       item: item._id,
       quantity: item.quantity,
       price: item.price,
-      name: item.name
+      name: item.name,
+      itemUrl: item.itemUrl
     });
   },
   REMOVE_ITEM(state, item) {
@@ -85,7 +86,8 @@ export const actions = {
         return {
           name: food.name,
           price: cartItem.price,
-          quantity: cartItem.quantity
+          quantity: cartItem.quantity,
+          itemUrl : food.itemUrl,
         };
       });
     } catch (error) {

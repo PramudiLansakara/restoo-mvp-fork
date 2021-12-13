@@ -76,6 +76,7 @@ export default {
         quantity: 1,
         price: "",
         name: "",
+        itemUrl:"",
       },
     };
   },
@@ -106,6 +107,7 @@ export default {
           ? this.ItemDetails.discountPrice
           : this.ItemDetails.price,
         name: this.ItemDetails.name,
+        itemUrl: this.ItemDetails.itemUrl,
       };
       this.$store.dispatch("cart/addItemToCart", this.cartItem);
       this.$router.go(-1);

@@ -4,7 +4,7 @@
       <div class="d-flex flex-no-wrap">
         <v-avatar class="rounded-lg" size="75" tile>
           <v-img
-            src="https://i.picsum.photos/id/429/4128/2322.jpg?hmac=_mAS4ToWrJBx29qI2YNbOQ9IyOevQr01DEuCbArqthc"
+            :src="cartItem.itemUrl"
           ></v-img>
         </v-avatar>
         <v-card-text>
