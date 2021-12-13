@@ -16,7 +16,7 @@
           </v-col>
           <v-col cols="12" md="3">
             <h5 class="mb-3">Item Category</h5>
-            {{ item.category }}
+            {{ item.category.name }}
           </v-col>
         </v-row>
         <v-row>
