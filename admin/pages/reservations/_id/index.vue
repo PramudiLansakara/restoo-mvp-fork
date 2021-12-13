@@ -58,6 +58,7 @@
                 required
                 :rules="rules.statusRules"
                 :items="items"
+                @change="onChangeStatus(reservation)"
               ></v-select>
             </v-col>
             <v-col cols="12" md="2">
@@ -144,7 +145,6 @@ export default {
     },
     sendEmail() {
       this.reservation.receiverEmail = this.reservation.email;
-      this.reservation.note = this.reservation.adminNote;
       console.log(this.reservation);
       const validate = this.$refs.form.validate();
       if (validate) {
@@ -170,7 +170,7 @@ export default {
     onChangeStatus(item) {
       console.log(item);
       this.$store
-        .dispatch("order/changeStatus", item)
+        .dispatch("reservation/changeReservationStatus", item)
         .then(() => {
           this.$dialog.message.success(this.$t("Success Message"), {
             position: "top-right",

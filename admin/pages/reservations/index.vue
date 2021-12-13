@@ -1,13 +1,15 @@
 <template>
   <v-container fluid>
-    <v-data-table :headers="headers" :items="reservations" class="elevation-1">
+    <v-data-table :headers="headers" :items="reservations" class="elevation-1" 
+      sort-by="reservationDate"
+      :sort-desc="true">
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title><h2>Reservations</h2></v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
       </template>
-      <template v-slot:item.reservationDate="{ item }">
+      <template v-slot:item.reservationDate="{ item }"> 
         {{ item.reservationDate | formatDate }}
       </template>
       <template v-slot:item.reservationStatus="{ item }">
