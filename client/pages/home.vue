@@ -64,6 +64,22 @@
           </v-col>
         </v-row>
       </div>
+        <div v-if="specials.length > 0">
+        <v-row>
+          <v-col cols="12" align="center">
+            <h4>{{ $t("Specials") }}</h4>
+          </v-col>
+        </v-row>
+        <v-row justify="center">
+          <v-col sm="12" md="4" lg="4">
+            <v-carousel cycle height="250" hide-delimiters>
+              <v-carousel-item v-for="special of specials" :key="special._id">
+                <SpecialCard :special="special" />
+              </v-carousel-item>
+            </v-carousel>
+          </v-col>
+        </v-row>
+      </div>
       <div v-if="menuItems.length > 0">
         <v-row>
           <v-col cols="12" align="center">
@@ -95,10 +111,11 @@
 
 <script>
 import EventCard from "../components/Event/EventCard.vue";
+import SpecialCard from "../components/Event/SpecialCard.vue";
 import MenuItemCard from "../components/Menu/MenuItemCard.vue";
 import SpecialDealCard from "../components/Menu/SpecialDealCard.vue";
 export default {
-  components: { MenuItemCard, SpecialDealCard },
+  components: { MenuItemCard, SpecialDealCard, SpecialCard },
   computed: {
     topDeals() {
       return this.menuItems.filter((item) => item.todaySpecial);
@@ -107,10 +124,11 @@ export default {
 
   async asyncData({ store }) {
     const categories = await store.dispatch("food/getFoodCategoryList");
+    const specials = await store.dispatch("specials/getSpecialsList");
     const events = await store.dispatch("event/getEventList");
     const menu = await store.dispatch("food/getFoodItemList");
     const menuItems = menu.slice(0, 5);
-    return { menuItems, events,categories };
+    return { menuItems, events, categories, specials };
   },
   methods: {
     viewCategoryList(category) {

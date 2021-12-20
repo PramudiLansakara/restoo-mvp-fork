@@ -12,6 +12,7 @@ const reservationRouter = require('./reservations.route');
 const tablesRouter = require('./tables.route');
 const paymentRouter = require('./payment.route');
 const mailRouter = require('./mail.route');
+const specialsRouter = require('./specials.route');
 
 router.get('/status', (_req, res) => {
   res.send({ status: 'OK' });
@@ -38,5 +39,7 @@ router.use('/table', tablesRouter);
 router.use('/payment', paymentRouter);
 
 router.use('/mail', mailRouter);
+
+router.use('/specials', specialsRouter);
 
 module.exports = router;
