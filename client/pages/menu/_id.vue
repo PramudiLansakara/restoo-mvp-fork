@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-img height="250" :src="ItemDetails.itemUrl" class="mb-3"></v-img>
+    <v-img :height="imgHight" :src="ItemDetails.itemUrl" @click="onImageClick()" class="mb-3"></v-img>
     <h2>{{ ItemDetails.name }}</h2>
     <h5 class="danger--text mt-2">
       {{ ItemDetails.category.name }}
@@ -78,6 +78,7 @@ export default {
         name: "",
         itemUrl:"",
       },
+      imgHight:"250",
     };
   },
   async asyncData({ store, params }) {
@@ -111,6 +112,14 @@ export default {
       };
       this.$store.dispatch("cart/addItemToCart", this.cartItem);
       this.$router.go(-1);
+    },
+    onImageClick(){
+      if(this.imgHight === "250" ){
+        this.imgHight= "100%";
+      }else{
+        this.imgHight= "250";
+      }
+        
     },
   },
 };
