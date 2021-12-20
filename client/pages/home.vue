@@ -100,7 +100,14 @@
           <MenuItemCard :menuItem="menuItem" v-for="menuItem of menuItems" :key="menuItem._id" />
         </v-row>
         <v-row justify="center" class="mb-5">
-          <v-btn :to="'menu/all'" rounded large class="mt-5" outlined color="primary lighten-1">
+          <v-btn
+            :to="'menu/all'"
+            rounded
+            large
+            class="mt-5"
+            outlined
+            color="primary lighten-1"
+          >
             <h4 class="primary--text text--lighten-1">{{ $t("View More") }}</h4>
           </v-btn>
         </v-row>
@@ -115,7 +122,7 @@ import SpecialCard from "../components/Event/SpecialCard.vue";
 import MenuItemCard from "../components/Menu/MenuItemCard.vue";
 import SpecialDealCard from "../components/Menu/SpecialDealCard.vue";
 export default {
-  components: { MenuItemCard, SpecialDealCard, SpecialCard },
+  components: { MenuItemCard, SpecialDealCard ,SpecialCard },
   computed: {
     topDeals() {
       return this.menuItems.filter((item) => item.todaySpecial);
@@ -123,13 +130,16 @@ export default {
   },
 
   async asyncData({ store }) {
-    const categories = await store.dispatch("food/getFoodCategoryList");
-    const specials = await store.dispatch("specials/getSpecialsList");
     const events = await store.dispatch("event/getEventList");
+        console.log(events)
+    const specials = await store.dispatch("specials/getSpecialsList");
+    console.log(specials)
     const menu = await store.dispatch("food/getFoodItemList");
+    const categories = await store.dispatch("food/getFoodCategoryList");
     const menuItems = menu.slice(0, 5);
     return { menuItems, events, categories, specials };
   },
+
   methods: {
     viewCategoryList(category) {
       console.log(category);
