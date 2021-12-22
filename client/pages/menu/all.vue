@@ -40,10 +40,12 @@ export default {
   },
   methods: {
     async getFoodItemListByCategory(categoryId) {
+      console.log(categoryId)
       this.menuItems = await this.$store.dispatch(
         "food/getFoodItemListByCategory",
         categoryId
       );
+      console.log(this.menuItems)
     }
   }
 };

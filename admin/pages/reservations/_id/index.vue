@@ -61,7 +61,7 @@
                 @change="onChangeStatus(reservation)"
               ></v-select>
             </v-col>
-            <v-col cols="12" md="2">
+            <v-col v-show="acceptedStatus" cols="12" md="2">
               <h5 class="mb-3">Table Number</h5>
               <v-text-field
                 v-model="reservation.tableNumber"
@@ -73,7 +73,7 @@
                 :rules="rules.tableRules"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" md="3">
+            <v-col v-show="acceptedStatus" cols="12" md="3">
               <h5 class="mb-3">Note</h5>
               <v-text-field
                 v-model="reservation.adminNote"
@@ -113,6 +113,7 @@ export default {
       valid: true,
       loading: false,
       items: reservationStatusList,
+      acceptedStatus: false,
       reservation: {
         reservationStatus: "",
         tableNumber: "",
@@ -169,6 +170,9 @@ export default {
     },
     onChangeStatus(item) {
       console.log(item);
+      if(this.reservation.reservationStatus == "accepted" ){
+        this.acceptedStatus = true;
+      }
       this.$store
         .dispatch("reservation/changeReservationStatus", item)
         .then(() => {
