@@ -60,6 +60,7 @@ export const actions = {
   async sendEmail(_, reservation) {
     try {
       // console.log(order);
+      await this.$axios.$put(`reservations/${reservation._id}/update`, reservation );
       const response = await this.$axios.$post("mail/reservationFeedback", reservation);
       return response;
     } catch (error) {
