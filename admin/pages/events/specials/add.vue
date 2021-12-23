@@ -101,13 +101,12 @@ export default {
     };
   },
   methods: {
-    addSpecials() {
+    async addSpecials() {
       const validate = this.$refs.form.validate();
       if (validate) {
         console.log(this.specials);
         this.loading = true;
-        this.$store
-          .dispatch("specials/addSpecials", this.specials)
+        await this.$store.dispatch("specials/addSpecials", this.specials)
           .then(() => {
             this.$dialog.message.success(this.$t('Success Message'), {
               position: "top-right",
@@ -124,13 +123,13 @@ export default {
           });
       }
     },
-    uploadImage() {
+    async uploadImage() {
       console.log(this.image);
       if (this.image != null) {
         this.imageLoading = true;
         let fd = new FormData();
         fd.append("file", this.image);
-        this.$store
+        await this.$store
           .dispatch("images/uploadImage", fd)
           .then((response) => {
             console.log(response);
