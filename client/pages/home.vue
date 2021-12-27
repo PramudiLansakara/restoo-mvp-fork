@@ -19,7 +19,12 @@
     <v-container fluid>
       <v-row>
         <v-col cols="12" align="center">
-          <img height="250" width="350" src="../assets/images/home.jpg" class="rounded-xl mt-10" />
+          <img
+            height="250"
+            width="350"
+            src="../assets/images/home.jpg"
+            class="rounded-xl mt-10"
+          />
         </v-col>
       </v-row>
       <v-row>
@@ -43,7 +48,13 @@
           </v-col>
         </v-row>
         <v-row justify="center" class="mb-7">
-          <v-btn :to="'menu/top-deals'" rounded large outlined color="primary lighten-1">
+          <v-btn
+            :to="'menu/top-deals'"
+            rounded
+            large
+            outlined
+            color="primary lighten-1"
+          >
             <h4 class="primary--text text--lighten-1">{{ $t("View More") }}</h4>
           </v-btn>
         </v-row>
@@ -59,6 +70,22 @@
             <v-carousel cycle height="250" hide-delimiters>
               <v-carousel-item v-for="event of events" :key="event._id">
                 <EventCard :event="event" />
+              </v-carousel-item>
+            </v-carousel>
+          </v-col>
+        </v-row>
+      </div>
+      <div v-if="specials.length > 0">
+        <v-row>
+          <v-col cols="12" align="center">
+            <h4>{{ $t("Specials") }}</h4>
+          </v-col>
+        </v-row>
+        <v-row justify="center">
+          <v-col sm="12" md="4" lg="4">
+            <v-carousel cycle height="250" hide-delimiters>
+              <v-carousel-item v-for="special of specials" :key="special._id">
+                <SpecialCard :special="special" />
               </v-carousel-item>
             </v-carousel>
           </v-col>
@@ -81,10 +108,21 @@
           </v-chip-group>
         </v-row>
         <v-row>
-          <MenuItemCard :menuItem="menuItem" v-for="menuItem of menuItems" :key="menuItem._id" />
+          <MenuItemCard
+            :menuItem="menuItem"
+            v-for="menuItem of menuItems"
+            :key="menuItem._id"
+          />
         </v-row>
         <v-row justify="center" class="mb-5">
-          <v-btn :to="'menu/all'" rounded large class="mt-5" outlined color="primary lighten-1">
+          <v-btn
+            :to="'menu/all'"
+            rounded
+            large
+            class="mt-5"
+            outlined
+            color="primary lighten-1"
+          >
             <h4 class="primary--text text--lighten-1">{{ $t("View More") }}</h4>
           </v-btn>
         </v-row>
@@ -95,10 +133,11 @@
 
 <script>
 import EventCard from "../components/Event/EventCard.vue";
+import SpecialCard from "../components/Event/SpecialCard.vue";
 import MenuItemCard from "../components/Menu/MenuItemCard.vue";
 import SpecialDealCard from "../components/Menu/SpecialDealCard.vue";
 export default {
-  components: { MenuItemCard, SpecialDealCard },
+  components: { MenuItemCard, SpecialDealCard, SpecialCard },
   computed: {
     topDeals() {
       return this.menuItems.filter((item) => item.todaySpecial);
@@ -106,12 +145,16 @@ export default {
   },
 
   async asyncData({ store }) {
-    const categories = await store.dispatch("food/getFoodCategoryList");
     const events = await store.dispatch("event/getEventList");
+    console.log(events);
+    const specials = await store.dispatch("specials/getSpecialsList");
+    console.log(specials);
     const menu = await store.dispatch("food/getFoodItemList");
+    const categories = await store.dispatch("food/getFoodCategoryList");
     const menuItems = menu.slice(0, 5);
-    return { menuItems, events,categories };
+    return { menuItems, events, categories, specials };
   },
+
   methods: {
     viewCategoryList(category) {
       console.log(category);

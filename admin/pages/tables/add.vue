@@ -78,26 +78,25 @@ export default {
   //     }
   //   },
   methods: {
-    addTable() {
+    async addTable() {
       const validate = this.$refs.form.validate();
       if (validate) {
         this.loading = true;
-        this.$store
+        try { 
+        await this.$store
           .dispatch("table/addTable", this.table)
-          .then(() => {
             this.$dialog.message.success(this.$t('Success Message'), {
               position: "top-right",
             });
             this.$refs.form.reset();
             this.$router.push({ name: "tables" });
-          })
-          .catch((error) => {
-            this.loading = false;
-            console.log(error);
-            this.$dialog.message.error(error.response.data.message, {
-              position: "top-right",
-            });
-          });
+        }catch (error) {
+          this.loading = false;
+          console.log(error);
+          this.$dialog.message.error(error.response.data.message, {
+          position: "top-right",
+          });        
+        }
       }
     },
     cancel() {

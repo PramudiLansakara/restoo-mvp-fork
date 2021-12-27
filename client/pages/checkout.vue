@@ -26,7 +26,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-row justify="space-between" align="center" class=" mx-3">
+      <v-row justify="space-between" align="center" class="mx-3">
         <h5 class="secondary--text">Subtotal</h5>
         <h5 class="secondary--text">{{ total }}$</h5>
       </v-row>
@@ -73,17 +73,17 @@ export default {
   data() {
     return {
       orderDetails: {
-        note: ""
+        note: "",
       },
-      loading: false
+      loading: false,
     };
   },
   computed: {
     ...mapGetters("cart", {
-      total: "getTotal"
+      total: "getTotal",
     }),
     ...mapGetters("cart", {
-      cartItems: "getCartItems"
+      cartItems: "getCartItems",
     }),
     isCartEmpty() {
       if (this.cartItems.length != 0) {
@@ -91,14 +91,14 @@ export default {
       } else {
         return true;
       }
-    }
+    },
   },
   methods: {
     confirm() {
       this.$store.dispatch("cart/updateCartItem", this.orderDetails);
       this.$router.push({ name: "payment" });
-    }
-  }
+    },
+  },
 };
 </script>
 

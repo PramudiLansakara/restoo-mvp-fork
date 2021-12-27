@@ -24,7 +24,7 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ["~/plugins/axios", "~/plugins/filters", {
+  plugins: ["~/plugins/axios", "~/plugins/filters","~/plugins/cookies.js", {
     src: '~/plugins/socket-io.js',
     ssr: false,                    // <-- this line is required
   }, { src: '~/plugins/vue-stripe.js', ssr: false },],
@@ -51,7 +51,7 @@ export default {
   },
 
   i18n: {
-    defaultLocale: "de",
+    defaultLocale: "en",
     vueI18n: i18n
   },
 

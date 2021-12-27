@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <h2>{{ $t("Our Menu") }} 🥗</h2>
+        <h2>{{ $t("Our Menu") }}</h2>
       </v-col>
     </v-row>
     <v-row cols="12" justify="center">
@@ -33,19 +33,21 @@ export default {
     const categories = await store.dispatch("food/getFoodCategoryList");
     // const menuItems = await store.dispatch("food/getFoodItemList");
     const menuItems = await store.dispatch(
-        "food/getFoodItemListByCategory",
-        categories[0]._id
-      );
+      "food/getFoodItemListByCategory",
+      categories[0]._id
+    );
     return { categories, menuItems };
   },
   methods: {
     async getFoodItemListByCategory(categoryId) {
+      console.log(categoryId);
       this.menuItems = await this.$store.dispatch(
         "food/getFoodItemListByCategory",
         categoryId
       );
-    }
-  }
+      console.log(this.menuItems);
+    },
+  },
 };
 </script>
 

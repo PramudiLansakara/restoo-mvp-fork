@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-toolbar flat>
       <v-toolbar-title
-        ><h2>{{ $t("Add Food") }}</h2></v-toolbar-title
+        ><h2>{{ $t("Edit Specials") }}</h2></v-toolbar-title
       >
     </v-toolbar>
     <v-card class="elevation-1">
@@ -10,9 +10,9 @@
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row>
             <v-col cols="12" md="3">
-              <h5 class="mb-3">{{ $t("Item Name") }}</h5>
+              <h5 class="mb-3">{{ $t("Specials Name") }}</h5>
               <v-text-field
-                v-model="item.name"
+                v-model="specials.name"
                 class="rounded-sm"
                 filled
                 dense
@@ -21,38 +21,23 @@
                 :rules="rules.nameRules"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" md="3">
-              <h5 class="mb-3">{{ $t("Item Price") }} (€)</h5>
-              <v-text-field
-                v-model="item.price"
+            <v-col cols="12" md="4">
+              <h5 class="mb-3">{{ $t("Specials Description") }}</h5>
+              <v-textarea
+                v-model="specials.description"
                 class="rounded-sm"
+                auto-grow
                 filled
                 dense
                 rounded
                 required
-                :rules="rules.priceRules"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" md="3">
-              <h5 class="mb-3">{{ $t("Item Category") }}</h5>
-              <v-select
-                :items="categories"
-                v-model="item.category"
-                item-text="name"
-                item-value="_id"
-                class="rounded-sm"
-                filled
-                dense
-                rounded
-                required
-                :rules="rules.categoryRules"
-                @change="selectCategory(item)"
-              ></v-select>
+                :rules="rules.descriptionRules"
+              ></v-textarea>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="12" md="4">
-              <h5 class="mb-3">{{ $t("Item Image") }}</h5>
+              <h5 class="mb-3">{{ $t("Specials Banner") }}</h5>
               <v-row class="mt-2">
                 <v-file-input
                   @change="uploadImage"
@@ -74,19 +59,6 @@
                 <v-img :src="url" max-height="200" contain></v-img>
               </div>
             </v-col>
-            <v-col cols="12" md="4">
-              <h5 class="mb-3">{{ $t("Item Description") }}</h5>
-              <v-textarea
-                v-model="item.description"
-                class="rounded-sm"
-                auto-grow
-                filled
-                dense
-                rounded
-                required
-                :rules="rules.descriptionRules"
-              ></v-textarea>
-            </v-col>
           </v-row>
         </v-form>
       </v-card-text>
@@ -96,7 +68,7 @@
           <v-btn
             class="mr-3"
             color="primary lighten-1 white--text"
-            @click="editItem"
+            @click="editSpecials"
             :loading="loading"
             >{{ $t("Save") }}</v-btn
           >
@@ -114,42 +86,43 @@ export default {
     return {
       valid: true,
       loading: false,
+      menu: false,
+      menu2: false,
       imageLoading: false,
       image: null,
       rules: {
         nameRules: [(v) => !!v || "Name is required"],
         descriptionRules: [(v) => !!v || "Description is required"],
-        priceRules: [(v) => !!v || "Price is required"],
-        categoryRules: [(v) => !!v || "Category is required"],
       },
     };
   },
   async asyncData({ store, error, params }) {
     try {
-      const categories = await store.dispatch("menu/getFoodCategoryList");
-      const item = await store.dispatch("menu/getFoodItemDetails", params.id);
-      const url = item.itemUrl;
-      console.log(categories);
-      item.category = item.category._id;
-      return { categories, item, url };
+      const specials = await store.dispatch(
+        "specials/getSpecialsDetails",
+        params.id
+      );
+      console.log(specials);
+      const url = specials.bannerImg;
+      return { specials, url };
     } catch (err) {
       console.log(err);
       return error({ statusCode: 404 });
     }
   },
-
   methods: {
-    async editItem() {
+    async editSpecials() {
       try {
         const validate = this.$refs.form.validate();
         if (validate) {
+          console.log(this.specials);
           this.loading = true;
-          await this.$store.dispatch("menu/editMenuItem", this.item);
+          await this.$store.dispatch("specials/editSpecials", this.specials);
           this.$dialog.message.success(this.$t("Success Message"), {
             position: "top-right",
           });
           this.$refs.form.reset();
-          this.$router.push({ name: "menu" });
+          this.$router.push({ name: "events-specials" });
         }
       } catch (error) {
         this.loading = false;
@@ -159,16 +132,27 @@ export default {
         });
       }
     },
+    setDate(value) {
+      console.log(value);
+      this.event.date = value;
+      this.menu = false;
+    },
+    cancel() {
+      this.$refs.form.reset();
+      this.$router.push({
+        name: "events-specials",
+      });
+    },
     async uploadImage() {
       console.log(this.image);
       if (this.image != null) {
         this.imageLoading = true;
         let fd = new FormData();
         fd.append("file", this.image);
-        const response = await this.$store.dispatch("images/uploadImage", fd);
         try {
+          const response = await this.$store.dispatch("images/uploadImage", fd);
           console.log(response);
-          this.item.itemUrl = response.imgPath;
+          this.specials.bannerImg = response.imgPath;
           this.url = URL.createObjectURL(this.image);
           this.$dialog.message.success("Successfully uploaded!", {
             position: "top-right",
@@ -184,15 +168,6 @@ export default {
       } else {
         this.url = "";
       }
-    },
-    selectCategory(item) {
-      console.log(item);
-    },
-    cancel() {
-      this.$refs.form.reset();
-      this.$router.push({
-        name: "menu",
-      });
     },
   },
 };

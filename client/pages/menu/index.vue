@@ -59,7 +59,7 @@ export default {
     topDeals() {
       return this.menuItems.filter((item) => item.todaySpecial);
     },
-     menu() {
+    menu() {
       return this.menuItems.filter((item) => !item.todaySpecial);
     },
   },

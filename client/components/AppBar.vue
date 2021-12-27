@@ -8,7 +8,7 @@
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn> -->
           <v-btn icon :to="'/checkout'">
-            <v-badge color="danger" :content="cartCount">
+            <v-badge color="danger" :content="cartCount" :value="cartCount">
               <v-icon large>mdi-food-fork-drink</v-icon>
             </v-badge>
           </v-btn>

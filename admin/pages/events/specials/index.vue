@@ -1,16 +1,16 @@
 <template>
   <v-container fluid>
-    <v-data-table :headers="headers" :items="menuItems" class="elevation-1">
+    <v-data-table :headers="headers" :items="specials" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title
-            ><h2>{{ $t("Menu") }}</h2></v-toolbar-title
+            ><h2>{{ $t("Specials") }}</h2></v-toolbar-title
           >
           <v-spacer></v-spacer>
-          <v-btn :to="'menu/add'" color="primary lighten-1 white--text">
+          <v-btn :to="'specials/add'" color="primary lighten-1 white--text">
             <v-icon left color="white" size="20px"> mdi-plus </v-icon>
-            {{ $t("Add Food") }}
-          </v-btn>
+            {{ $t("Add Specials") }}</v-btn
+          >
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="text-h5"
@@ -34,16 +34,6 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:item.price="{ item }">
-        {{ item.price + " " }}$
-      </template>
-      <template v-slot:item.todaySpecial="{ item }">
-        <v-simple-checkbox
-          :ripple="false"
-          @click="handleTodaySpecial(item._id, item.todaySpecial)"
-          v-model="item.todaySpecial"
-        ></v-simple-checkbox>
-      </template>
       <template v-slot:item.actions="{ item }">
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
@@ -60,20 +50,6 @@
             </v-btn>
           </template>
           <span>Edit</span>
-        </v-tooltip>
-        <v-tooltip top>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              :disabled="!item.todaySpecial"
-              icon
-              @click="addDiscount(item._id)"
-              v-bind="attrs"
-              v-on="on"
-            >
-              <v-icon>mdi-tag-outline</v-icon>
-            </v-btn>
-          </template>
-          <span>Add discount</span>
         </v-tooltip>
         <v-tooltip right>
           <template v-slot:activator="{ on, attrs }">
@@ -97,10 +73,6 @@ export default {
       loading: false,
       itemId: "",
       itemIndex: "",
-      todaySpecial: {
-        id: "",
-        todaySpecial: "",
-      },
       headers: [
         {
           text: "ID",
@@ -109,83 +81,50 @@ export default {
         },
         { text: this.$t("Name"), value: "name" },
         { text: this.$t("Description"), value: "description" },
-        { text: `${this.$t("Price")} (€)`, value: "price" },
-        {
-          text: this.$t("Today Special"),
-          value: "todaySpecial",
-          align: "center",
-        },
         { text: this.$t("Actions"), value: "actions", sortable: false },
       ],
     };
   },
   async asyncData({ store, error }) {
     try {
-      const menuItems = await store.dispatch("menu/getFoodItemList");
-      console.log(menuItems);
-      return { menuItems };
-    } catch (err) {
-      console.log(err);
-      return error({ statusCode: 404 });
+      const specials = await store.dispatch("specials/getSpecialsList");
+      console.log(specials);
+      return { specials };
+    } catch (error) {
+      console.log(error);
+      this.$dialog.message.error(error.response.data.message, {
+        position: "top-right",
+      });
     }
   },
 
   methods: {
     editItem(itemId) {
       this.$router.push({
-        name: "menu-id-edit",
-        params: { id: itemId },
-      });
-    },
-    addDiscount(itemId) {
-      this.$router.push({
-        name: "menu-id-discount",
+        name: "events-specials-id-edit",
         params: { id: itemId },
       });
     },
     viewItem(itemId) {
       this.$router.push({
-        name: "menu-id",
+        name: "events-specials-id",
         params: { id: itemId },
       });
     },
-    handleTodaySpecial(id, todaySpecial) {
-      this.todaySpecial.id = id;
-      if (todaySpecial) {
-        this.todaySpecial.todaySpecial = "mark";
-      } else {
-        this.todaySpecial.todaySpecial = "unmark";
-      }
-      console.log(this.todaySpecial);
-      this.$store
-        .dispatch("menu/todaySpecial", this.todaySpecial)
-        .then(() => {
-          this.$dialog.message.success("Successfully marked!", {
-            position: "top-right",
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-          this.$dialog.message.error(error.response.data.message, {
-            position: "top-right",
-          });
-        });
-    },
     deleteItem(item) {
       this.itemId = item._id;
-      this.itemIndex = this.menuItems.indexOf(item);
+      this.itemIndex = this.specials.indexOf(item);
       this.dialogDelete = true;
     },
 
     async deleteItemConfirm() {
       try {
         this.loading = true;
-        await this.$store.dispatch("menu/deleteMenuItem", this.itemId);
-        this.$dialog.message.success("Successfully item deleted!", {
+        await this.$store.dispatch("specials/deleteSpecials", this.itemId);
+        this.$dialog.message.success("Successfully special deleted!", {
           position: "top-right",
         });
-        this.menuItems.splice(this.itemIndex, 1);
-        this.loading = false;
+        this.specials.splice(this.itemIndex, 1);
         this.closeDelete();
       } catch (error) {
         this.loading = false;

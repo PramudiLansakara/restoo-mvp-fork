@@ -58,9 +58,10 @@
                 required
                 :rules="rules.statusRules"
                 :items="items"
+                @change="onChangeStatus(reservation)"
               ></v-select>
             </v-col>
-            <v-col cols="12" md="2">
+            <v-col v-show="acceptedStatus" cols="12" md="2">
               <h5 class="mb-3">Table Number</h5>
               <v-text-field
                 v-model="reservation.tableNumber"
@@ -72,7 +73,7 @@
                 :rules="rules.tableRules"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" md="3">
+            <v-col v-show="acceptedStatus" cols="12" md="3">
               <h5 class="mb-3">Note</h5>
               <v-text-field
                 v-model="reservation.adminNote"
@@ -112,6 +113,7 @@ export default {
       valid: true,
       loading: false,
       items: reservationStatusList,
+      acceptedStatus: false,
       reservation: {
         reservationStatus: "",
         tableNumber: "",
@@ -139,49 +141,49 @@ export default {
   methods: {
     cancel() {
       this.$router.push({
-        name: "orders",
+        name: "reservations",
       });
     },
-    sendEmail() {
+    async sendEmail() {
       this.reservation.receiverEmail = this.reservation.email;
-      this.reservation.note = this.reservation.adminNote;
       console.log(this.reservation);
       const validate = this.$refs.form.validate();
       if (validate) {
         this.loading = true;
-        this.$store
+        try {
+        await this.$store
           .dispatch("reservation/sendEmail", this.reservation)
-          .then(() => {
             this.$dialog.message.success("Successfully email sent!", {
               position: "top-right"
             });
             this.$refs.form.reset();
             this.$router.push({ name: "reservations" });
-          })
-          .catch(error => {
-            this.loading = false;
-            console.log(error);
-            this.$dialog.message.error(error.response.data.message, {
-              position: "top-right"
-            });
-          });
+        }catch (error) {
+          this.loading = false;
+          console.log(error);
+          this.$dialog.message.error(error.response.data.message, {
+          position: "top-right",
+          });        
+        } 
       }
     },
-    onChangeStatus(item) {
+    async onChangeStatus(item) {
       console.log(item);
-      this.$store
-        .dispatch("order/changeStatus", item)
-        .then(() => {
+      if(this.reservation.reservationStatus == "accepted" ){
+        this.acceptedStatus = true;
+      }
+      try {
+      await this.$store
+        .dispatch("reservation/changeReservationStatus", item)
           this.$dialog.message.success(this.$t("Success Message"), {
             position: "top-right",
           });
-        })
-        .catch((error) => {
-          console.log(error);
-          this.$dialog.message.error(error.response.data.message, {
-            position: "top-right",
-          });
-        });
+      }catch (error) {
+        console.log(error);
+        this.$dialog.message.error(error.response.data.message, {
+        position: "top-right",
+        });        
+      }
     },
   },
 };

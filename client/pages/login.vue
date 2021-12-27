@@ -120,25 +120,26 @@ export default {
       const validate = this.$refs.form.validate();
       if (validate) {
         this.loading = true;
-        await this.$store
-          .dispatch("login/loginUser", this.user)
-          .then((response) => {
-            Cookie.set("authToken", response.token);
-            Cookie.set("authUser", response.user);
+        try {
+          const response = await this.$store.dispatch(
+            "login/loginUser",
+            this.user
+          );
+          Cookie.set("authToken", response.token);
+          Cookie.set("authUser", response.user);
 
-            this.$dialog.message.success("Successfully Login!", {
-              position: "top-right",
-            });
-            // this.$router.push({ name: "menu" });
-            this.$router.push(this.$route.query.redirect || "/menu");
-          })
-          .catch((error) => {
-            this.loading = false;
-            console.log(error);
-            this.$dialog.message.error(error.response.data.message, {
-              position: "top-right",
-            });
+          this.$dialog.message.success("Successfully Login!", {
+            position: "top-right",
           });
+          // this.$router.push({ name: "menu" });
+          this.$router.push(this.$route.query.redirect || "/menu");
+        } catch (error) {
+          this.loading = false;
+          console.log(error);
+          this.$dialog.message.error(error.response.data.message, {
+            position: "top-right",
+          });
+        }
       }
     },
   },

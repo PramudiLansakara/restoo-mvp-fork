@@ -136,36 +136,34 @@ export default {
     }
   },
   methods: {
-    onChangeStatus(item) {
+    async onChangeStatus(item) {
       console.log(item);
-      this.$store
+      try { 
+        await this.$store
         .dispatch("table/updateTable", item)
-        .then(() => {
           this.$dialog.message.success(this.$t("Success Message"), {
             position: "top-right",
           });
-        })
-        .catch((error) => {
+      }catch (error) {
           console.log(error);
           this.$dialog.message.error(error.response.data.message, {
-            position: "top-right",
-          });
-        });
+          position: "top-right",
+          });        
+      }
     },
-    onAllChangeStatus() {
-      this.$store
+    async onAllChangeStatus() {
+      try { 
+        await this.$store
         .dispatch("table/updateAllStatus", this.allTables)
-        .then(() => {
           this.$dialog.message.success(this.$t("Success Message"), {
             position: "top-right",
           });
-        })
-        .catch((error) => {
+      }catch (error) {
           console.log(error);
           this.$dialog.message.error(error.response.data.message, {
-            position: "top-right",
-          });
-        });
+          position: "top-right",
+          });        
+      }
     },
     editTable(tableId) {
       this.$router.push({
@@ -178,24 +176,23 @@ export default {
       this.itemIndex = this.tables.indexOf(item);
       this.dialogDelete = true;
     },
-    deleteItemConfirm() {
+    async deleteItemConfirm() {
+      try {
       this.loading = true;
-      this.$store
+      await this.$store
         .dispatch("table/deleteTable", this.itemId)
-        .then(() => {
           this.$dialog.message.success("Successfully item deleted!", {
             position: "top-right",
           });
           this.tables.splice(this.itemIndex, 1);
           this.closeDelete();
-        })
-        .catch((error) => {
-          this.loading = false;
-          console.log(error.response);
-          this.$dialog.message.error(error.response.data.message, {
+       }catch (error) {
+        this.loading = false;
+        console.log(error);
+        this.$dialog.message.error(error.response.data.message, {
             position: "top-right",
-          });
-        });
+        });        
+      }
     },
     closeDelete() {
       this.dialogDelete = false;

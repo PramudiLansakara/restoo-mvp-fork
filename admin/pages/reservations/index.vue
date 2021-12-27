@@ -1,13 +1,15 @@
 <template>
   <v-container fluid>
-    <v-data-table :headers="headers" :items="reservations" class="elevation-1">
+    <v-data-table :headers="headers" :items="reservations" class="elevation-1" 
+      sort-by="reservationDate"
+      :sort-desc="true">
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title><h2>Reservations</h2></v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
       </template>
-      <template v-slot:item.reservationDate="{ item }">
+      <template v-slot:item.reservationDate="{ item }"> 
         {{ item.reservationDate | formatDate }}
       </template>
       <template v-slot:item.reservationStatus="{ item }">
@@ -98,56 +100,6 @@ export default {
         params: { id: itemId }
       });
     },
-    handleTodaySpecial(id, todaySpecial) {
-      this.todaySpecial.id = id;
-      if (todaySpecial) {
-        this.todaySpecial.todaySpecial = "mark";
-      } else {
-        this.todaySpecial.todaySpecial = "unmark";
-      }
-      console.log(this.todaySpecial);
-      this.$store
-        .dispatch("menu/todaySpecial", this.todaySpecial)
-        .then(() => {
-          this.$dialog.message.success("Successfully marked!", {
-            position: "top-right"
-          });
-        })
-        .catch(error => {
-          console.log(error);
-          this.$dialog.message.error(error.response.data.message, {
-            position: "top-right"
-          });
-        });
-    },
-    deleteItem(item) {
-      this.itemId = item._id;
-      this.itemIndex = this.events.indexOf(item);
-      this.dialogDelete = true;
-    },
-
-    deleteItemConfirm() {
-      this.loading = true;
-      this.$store
-        .dispatch("event/deleteEvent", this.itemId)
-        .then(() => {
-          this.$dialog.message.success("Successfully event deleted!", {
-            position: "top-right"
-          });
-          this.events.splice(this.itemIndex, 1);
-          this.closeDelete();
-        })
-        .catch(error => {
-          this.loading = false;
-          console.log(error.response);
-          this.$dialog.message.error(error.response.data.message, {
-            position: "top-right"
-          });
-        });
-    },
-    closeDelete() {
-      this.dialogDelete = false;
-    }
   }
 };
 </script>

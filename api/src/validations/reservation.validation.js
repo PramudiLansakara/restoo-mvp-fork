@@ -21,6 +21,8 @@ module.exports = {
       from: Joi.string().required(),
       to: Joi.string().required(),
       personCount: Joi.string().required(),
+      adminNote: Joi.string(),
+      tableNumber: Joi.string(),
     },
   },
   changeReservationStatus: {

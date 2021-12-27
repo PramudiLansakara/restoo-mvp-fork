@@ -10,7 +10,10 @@ export default [
     ]
   ],
   ["mdi-clipboard-edit-outline", "Orders", "/orders", []],
-  ["mdi-tag-outline", "Events", "/events", []],
+  ["mdi-tag-outline", "Events", "/events", [
+    ["mdi-food-drumstick-outline", "Events", "/events"],
+      ["mdi-format-list-bulleted-square", "Specials", "/events/specials"]
+  ]],
   ["mdi-table-chair", "Reservations", "/reservations", []],
   ["mdi-table-furniture", "Tables", "/tables", []]
 

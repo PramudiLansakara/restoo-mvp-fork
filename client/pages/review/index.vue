@@ -7,7 +7,7 @@
         </center>
       </v-col>
     </v-row>
-    <v-row justify="center" style="height:90vh">
+    <v-row justify="center" style="height: 90vh">
       <v-col class="justify-center align-center" cols="12" md="6">
         <v-card class="gradient" elevation="0" rounded="xl">
           <v-card-text>
@@ -26,9 +26,7 @@
               </v-btn>
             </center>
             <center>
-              <v-btn color="primary--text text--base">
-                No, Thanks!
-              </v-btn>
+              <v-btn color="primary--text text--base"> No, Thanks! </v-btn>
             </center>
           </v-card-text>
         </v-card>
@@ -47,17 +45,17 @@ export default {
   },
   computed: {
     ...mapGetters("review", {
-      reviewItems: "getReviewItems"
-    })
+      reviewItems: "getReviewItems",
+    }),
   },
   methods: {
     review() {
       this.$router.push({
         name: "review-id",
-        params: { id: this.reviewItems[0].item }
+        params: { id: this.reviewItems[0].item },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

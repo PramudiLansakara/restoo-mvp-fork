@@ -216,27 +216,28 @@ export default {
     };
   },
   methods: {
-    requestReservation() {
+    async requestReservation() {
       const validate = this.$refs.form.validate();
       if (validate) {
         console.log(this.reservation);
         this.loading = true;
-        this.$store
-          .dispatch("reservation/newReservation", this.reservation)
-          .then(() => {
-            this.$dialog.message.success("Successfully reservation added!", {
-              position: "top-right",
-            });
-            this.$refs.form.reset();
-            this.$router.push({ name: "home" });
-          })
-          .catch((error) => {
-            this.loading = false;
-            console.log(error);
-            this.$dialog.message.error(error.response.data.message, {
-              position: "top-right",
-            });
+        try {
+          await this.$store.dispatch(
+            "reservation/newReservation",
+            this.reservation
+          );
+          this.$dialog.message.success("Successfully reservation added!", {
+            position: "top-right",
           });
+          this.$refs.form.reset();
+          this.$router.push({ name: "home" });
+        } catch (error) {
+          this.loading = false;
+          console.log(error);
+          this.$dialog.message.error(error.response.data.message, {
+            position: "top-right",
+          });
+        }
       }
     },
   },

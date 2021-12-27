@@ -219,27 +219,26 @@ export default {
     }
   },
   methods: {
-    editReservation() {
+    async editReservation() {
       const validate = this.$refs.form.validate();
       if (validate) {
         console.log(this.reservation);
         this.loading = true;
-        this.$store
+        try {
+        await this.$store
           .dispatch("reservation/editReservation", this.reservation)
-          .then(() => {
             this.$dialog.message.success("Successfully reservation edited!", {
               position: "top-right"
             });
             this.$refs.form.reset();
             this.$router.push({ name: "reservations" });
-          })
-          .catch(error => {
-            this.loading = false;
-            console.log(error);
-            this.$dialog.message.error(error.response.data.message, {
-              position: "top-right"
-            });
-          });
+        }catch (error) {
+          this.loading = false;
+          console.log(error);
+          this.$dialog.message.error(error.response.data.message, {
+          position: "top-right",
+          });        
+        }
       }
     },
     setDate(value) {
