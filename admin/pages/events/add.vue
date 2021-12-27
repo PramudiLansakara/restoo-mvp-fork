@@ -1,14 +1,16 @@
 <template>
   <v-container fluid>
     <v-toolbar flat>
-      <v-toolbar-title><h2>{{$t("Add Event")}}</h2></v-toolbar-title>
+      <v-toolbar-title
+        ><h2>{{ $t("Add Event") }}</h2></v-toolbar-title
+      >
     </v-toolbar>
     <v-card class="elevation-1">
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row>
             <v-col cols="12" md="3">
-              <h5 class="mb-3">{{$t("Event Name")}}</h5>
+              <h5 class="mb-3">{{ $t("Event Name") }}</h5>
               <v-text-field
                 v-model="event.name"
                 class="rounded-sm"
@@ -20,7 +22,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="4">
-              <h5 class="mb-3">{{$t("Event Description")}}</h5>
+              <h5 class="mb-3">{{ $t("Event Description") }}</h5>
               <v-textarea
                 v-model="event.description"
                 class="rounded-sm"
@@ -33,7 +35,7 @@
               ></v-textarea>
             </v-col>
             <v-col cols="12" md="3">
-              <h5 class="mb-3">{{$t("Event Date")}}</h5>
+              <h5 class="mb-3">{{ $t("Event Date") }}</h5>
               <v-menu
                 v-model="menu"
                 :close-on-content-click="false"
@@ -65,7 +67,7 @@
           </v-row>
           <v-row>
             <v-col cols="12" md="4">
-              <h5 class="mb-3">{{$t("Event Banner")}}</h5>
+              <h5 class="mb-3">{{ $t("Event Banner") }}</h5>
               <v-row class="mt-2">
                 <v-file-input
                   @change="uploadImage"
@@ -88,7 +90,7 @@
               </div>
             </v-col>
             <v-col cols="12" md="4">
-              <h5 class="mb-3">{{$t("Event Time")}}</h5>
+              <h5 class="mb-3">{{ $t("Event Time") }}</h5>
               <v-menu
                 ref="menu"
                 v-model="menu2"
@@ -133,9 +135,9 @@
             color="primary lighten-1 white--text"
             @click="addEvent"
             :loading="loading"
-            >{{$t("Save")}}</v-btn
+            >{{ $t("Save") }}</v-btn
           >
-          <v-btn color="black--text" @click="cancel">{{$t("Cancel")}}</v-btn>
+          <v-btn color="black--text" @click="cancel">{{ $t("Cancel") }}</v-btn>
         </div>
       </v-card-actions>
     </v-card>
@@ -174,25 +176,24 @@ export default {
   methods: {
     async addEvent() {
       try {
-      const validate = this.$refs.form.validate();
-      if (validate) {
-        console.log(this.event);
-        this.loading = true;
-        await this.$store
-          .dispatch("event/addEvent", this.event)
-            this.$dialog.message.success(this.$t('Success Message'), {
-              position: "top-right",
-            });
-            this.$refs.form.reset();
-            this.$router.push({ name: "events" });
-      }
-    }catch (error) {
-          this.loading = false;
-          console.log(error);
-          this.$dialog.message.error(error.response.data.message, {
+        const validate = this.$refs.form.validate();
+        if (validate) {
+          console.log(this.event);
+          this.loading = true;
+          await this.$store.dispatch("event/addEvent", this.event);
+          this.$dialog.message.success(this.$t("Success Message"), {
             position: "top-right",
-          });        
-      } 
+          });
+          this.$refs.form.reset();
+          this.$router.push({ name: "events" });
+        }
+      } catch (error) {
+        this.loading = false;
+        console.log(error);
+        this.$dialog.message.error(error.response.data.message, {
+          position: "top-right",
+        });
+      }
     },
     async uploadImage() {
       console.log(this.image);
@@ -201,22 +202,21 @@ export default {
         let fd = new FormData();
         fd.append("file", this.image);
         try {
-        const response = await this.$store
-          .dispatch("images/uploadImage", fd)
-            console.log(response);
-            this.event.bannerImg = response.imgPath;
-            this.url = URL.createObjectURL(this.image);
-            this.$dialog.message.success("Successfully uploaded!", {
-              position: "top-right",
-            });
-            this.imageLoading = false;
-        }catch (error) {
-            console.log(error);
-            this.$dialog.message.error(error.response.data.message, {
-              position: "top-right",
-            });
-            this.imageLoading = false;        
-          }
+          const response = await this.$store.dispatch("images/uploadImage", fd);
+          console.log(response);
+          this.event.bannerImg = response.imgPath;
+          this.url = URL.createObjectURL(this.image);
+          this.$dialog.message.success("Successfully uploaded!", {
+            position: "top-right",
+          });
+          this.imageLoading = false;
+        } catch (error) {
+          console.log(error);
+          this.$dialog.message.error(error.response.data.message, {
+            position: "top-right",
+          });
+          this.imageLoading = false;
+        }
       } else {
         this.url = "";
       }

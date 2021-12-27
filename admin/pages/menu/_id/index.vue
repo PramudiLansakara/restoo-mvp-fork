@@ -29,7 +29,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <div class="form-btn ma-5">
-          <v-btn color="black--text" @click="cancel">{{$t("Cancel")}}</v-btn>
+          <v-btn color="black--text" @click="cancel">{{ $t("Cancel") }}</v-btn>
         </div>
       </v-card-actions>
     </v-card>
@@ -51,10 +51,10 @@ export default {
   methods: {
     cancel() {
       this.$router.push({
-        name: "menu"
+        name: "menu",
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

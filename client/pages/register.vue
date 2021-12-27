@@ -1,20 +1,23 @@
 <template>
   <v-container fluid>
-    <v-row align="center" justify="center" style="height:90vh">
+    <v-row align="center" justify="center" style="height: 90vh">
       <v-col class="justify-center align-center" cols="12" md="6">
         <v-card>
           <v-card-text>
             <div class="layout column align-center">
               <img src="../assets/images/chef.svg" />
               <center>
-                <h1 class="my-4">
-                  Welcome to Restoo
-                </h1>
+                <h1 class="my-4">Welcome to Restoo</h1>
               </center>
             </div>
             <v-form ref="form" v-model="valid" lazy-validation>
               <v-row justify="center">
-                <v-col cols="12" md="6" class="mt-5" style="padding-bottom:0px">
+                <v-col
+                  cols="12"
+                  md="6"
+                  class="mt-5"
+                  style="padding-bottom: 0px"
+                >
                   <v-text-field
                     class="rounded-sm"
                     filled
@@ -31,7 +34,7 @@
                 <v-col
                   cols="12"
                   md="6"
-                  style="padding-top:0px;padding-bottom:0px"
+                  style="padding-top: 0px; padding-bottom: 0px"
                 >
                   <v-text-field
                     class="rounded-sm"
@@ -46,7 +49,7 @@
                 </v-col>
               </v-row>
               <v-row justify="center">
-                <v-col cols="12" md="6" style="padding-top:0px">
+                <v-col cols="12" md="6" style="padding-top: 0px">
                   <v-text-field
                     class="rounded-sm"
                     filled
@@ -80,7 +83,7 @@
               <p>
                 Already have an account?<nuxt-link
                   :to="'login'"
-                  style=" text-decoration: none;"
+                  style="text-decoration: none"
                 >
                   Login</nuxt-link
                 >
@@ -120,16 +123,16 @@ export default {
       user: {
         name: "",
         email: "",
-        password: ""
+        password: "",
       },
       rules: {
-        nameRules: [v => !!v || "Name is required"],
-        passwordRules: [v => !!v || "Password is required"],
+        nameRules: [(v) => !!v || "Name is required"],
+        passwordRules: [(v) => !!v || "Password is required"],
         emailRules: [
-          v => !!v || "E-mail is required",
-          v => /.+@.+\..+/.test(v) || "E-mail must be valid"
-        ]
-      }
+          (v) => !!v || "E-mail is required",
+          (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+        ],
+      },
     };
   },
   methods: {
@@ -138,22 +141,21 @@ export default {
       if (validate) {
         this.loading = true;
         try {
-        await this.$store
-          .dispatch("login/registerUser", this.user)
-            this.$dialog.message.success("Successfully Registered!", {
-              position: "top-right"
-            });
-            this.$router.push({ name: "login" });
-        }catch (error) {
-            this.loading = false;
-            console.log(error);
-            this.$dialog.message.error(error.response.data.message, {
-              position: "top-right",
-            });        
+          await this.$store.dispatch("login/registerUser", this.user);
+          this.$dialog.message.success("Successfully Registered!", {
+            position: "top-right",
+          });
+          this.$router.push({ name: "login" });
+        } catch (error) {
+          this.loading = false;
+          console.log(error);
+          this.$dialog.message.error(error.response.data.message, {
+            position: "top-right",
+          });
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

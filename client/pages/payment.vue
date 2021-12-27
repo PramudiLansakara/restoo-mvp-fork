@@ -68,11 +68,7 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-    <stripe-checkout
-          ref="checkoutRef"
-          :pk="pk"
-          :session-id="sessionId"
-        />
+        <stripe-checkout ref="checkoutRef" :pk="pk" :session-id="sessionId" />
         <v-btn
           large
           rounded
@@ -87,8 +83,7 @@
           <h3 class="white--text">Checkout</h3>
         </v-btn>
 
-        
-    <!-- <button @click="check">Checkout</button> -->
+        <!-- <button @click="check">Checkout</button> -->
       </v-col>
     </v-row>
   </v-container>
@@ -101,11 +96,11 @@ import { mapGetters } from "vuex";
 export default {
   // middleware: "redirectIfNotAuth",
   data() {
-        this.pk = process.env.STRIPE_PK;
+    this.pk = process.env.STRIPE_PK;
     return {
       paymentDetails: {
         orderType: null,
-        paymentMethod: null
+        paymentMethod: null,
       },
       payments: payments,
       loading: false,
@@ -119,11 +114,11 @@ export default {
         return true;
       }
     },
-     ...mapGetters("payment", {
-      sessionId: "getSessionId"
+    ...mapGetters("payment", {
+      sessionId: "getSessionId",
     }),
     ...mapGetters("cart", {
-      orderId: "getOrderId"
+      orderId: "getOrderId",
     }),
   },
   methods: {
@@ -131,39 +126,41 @@ export default {
       if (this.$store.state.auth.authToken) {
         this.loading = true;
         this.$store.dispatch("cart/updateCartItem", this.paymentDetails);
-        try { 
-        await this.$store.dispatch("cart/newOrder")
-            if(this.paymentDetails.paymentMethod == 'card'){
-              console.log(this.sessionId)
-              this.$refs.checkoutRef.redirectToCheckout();
-            }
-            else{
-              try { 
-              await this.$store.dispatch("payment/newPayment")
-                  this.$dialog.message.success("Successfully paid!", {
-                  position: "top-right"
-                  });
-                  this.$router.push({ name: "thank-you" , query: { status: 'success' }});
-              }catch (error) {
-                this.loading = false;
-                console.log(error);
-                this.$dialog.message.error(error.response.data.message, {
+        try {
+          await this.$store.dispatch("cart/newOrder");
+          if (this.paymentDetails.paymentMethod == "card") {
+            console.log(this.sessionId);
+            this.$refs.checkoutRef.redirectToCheckout();
+          } else {
+            try {
+              await this.$store.dispatch("payment/newPayment");
+              this.$dialog.message.success("Successfully paid!", {
                 position: "top-right",
-                });        
-              }
+              });
+              this.$router.push({
+                name: "thank-you",
+                query: { status: "success" },
+              });
+            } catch (error) {
+              this.loading = false;
+              console.log(error);
+              this.$dialog.message.error(error.response.data.message, {
+                position: "top-right",
+              });
             }
-        }catch (error) {
+          }
+        } catch (error) {
           this.loading = false;
           console.log(error);
           this.$dialog.message.error(error.response.data.message, {
-          position: "top-right",
-          });        
+            position: "top-right",
+          });
         }
       } else {
         this.$router.push({ name: "login", query: { redirect: "/payment" } });
       }
     },
-  }
+  },
 };
 </script>
 

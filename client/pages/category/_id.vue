@@ -38,7 +38,6 @@ export default {
     const name = params.name;
     return { menuItems, categories, name };
   },
-
   methods: {
     async getFoodItemListByCategory(category) {
       this.name = category.name;

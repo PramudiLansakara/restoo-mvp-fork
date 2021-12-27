@@ -222,19 +222,21 @@ export default {
         console.log(this.reservation);
         this.loading = true;
         try {
-        await this.$store
-          .dispatch("reservation/newReservation", this.reservation)
-            this.$dialog.message.success("Successfully reservation added!", {
-              position: "top-right",
-            });
-            this.$refs.form.reset();
-            this.$router.push({ name: "home" });
-        }catch (error) {
-            this.loading = false;
-            console.log(error);
-            this.$dialog.message.error(error.response.data.message, {
-              position: "top-right",
-            });        
+          await this.$store.dispatch(
+            "reservation/newReservation",
+            this.reservation
+          );
+          this.$dialog.message.success("Successfully reservation added!", {
+            position: "top-right",
+          });
+          this.$refs.form.reset();
+          this.$router.push({ name: "home" });
+        } catch (error) {
+          this.loading = false;
+          console.log(error);
+          this.$dialog.message.error(error.response.data.message, {
+            position: "top-right",
+          });
         }
       }
     },

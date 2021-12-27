@@ -65,7 +65,7 @@
         <v-list-item-icon>
           <img height="50" src="../assets/images/logo.png" />
         </v-list-item-icon>
-<!-- 
+        <!-- 
         <v-list-item-content>
           <v-list-item-title
             ><h1>{{ $t("Hello") }}</h1></v-list-item-title

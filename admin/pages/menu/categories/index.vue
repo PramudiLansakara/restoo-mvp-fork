@@ -107,21 +107,20 @@ export default {
     },
 
     async deleteItemConfirm() {
-      try { 
-      this.loading = true;
-      await this.$store
-        .dispatch("menu/deleteCategory", this.itemId)
-          this.$dialog.message.success("Successfully item deleted!", {
-            position: "top-right",
-          });
-          this.categories.splice(this.itemIndex, 1);
-          this.closeDelete();
-      }catch (error) {
+      try {
+        this.loading = true;
+        await this.$store.dispatch("menu/deleteCategory", this.itemId);
+        this.$dialog.message.success("Successfully item deleted!", {
+          position: "top-right",
+        });
+        this.categories.splice(this.itemIndex, 1);
+        this.closeDelete();
+      } catch (error) {
         this.loading = false;
         console.log(error);
         this.$dialog.message.error(error.response.data.message, {
-            position: "top-right",
-        });        
+          position: "top-right",
+        });
       }
     },
     closeDelete() {

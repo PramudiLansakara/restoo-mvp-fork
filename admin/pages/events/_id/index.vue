@@ -20,7 +20,7 @@
             <h5 class="mb-3">Event Date</h5>
             {{ event.date }}
           </v-col>
-           <v-col cols="12" md="4">
+          <v-col cols="12" md="4">
             <h5 class="mb-3">Event Time</h5>
             {{ event.time }}
           </v-col>
@@ -29,7 +29,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <div class="form-btn ma-5">
-          <v-btn color="black--text" @click="cancel">{{$t("Cancel")}}</v-btn>
+          <v-btn color="black--text" @click="cancel">{{ $t("Cancel") }}</v-btn>
         </div>
       </v-card-actions>
     </v-card>

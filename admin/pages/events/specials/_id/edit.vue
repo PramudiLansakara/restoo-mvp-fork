@@ -50,7 +50,7 @@
                 >
                 </v-file-input>
               </v-row>
-             <div class="text-center">
+              <div class="text-center">
                 <v-progress-circular
                   indeterminate
                   color="primary"
@@ -72,7 +72,7 @@
             :loading="loading"
             >{{ $t("Save") }}</v-btn
           >
-          <v-btn color="black--text" @click="cancel">{{$t("Cancel")}}</v-btn>
+          <v-btn color="black--text" @click="cancel">{{ $t("Cancel") }}</v-btn>
         </div>
       </v-card-actions>
     </v-card>
@@ -88,7 +88,7 @@ export default {
       loading: false,
       menu: false,
       menu2: false,
-      imageLoading:false,
+      imageLoading: false,
       image: null,
       rules: {
         nameRules: [(v) => !!v || "Name is required"],
@@ -98,8 +98,11 @@ export default {
   },
   async asyncData({ store, error, params }) {
     try {
-      const specials = await store.dispatch("specials/getSpecialsDetails", params.id);
-      console.log(specials)
+      const specials = await store.dispatch(
+        "specials/getSpecialsDetails",
+        params.id
+      );
+      console.log(specials);
       const url = specials.bannerImg;
       return { specials, url };
     } catch (err) {
@@ -108,27 +111,26 @@ export default {
     }
   },
   methods: {
-   async editSpecials() {
-    try { 
-      const validate = this.$refs.form.validate();
-      if (validate) {
-        console.log(this.specials);
-        this.loading = true;
-        await this.$store
-          .dispatch("specials/editSpecials", this.specials)
-            this.$dialog.message.success(this.$t('Success Message'), {
-              position: "top-right",
-            });
-            this.$refs.form.reset();
-            this.$router.push({ name: "events-specials" });
+    async editSpecials() {
+      try {
+        const validate = this.$refs.form.validate();
+        if (validate) {
+          console.log(this.specials);
+          this.loading = true;
+          await this.$store.dispatch("specials/editSpecials", this.specials);
+          this.$dialog.message.success(this.$t("Success Message"), {
+            position: "top-right",
+          });
+          this.$refs.form.reset();
+          this.$router.push({ name: "events-specials" });
+        }
+      } catch (error) {
+        this.loading = false;
+        console.log(error);
+        this.$dialog.message.error(error.response.data.message, {
+          position: "top-right",
+        });
       }
-    }catch (error) {
-      this.loading = false;
-      console.log(error);
-      this.$dialog.message.error(error.response.data.message, {
-      position: "top-right",
-      });        
-    }  
     },
     setDate(value) {
       console.log(value);
@@ -148,22 +150,21 @@ export default {
         let fd = new FormData();
         fd.append("file", this.image);
         try {
-        const response = await this.$store
-          .dispatch("images/uploadImage", fd)
+          const response = await this.$store.dispatch("images/uploadImage", fd);
           console.log(response);
-            this.specials.bannerImg = response.imgPath;
-            this.url = URL.createObjectURL(this.image);
-            this.$dialog.message.success("Successfully uploaded!", {
-              position: "top-right",
-            });
-            this.imageLoading = false;
-        }catch (error) {
-            console.log(error);
-            this.$dialog.message.error(error.response.data.message, {
-              position: "top-right",
-            });
-            this.imageLoading = false;        
-          } 
+          this.specials.bannerImg = response.imgPath;
+          this.url = URL.createObjectURL(this.image);
+          this.$dialog.message.success("Successfully uploaded!", {
+            position: "top-right",
+          });
+          this.imageLoading = false;
+        } catch (error) {
+          console.log(error);
+          this.$dialog.message.error(error.response.data.message, {
+            position: "top-right",
+          });
+          this.imageLoading = false;
+        }
       } else {
         this.url = "";
       }

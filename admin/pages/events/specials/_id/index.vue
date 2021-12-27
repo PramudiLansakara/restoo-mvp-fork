@@ -19,7 +19,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <div class="form-btn ma-5">
-          <v-btn color="black--text" @click="cancel">{{$t("Cancel")}}</v-btn>
+          <v-btn color="black--text" @click="cancel">{{ $t("Cancel") }}</v-btn>
         </div>
       </v-card-actions>
     </v-card>
@@ -31,7 +31,10 @@ export default {
   middleware: "redirectIfNotAuth",
   async asyncData({ store, error, params }) {
     try {
-      const special = await store.dispatch("specials/getSpecialsDetails", params.id);
+      const special = await store.dispatch(
+        "specials/getSpecialsDetails",
+        params.id
+      );
       return { special };
     } catch (err) {
       console.log(err);

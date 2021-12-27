@@ -16,7 +16,6 @@
       </v-chip-group>
     </v-row>
     <v-row>
-      
       <SpecialDealCard
         :menuItem="menuItem"
         v-if="menuItem.todaySpecial"
@@ -30,7 +29,7 @@
 <script>
 import CategoryChip from "../../components/Category/CategoryChip.vue";
 import MenuItemCard from "../../components/Menu/MenuItemCard.vue";
-import SpecialDealCard from '../../components/Menu/SpecialDealCard.vue';
+import SpecialDealCard from "../../components/Menu/SpecialDealCard.vue";
 
 export default {
   components: { MenuItemCard, CategoryChip, SpecialDealCard },

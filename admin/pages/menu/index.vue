@@ -15,18 +15,18 @@
             <v-card>
               <v-card-title class="text-h5"
                 ><h4>
-                  {{$t("Delete Confirm")}}
+                  {{ $t("Delete Confirm") }}
                 </h4></v-card-title
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn text @click="closeDelete">{{$t("Cancel")}}</v-btn>
+                <v-btn text @click="closeDelete">{{ $t("Cancel") }}</v-btn>
                 <v-btn
                   color="danger"
                   text
                   @click="deleteItemConfirm"
                   :loading="loading"
-                  >{{$t("OK")}}</v-btn
+                  >{{ $t("OK") }}</v-btn
                 >
                 <v-spacer></v-spacer>
               </v-card-actions>
@@ -107,11 +107,15 @@ export default {
           align: "start",
           value: "_id",
         },
-        { text: this.$t('Name'), value: "name" },
-        { text: this.$t('Description'), value: "description" },
-        { text: `${this.$t('Price')} (€)`, value: "price" },
-        { text: this.$t('Today Special'), value: "todaySpecial", align: "center" },
-        { text: this.$t('Actions'), value: "actions", sortable: false },
+        { text: this.$t("Name"), value: "name" },
+        { text: this.$t("Description"), value: "description" },
+        { text: `${this.$t("Price")} (€)`, value: "price" },
+        {
+          text: this.$t("Today Special"),
+          value: "todaySpecial",
+          align: "center",
+        },
+        { text: this.$t("Actions"), value: "actions", sortable: false },
       ],
     };
   },
@@ -173,23 +177,22 @@ export default {
       this.dialogDelete = true;
     },
 
-   async deleteItemConfirm() {
-     try {
-      this.loading = true;
-      await this.$store
-        .dispatch("menu/deleteMenuItem", this.itemId) 
-          this.$dialog.message.success("Successfully item deleted!", {
-            position: "top-right",
-          });
-          this.menuItems.splice(this.itemIndex, 1);
-          this.loading = false;
-          this.closeDelete();
-      }catch (error) {
+    async deleteItemConfirm() {
+      try {
+        this.loading = true;
+        await this.$store.dispatch("menu/deleteMenuItem", this.itemId);
+        this.$dialog.message.success("Successfully item deleted!", {
+          position: "top-right",
+        });
+        this.menuItems.splice(this.itemIndex, 1);
+        this.loading = false;
+        this.closeDelete();
+      } catch (error) {
         this.loading = false;
         console.log(error);
         this.$dialog.message.error(error.response.data.message, {
-            position: "top-right",
-        });        
+          position: "top-right",
+        });
       }
     },
     closeDelete() {

@@ -45,7 +45,7 @@
             :loading="loading"
             >Save</v-btn
           >
-          <v-btn color="black--text" @click="cancel">{{$t("Cancel")}}</v-btn>
+          <v-btn color="black--text" @click="cancel">{{ $t("Cancel") }}</v-btn>
         </div>
       </v-card-actions>
     </v-card>
@@ -61,43 +61,42 @@ export default {
       loading: false,
       item: {
         name: "",
-        description: ""
+        description: "",
       },
       rules: {
-        nameRules: [v => !!v || "Name is required"],
-        descriptionRules: [v => !!v || "Description is required"]
-      }
+        nameRules: [(v) => !!v || "Name is required"],
+        descriptionRules: [(v) => !!v || "Description is required"],
+      },
     };
   },
   methods: {
-   async addCategory() {
+    async addCategory() {
       const validate = this.$refs.form.validate();
       if (validate) {
         this.loading = true;
-        try { 
-        await this.$store
-          .dispatch("menu/addCategory", this.item)
-            this.$dialog.message.success(this.$t('Success Message'), {
-              position: "top-right"
-            });
-            this.$refs.form.reset();
-            this.$router.push({ name: "menu-categories" });
-        }catch (error) {
+        try {
+          await this.$store.dispatch("menu/addCategory", this.item);
+          this.$dialog.message.success(this.$t("Success Message"), {
+            position: "top-right",
+          });
+          this.$refs.form.reset();
+          this.$router.push({ name: "menu-categories" });
+        } catch (error) {
           this.loading = false;
           console.log(error);
           this.$dialog.message.error(error.response.data.message, {
-          position: "top-right",
-          });        
-        }  
+            position: "top-right",
+          });
+        }
       }
     },
     cancel() {
       this.$refs.form.reset();
       this.$router.push({
-        name: "menu-categories"
+        name: "menu-categories",
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

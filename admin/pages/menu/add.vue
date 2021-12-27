@@ -34,7 +34,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="3">
-              <h5 class="mb-3">{{$t("Item Category")}}</h5>
+              <h5 class="mb-3">{{ $t("Item Category") }}</h5>
               <v-select
                 :items="categories"
                 v-model="item.category"
@@ -51,7 +51,7 @@
           </v-row>
           <v-row>
             <v-col cols="12" md="4">
-              <h5 class="mb-3">{{$t("Item Image")}}</h5>
+              <h5 class="mb-3">{{ $t("Item Image") }}</h5>
               <v-row class="mt-2">
                 <v-file-input
                   @change="uploadImage"
@@ -74,7 +74,7 @@
               </div>
             </v-col>
             <v-col cols="12" md="4">
-              <h5 class="mb-3">{{$t("Item Description")}}</h5>
+              <h5 class="mb-3">{{ $t("Item Description") }}</h5>
               <v-textarea
                 v-model="item.description"
                 class="rounded-sm"
@@ -97,9 +97,9 @@
             color="primary lighten-1 white--text"
             @click="addItem"
             :loading="loading"
-            >{{$t("Save")}}</v-btn
+            >{{ $t("Save") }}</v-btn
           >
-          <v-btn color="black--text" @click="cancel">{{$t("Cancel")}}</v-btn>
+          <v-btn color="black--text" @click="cancel">{{ $t("Cancel") }}</v-btn>
         </div>
       </v-card-actions>
     </v-card>
@@ -147,21 +147,20 @@ export default {
       const validate = this.$refs.form.validate();
       if (validate) {
         this.loading = true;
-      try {
-        this.$store
-          .dispatch("menu/addMenuItem", this.item)
-            this.$dialog.message.success(this.$t('Success Message'), {
-              position: "top-right",
-            });
-            this.$refs.form.reset();
-            this.$router.push({ name: "menu" });
-      }catch (error) {
+        try {
+          this.$store.dispatch("menu/addMenuItem", this.item);
+          this.$dialog.message.success(this.$t("Success Message"), {
+            position: "top-right",
+          });
+          this.$refs.form.reset();
+          this.$router.push({ name: "menu" });
+        } catch (error) {
           this.loading = false;
           console.log(error);
           this.$dialog.message.error(error.response.data.message, {
             position: "top-right",
-          });        
-      } 
+          });
+        }
       }
     },
     async uploadImage() {
@@ -171,22 +170,21 @@ export default {
         let fd = new FormData();
         fd.append("file", this.image);
         try {
-        const response = await this.$store
-          .dispatch("images/uploadImage", fd)
-            console.log(response);
-            this.item.itemUrl = response.imgPath;
-            this.url = URL.createObjectURL(this.image);
-            this.$dialog.message.success(this.$t('Success Message'), {
-              position: "top-right",
-            });
-            this.imageLoading = false;
-        }catch (error) {
-            console.log(error);
-            this.$dialog.message.error(error.response.data.message, {
-              position: "top-right",
-            });
-            this.imageLoading = false;        
-          }
+          const response = await this.$store.dispatch("images/uploadImage", fd);
+          console.log(response);
+          this.item.itemUrl = response.imgPath;
+          this.url = URL.createObjectURL(this.image);
+          this.$dialog.message.success(this.$t("Success Message"), {
+            position: "top-right",
+          });
+          this.imageLoading = false;
+        } catch (error) {
+          console.log(error);
+          this.$dialog.message.error(error.response.data.message, {
+            position: "top-right",
+          });
+          this.imageLoading = false;
+        }
       } else {
         this.url = "";
       }

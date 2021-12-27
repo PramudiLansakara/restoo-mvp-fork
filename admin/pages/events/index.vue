@@ -3,28 +3,30 @@
     <v-data-table :headers="headers" :items="events" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title><h2>{{$t("Events")}}</h2></v-toolbar-title>
+          <v-toolbar-title
+            ><h2>{{ $t("Events") }}</h2></v-toolbar-title
+          >
           <v-spacer></v-spacer>
           <v-btn :to="'events/add'" color="primary lighten-1 white--text">
             <v-icon left color="white" size="20px"> mdi-plus </v-icon>
-           {{$t("Add Event")}}</v-btn
+            {{ $t("Add Event") }}</v-btn
           >
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="text-h5"
                 ><h4>
-                  {{$t("Delete Confirm")}}
+                  {{ $t("Delete Confirm") }}
                 </h4></v-card-title
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn text @click="closeDelete">{{$t("Cancel")}}</v-btn>
+                <v-btn text @click="closeDelete">{{ $t("Cancel") }}</v-btn>
                 <v-btn
                   color="danger"
                   text
                   @click="deleteItemConfirm"
                   :loading="loading"
-                  >{{$t("OK")}}</v-btn
+                  >{{ $t("OK") }}</v-btn
                 >
                 <v-spacer></v-spacer>
               </v-card-actions>
@@ -84,11 +86,11 @@ export default {
           align: "start",
           value: "_id",
         },
-        { text: this.$t('Name'), value: "name" },
-        { text: this.$t('Description'), value: "description" },
-        { text: this.$t('Date'), value: "date" },
-        { text: this.$t('Time'), value: "time" },
-        { text: this.$t('Actions'), value: "actions", sortable: false },
+        { text: this.$t("Name"), value: "name" },
+        { text: this.$t("Description"), value: "description" },
+        { text: this.$t("Date"), value: "date" },
+        { text: this.$t("Time"), value: "time" },
+        { text: this.$t("Actions"), value: "actions", sortable: false },
       ],
     };
   },
@@ -126,20 +128,19 @@ export default {
 
     async deleteItemConfirm() {
       try {
-      this.loading = true;
-      await this.$store
-        .dispatch("event/deleteEvent", this.itemId)
-          this.$dialog.message.success("Successfully event deleted!", {
-            position: "top-right",
-          });
-          this.events.splice(this.itemIndex, 1);
-          this.closeDelete();
-       }catch (error) {
+        this.loading = true;
+        await this.$store.dispatch("event/deleteEvent", this.itemId);
+        this.$dialog.message.success("Successfully event deleted!", {
+          position: "top-right",
+        });
+        this.events.splice(this.itemIndex, 1);
+        this.closeDelete();
+      } catch (error) {
         this.loading = false;
         console.log(error);
         this.$dialog.message.error(error.response.data.message, {
-            position: "top-right",
-        });        
+          position: "top-right",
+        });
       }
     },
     closeDelete() {

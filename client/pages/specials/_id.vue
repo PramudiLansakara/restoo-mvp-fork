@@ -11,14 +11,17 @@
 <script>
 export default {
   async asyncData({ store, params }) {
-    const special = await store.dispatch("specials/getSpecialDetails", params.id);
+    const special = await store.dispatch(
+      "specials/getSpecialDetails",
+      params.id
+    );
     console.log(special);
     return { special };
   },
   data() {
     return {};
   },
-  methods: {}
+  methods: {},
 };
 </script>
 

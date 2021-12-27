@@ -32,9 +32,7 @@
       </v-btn>
     </center>
     <center>
-      <v-btn :to="'thank-you'" color="primary--text text--base">
-        Skip
-      </v-btn>
+      <v-btn :to="'thank-you'" color="primary--text text--base"> Skip </v-btn>
     </center>
   </v-container>
 </template>
@@ -54,8 +52,8 @@ export default {
   },
   computed: {
     ...mapGetters("review", {
-      reviewItems: "getReviewItems"
-    })
+      reviewItems: "getReviewItems",
+    }),
   },
   methods: {
     nextItem(item) {
@@ -63,18 +61,18 @@ export default {
       // console.log(this.reviewItems[this.reviewItems.indexOf(item) + 1].item);
       if (this.reviewItems.indexOf(item) == this.reviewItems.length - 1) {
         this.$router.push({
-          name: "thank-you"
+          name: "thank-you",
         });
       } else if (this.reviewItems.indexOf(item) < this.reviewItems.length) {
         this.$router.push({
           name: "review-id",
           params: {
-            id: this.reviewItems[this.reviewItems.indexOf(item) + 1].item
-          }
+            id: this.reviewItems[this.reviewItems.indexOf(item) + 1].item,
+          },
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
