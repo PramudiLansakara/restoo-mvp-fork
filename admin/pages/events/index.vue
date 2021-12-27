@@ -124,24 +124,23 @@ export default {
       this.dialogDelete = true;
     },
 
-    deleteItemConfirm() {
+    async deleteItemConfirm() {
+      try {
       this.loading = true;
-      this.$store
+      await this.$store
         .dispatch("event/deleteEvent", this.itemId)
-        .then(() => {
           this.$dialog.message.success("Successfully event deleted!", {
             position: "top-right",
           });
           this.events.splice(this.itemIndex, 1);
           this.closeDelete();
-        })
-        .catch((error) => {
-          this.loading = false;
-          console.log(error.response);
-          this.$dialog.message.error(error.response.data.message, {
+       }catch (error) {
+        this.loading = false;
+        console.log(error);
+        this.$dialog.message.error(error.response.data.message, {
             position: "top-right",
-          });
-        });
+        });        
+      }
     },
     closeDelete() {
       this.dialogDelete = false;

@@ -137,21 +137,20 @@ export default {
       const validate = this.$refs.form.validate();
       if (validate) {
         this.loading = true;
-        this.$store
+        try {
+        await this.$store
           .dispatch("login/registerUser", this.user)
-          .then(() => {
             this.$dialog.message.success("Successfully Registered!", {
               position: "top-right"
             });
             this.$router.push({ name: "login" });
-          })
-          .catch(error => {
+        }catch (error) {
             this.loading = false;
             console.log(error);
             this.$dialog.message.error(error.response.data.message, {
-              position: "top-right"
-            });
-          });
+              position: "top-right",
+            });        
+        }
       }
     }
   }

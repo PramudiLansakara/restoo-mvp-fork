@@ -172,38 +172,37 @@ export default {
     };
   },
   methods: {
-    addEvent() {
+    async addEvent() {
+      try {
       const validate = this.$refs.form.validate();
       if (validate) {
         console.log(this.event);
         this.loading = true;
-        this.$store
+        await this.$store
           .dispatch("event/addEvent", this.event)
-          .then(() => {
             this.$dialog.message.success(this.$t('Success Message'), {
               position: "top-right",
             });
             this.$refs.form.reset();
             this.$router.push({ name: "events" });
-          })
-          .catch((error) => {
-            this.loading = false;
-            console.log(error);
-            this.$dialog.message.error(error.response.data.message, {
-              position: "top-right",
-            });
-          });
       }
+    }catch (error) {
+          this.loading = false;
+          console.log(error);
+          this.$dialog.message.error(error.response.data.message, {
+            position: "top-right",
+          });        
+      } 
     },
-    uploadImage() {
+    async uploadImage() {
       console.log(this.image);
       if (this.image != null) {
         this.imageLoading = true;
         let fd = new FormData();
         fd.append("file", this.image);
-        this.$store
+        try {
+        const response = await this.$store
           .dispatch("images/uploadImage", fd)
-          .then((response) => {
             console.log(response);
             this.event.bannerImg = response.imgPath;
             this.url = URL.createObjectURL(this.image);
@@ -211,14 +210,13 @@ export default {
               position: "top-right",
             });
             this.imageLoading = false;
-          })
-          .catch((error) => {
+        }catch (error) {
             console.log(error);
             this.$dialog.message.error(error.response.data.message, {
               position: "top-right",
             });
-            this.imageLoading = false;
-          });
+            this.imageLoading = false;        
+          }
       } else {
         this.url = "";
       }

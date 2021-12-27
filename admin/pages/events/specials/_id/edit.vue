@@ -108,28 +108,27 @@ export default {
     }
   },
   methods: {
-    editSpecials() {
+   async editSpecials() {
+    try { 
       const validate = this.$refs.form.validate();
       if (validate) {
         console.log(this.specials);
         this.loading = true;
-        this.$store
+        await this.$store
           .dispatch("specials/editSpecials", this.specials)
-          .then(() => {
             this.$dialog.message.success(this.$t('Success Message'), {
               position: "top-right",
             });
             this.$refs.form.reset();
             this.$router.push({ name: "events-specials" });
-          })
-          .catch((error) => {
-            this.loading = false;
-            console.log(error);
-            this.$dialog.message.error(error.response.data.message, {
-              position: "top-right",
-            });
-          });
       }
+    }catch (error) {
+      this.loading = false;
+      console.log(error);
+      this.$dialog.message.error(error.response.data.message, {
+      position: "top-right",
+      });        
+    }  
     },
     setDate(value) {
       console.log(value);
@@ -142,30 +141,29 @@ export default {
         name: "events-specials",
       });
     },
-    uploadImage() {
+    async uploadImage() {
       console.log(this.image);
       if (this.image != null) {
         this.imageLoading = true;
         let fd = new FormData();
         fd.append("file", this.image);
-        this.$store
+        try {
+        const response = await this.$store
           .dispatch("images/uploadImage", fd)
-          .then((response) => {
-            console.log(response);
-            this.event.bannerImg = response.imgPath;
+          console.log(response);
+            this.specials.bannerImg = response.imgPath;
             this.url = URL.createObjectURL(this.image);
             this.$dialog.message.success("Successfully uploaded!", {
               position: "top-right",
             });
             this.imageLoading = false;
-          })
-          .catch((error) => {
+        }catch (error) {
             console.log(error);
             this.$dialog.message.error(error.response.data.message, {
               position: "top-right",
             });
-            this.imageLoading = false;
-          });
+            this.imageLoading = false;        
+          } 
       } else {
         this.url = "";
       }

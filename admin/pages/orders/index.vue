@@ -102,37 +102,35 @@ export default {
     }
   },
   methods: {
-    onChangeStatus(item) {
+    async onChangeStatus(item) {
       console.log(item);
-      this.$store
+      try { 
+      await this.$store
         .dispatch("order/changeStatus", item)
-        .then(() => {
           this.$dialog.message.success(this.$t('Success Message'), {
             position: "top-right"
           });
-        })
-        .catch(error => {
-          console.log(error);
-          this.$dialog.message.error(error.response.data.message, {
-            position: "top-right"
-          });
-        });
+      }catch (error) {
+      console.log(error);
+      this.$dialog.message.error(error.response.data.message, {
+      position: "top-right",
+      });        
+      }
     },
     async onSelectStatus() {
       if (this.filter.status === "all") {
         this.filter = {};
       }
-      this.$store
+      try { 
+      const response = await this.$store
         .dispatch("order/getOrderList", this.filter)
-        .then(response => {
           this.orderItems = response;
-        })
-        .catch(error => {
-          console.log(error);
-          this.$dialog.message.error(error.response.data.message, {
-            position: "top-right"
-          });
-        });
+      }catch (error) {
+      console.log(error);
+      this.$dialog.message.error(error.response.data.message, {
+      position: "top-right",
+      });        
+      }    
     },
      viewOrder(orderId) {
       this.$router.push({

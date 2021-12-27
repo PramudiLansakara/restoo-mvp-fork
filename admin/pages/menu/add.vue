@@ -143,37 +143,36 @@ export default {
   },
 
   methods: {
-    addItem() {
+    async addItem() {
       const validate = this.$refs.form.validate();
       if (validate) {
         this.loading = true;
+      try {
         this.$store
           .dispatch("menu/addMenuItem", this.item)
-          .then(() => {
             this.$dialog.message.success(this.$t('Success Message'), {
               position: "top-right",
             });
             this.$refs.form.reset();
             this.$router.push({ name: "menu" });
-          })
-          .catch((error) => {
-            this.loading = false;
-            console.log(error);
-            this.$dialog.message.error(error.response.data.message, {
-              position: "top-right",
-            });
-          });
+      }catch (error) {
+          this.loading = false;
+          console.log(error);
+          this.$dialog.message.error(error.response.data.message, {
+            position: "top-right",
+          });        
+      } 
       }
     },
-    uploadImage() {
+    async uploadImage() {
       console.log(this.image);
       if (this.image != null) {
         this.imageLoading = true;
         let fd = new FormData();
         fd.append("file", this.image);
-        this.$store
+        try {
+        const response = await this.$store
           .dispatch("images/uploadImage", fd)
-          .then((response) => {
             console.log(response);
             this.item.itemUrl = response.imgPath;
             this.url = URL.createObjectURL(this.image);
@@ -181,14 +180,13 @@ export default {
               position: "top-right",
             });
             this.imageLoading = false;
-          })
-          .catch((error) => {
+        }catch (error) {
             console.log(error);
             this.$dialog.message.error(error.response.data.message, {
               position: "top-right",
             });
-            this.imageLoading = false;
-          });
+            this.imageLoading = false;        
+          }
       } else {
         this.url = "";
       }

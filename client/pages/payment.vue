@@ -127,41 +127,38 @@ export default {
     }),
   },
   methods: {
-    checkout() {
+    async checkout() {
       if (this.$store.state.auth.authToken) {
         this.loading = true;
         this.$store.dispatch("cart/updateCartItem", this.paymentDetails);
-        this.$store.dispatch("cart/newOrder")
-          .then(() => {
+        try { 
+        await this.$store.dispatch("cart/newOrder")
             if(this.paymentDetails.paymentMethod == 'card'){
               console.log(this.sessionId)
               this.$refs.checkoutRef.redirectToCheckout();
             }
             else{
-              this.$store.dispatch("payment/newPayment")
-                .then(() => {
-
-                    this.$dialog.message.success("Successfully paid!", {
-                    position: "top-right"
-                    });
-                    this.$router.push({ name: "thank-you" , query: { status: 'success' }});
-                })
-                .catch(error => {
-                  this.loading = false;
-                  console.log(error);
-                  this.$dialog.message.error(error.response.data.message, {
-                    position: "top-right"
+              try { 
+              await this.$store.dispatch("payment/newPayment")
+                  this.$dialog.message.success("Successfully paid!", {
+                  position: "top-right"
                   });
-                });
+                  this.$router.push({ name: "thank-you" , query: { status: 'success' }});
+              }catch (error) {
+                this.loading = false;
+                console.log(error);
+                this.$dialog.message.error(error.response.data.message, {
+                position: "top-right",
+                });        
+              }
             }
-          })
-          .catch(error => {
-            this.loading = false;
-            console.log(error);
-            this.$dialog.message.error(error.response.data.message, {
-              position: "top-right"
-            });
-          });
+        }catch (error) {
+          this.loading = false;
+          console.log(error);
+          this.$dialog.message.error(error.response.data.message, {
+          position: "top-right",
+          });        
+        }
       } else {
         this.$router.push({ name: "login", query: { redirect: "/payment" } });
       }

@@ -120,9 +120,9 @@ export default {
       const validate = this.$refs.form.validate();
       if (validate) {
         this.loading = true;
-        await this.$store
+        try { 
+        const response = await this.$store
           .dispatch("login/loginUser", this.user)
-          .then((response) => {
             Cookie.set("authToken", response.token);
             Cookie.set("authUser", response.user);
 
@@ -131,14 +131,13 @@ export default {
             });
             // this.$router.push({ name: "menu" });
             this.$router.push(this.$route.query.redirect || "/menu");
-          })
-          .catch((error) => {
+        }catch (error) {
             this.loading = false;
             console.log(error);
             this.$dialog.message.error(error.response.data.message, {
               position: "top-right",
-            });
-          });
+            });        
+        }
       }
     },
   },

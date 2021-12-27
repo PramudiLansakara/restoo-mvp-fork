@@ -98,13 +98,13 @@ export default {
     },
   },
   methods: {
-    login() {
+   async login() {
       const validate = this.$refs.form.validate();
       if (validate) {
         this.loading = true;
-        this.$store
+        try { 
+        const response = await this.$store
           .dispatch("login/loginUser", this.user)
-          .then((response) => {
             Cookie.set("authToken", response.token);
             Cookie.set("authUser", response.user);
             this.$socket.client.emit("admin-join");
@@ -112,14 +112,13 @@ export default {
               position: "top-right",
             });
             this.$router.push({ name: "dashboard" });
-          })
-          .catch((error) => {
-            this.loading = false;
-            console.log(error);
-            this.$dialog.message.error(error.response.data.message, {
-              position: "top-right",
-            });
-          });
+        }catch (error) {
+          this.loading = false;
+          console.log(error);
+          this.$dialog.message.error(error.response.data.message, {
+          position: "top-right",
+          });        
+        }
       }
     },
   },

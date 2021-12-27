@@ -115,6 +115,7 @@ export default {
       valid: true,
       loading: false,
       imageLoading: false,
+      image: null,
       rules: {
         nameRules: [(v) => !!v || "Name is required"],
         descriptionRules: [(v) => !!v || "Description is required"],
@@ -138,37 +139,36 @@ export default {
   },
 
   methods: {
-    editItem() {
+   async editItem() {
+    try {
       const validate = this.$refs.form.validate();
       if (validate) {
         this.loading = true;
-        this.$store
+       await this.$store
           .dispatch("menu/editMenuItem", this.item)
-          .then(() => {
             this.$dialog.message.success(this.$t('Success Message'), {
               position: "top-right",
             });
             this.$refs.form.reset();
             this.$router.push({ name: "menu" });
-          })
-          .catch((error) => {
-            this.loading = false;
-            console.log(error);
-            this.$dialog.message.error(error.response.data.message, {
-              position: "top-right",
-            });
-          });
       }
+    }catch (error) {
+        this.loading = false;
+        console.log(error);
+        this.$dialog.message.error(error.response.data.message, {
+            position: "top-right",
+        });        
+    }    
     },
-    uploadImage() {
+    async uploadImage() {
       console.log(this.image);
       if (this.image != null) {
         this.imageLoading = true;
         let fd = new FormData();
         fd.append("file", this.image);
-        this.$store
+        const response = await this.$store
           .dispatch("images/uploadImage", fd)
-          .then((response) => {
+          try {
             console.log(response);
             this.item.itemUrl = response.imgPath;
             this.url = URL.createObjectURL(this.image);
@@ -176,14 +176,13 @@ export default {
               position: "top-right",
             });
             this.imageLoading = false;
-          })
-          .catch((error) => {
+          }catch (error) {
             console.log(error);
             this.$dialog.message.error(error.response.data.message, {
               position: "top-right",
             });
-            this.imageLoading = false;
-          });
+            this.imageLoading = false;        
+          }
       } else {
         this.url = "";
       }

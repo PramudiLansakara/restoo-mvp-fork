@@ -63,26 +63,25 @@ export default {
   },
 
   methods: {
-    editItem() {
+    async editItem() {
       const validate = this.$refs.form.validate();
       if (validate) {
         this.loading = true;
-        this.$store
+        try {
+        await this.$store
           .dispatch("menu/editMenuItem", this.item)
-          .then(() => {
             this.$dialog.message.success(this.$t('Success Message'), {
               position: "top-right",
             });
             this.$refs.form.reset();
             this.$router.push({ name: "menu" });
-          })
-          .catch((error) => {
-            this.loading = false;
-            console.log(error);
-            this.$dialog.message.error(error.response.data.message, {
-              position: "top-right",
-            });
-          });
+        }catch (error) {
+        this.loading = false;
+        console.log(error);
+        this.$dialog.message.error(error.response.data.message, {
+            position: "top-right",
+        });        
+        }
       }
     },
     cancel() {
