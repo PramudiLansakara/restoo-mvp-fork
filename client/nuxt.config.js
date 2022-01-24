@@ -47,7 +47,7 @@ export default {
   ],
 
   env: {
-    STRIPE_PK: process.env.STRIPE_PK,
+    STRIPE_PK: 'pk_test_51Js3YUEhEKYau5wJ4Sp6oPEj7U6Hllb1rx0tiNj3Zwd5fNe73yrZ03WzZjONfL1idvXUqBpq5ka4SzB7be13s11V00bqyAkEWq',
   },
 
   i18n: {
