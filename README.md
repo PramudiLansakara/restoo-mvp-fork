@@ -1,2 +1,2 @@
-# damas-lounge
+# restoo-mvp
 MVP for Restoo
