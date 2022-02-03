@@ -1,9 +1,9 @@
 export default [
-  ["Home", "/home"],
+  ["mdi-home","Home", "/home"],
   // ["Our Special Events", "/events"],
-  ["Our Specials", "/menu/top-deals"],
-  ["Our Menu", "/menu/all"],
-  ["Reservations", "/reservation"],
+  ["mdi-silverware-fork-knife","Our Specials", "/menu/top-deals"],
+  ["mdi-food","Our Menu", "/menu/all"],
+  ["mdi-calendar-month","Reservations", "/reservation"],
   // ["ABOUT US", "/about"],
   // ["MY ACCOUNT", "/account"]
 ];

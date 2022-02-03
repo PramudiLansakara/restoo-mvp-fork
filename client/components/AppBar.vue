@@ -76,15 +76,20 @@
     >
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title>
+          <v-list-item-title class="text-h6">
             <h2>Restoo</h2>
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
       <v-list dense nav>
-        <div v-for="[title, route] in menuItems" :key="title">
-          <v-list-item link :to="route" class="list-item-name pb-5">
-            <v-list-item-title>{{ $t(title) }}</v-list-item-title>
+        <div v-for="[icon,title, route] in menuItems" :key="title">
+          <v-list-item link :to="route" class=" pb-5">
+            <v-list-item-icon>
+              <v-icon>{{ icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content  class="list-item-name pb-5">
+            <v-list-item-title><h5>{{ $t(title) }}</h5></v-list-item-title>
+          </v-list-item-content>
           </v-list-item>
         </div>
         <v-spacer></v-spacer>
