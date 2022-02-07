@@ -2,7 +2,8 @@
   <v-footer dark
     padless >
 
-<v-card
+  <v-card
+      width="100%"
       flat
       tile
       class="primary darken-5 white--text text-center"

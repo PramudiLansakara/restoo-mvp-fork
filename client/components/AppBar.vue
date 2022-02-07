@@ -70,6 +70,7 @@
     </v-app-bar>
     <v-navigation-drawer
       fixed
+      right
       v-model="drawer"
       :src="require('../assets/images/drawer.png')"
       height="100%"
