@@ -16,6 +16,11 @@ module.exports = {
         price: Joi.number().required(),
         name: Joi.string().required(),
       })).min(1).required(),
+      customer: Joi.object({
+        name: Joi.string().required(),
+        email: Joi.string().email().required(),
+        phoneNumber: Joi.string().required(),
+      }).required(),
     },
   },
   listMyOrders: {

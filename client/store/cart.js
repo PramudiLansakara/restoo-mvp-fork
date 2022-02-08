@@ -4,7 +4,12 @@ export const state = () => ({
     items: [],
     note: "",
     orderType: "",
-    paymentMethod: ""
+    paymentMethod: "",
+    customer:{    
+      name: "",
+      email: "",
+      phoneNumber:"",
+    },
   },
   total: 0,
   orderId:""
@@ -52,9 +57,20 @@ export const mutations = {
     if (item.note) {
       state.order.note = item.note;
     }
-    if (item.paymentMethod) {
+    if (item.orderType) {
       state.order.orderType = item.orderType;
+    }
+    if (item.paymentMethod) {
       state.order.paymentMethod = item.paymentMethod;
+    }
+    if (item.name) {
+      state.order.customer.name = item.name;
+    }
+    if (item.email) {
+      state.order.customer.email = item.email;
+    }
+    if (item.phoneNumber) {
+      state.order.customer.phoneNumber = item.phoneNumber;
     }
   },
   SAVE_ORDER_ID(state, id) {
@@ -99,13 +115,19 @@ export const actions = {
     commit("UPDATE_ITEM", cartItem);
   },
   async newOrder({ commit, state }) {
+    console.log(state.order)
     try {
       let response={};
       if(state.orderId){
-        const update = {orderType: state.order.orderType, paymentMethod: state.order.paymentMethod}
+        const update = {
+          orderType: state.order.orderType, 
+          paymentMethod: state.order.paymentMethod,
+          customer:  state.order.customer,
+        }
         response = await this.$axios.$put(`order/${state.orderId}`, update );
       }else{
         response = await this.$axios.$post("order/new", state.order);
+        console.log(response);
       }
       
       if(state.order.paymentMethod == 'card'){

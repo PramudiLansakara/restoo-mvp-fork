@@ -24,7 +24,7 @@ async function generateOrderRef() {
 exports.placeOrder = async (req, res, next) => {
   try {
     const { user } = req;
-    const { note = null, orderType = null, paymentMethod,  items } = req.body;
+    const { note = null, orderType = null, paymentMethod, items , customer} = req.body;
 
     const itemsObjects = await FoodItem.find({
       _id: {
@@ -48,7 +48,7 @@ exports.placeOrder = async (req, res, next) => {
       paymentMethod,
       currency: 'eur',
       placedAt: new Date(),
-      customer: user._id,
+      customer,
       total,
       reference,
       table: Math.round(1 + Math.random() * 20),
