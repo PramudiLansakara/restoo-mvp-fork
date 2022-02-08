@@ -7,6 +7,88 @@
     </v-row>
     <v-row>
       <v-col cols="12">
+        <h3>Your information ℹ️</h3>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <v-card class="rounded-lg" elevation="2">
+          <v-card-text>
+        <v-form ref="form" v-model="valid" lazy-validation>
+              <v-row justify="center">
+                <v-col
+                  cols="12"
+                  md="6"
+                  class="mt-5"
+                  style="padding-bottom: 0px"
+                >
+                  <v-text-field
+                    class="rounded-sm"
+                    filled
+                    dense
+                    rounded
+                    :rules="rules.nameRules"
+                    v-model="paymentDetails.name"
+                    label="Name"
+                    required
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+               <v-row justify="center">
+                <v-col
+                  cols="12"
+                  md="6"
+                  style="padding-top: 0px; padding-bottom: 0px"
+                >
+                  <v-text-field
+                    class="rounded-sm"
+                    filled
+                    dense
+                    rounded
+                    :rules="rules.phoneNumberRules"
+                    v-model="paymentDetails.phoneNumber"
+                    label="Phone Number"
+                    required
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row justify="center">
+                <v-col
+                  cols="12"
+                  md="6"
+                  style="padding-top: 0px; padding-bottom: 0px"
+                >
+                  <v-text-field
+                    class="rounded-sm"
+                    filled
+                    dense
+                    rounded
+                    :rules="rules.emailRules"
+                    v-model="paymentDetails.email"
+                    label="E-mail"
+                    required
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-form>
+            </v-card-text>
+            <v-card-actions>
+            <v-row justify="center">
+              <p>
+                Already have an account?<nuxt-link
+                  :to="'login'"
+                  style="text-decoration: none"
+                >
+                  Login</nuxt-link
+                >
+              </p>
+            </v-row>
+          </v-card-actions>
+          </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
         <h3>Order for 🍟</h3>
       </v-col>
     </v-row>
@@ -101,6 +183,21 @@ export default {
       paymentDetails: {
         orderType: null,
         paymentMethod: null,
+        name: "",
+        email: "",
+        phoneNumber:"",
+      },
+      valid: true,
+      rules: {
+        nameRules: [(v) => !!v || "Name is required"],
+        phoneNumberRules:[
+          (v) => !!v || "Phone Number is required",
+          (v) => /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(v) || "Phone Number must be valid",
+        ],
+        emailRules: [
+          (v) => !!v || "E-mail is required",
+          (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+        ],
       },
       payments: payments,
       loading: false,
@@ -108,7 +205,7 @@ export default {
   },
   computed: {
     isDisabled() {
-      if (this.paymentDetails.orderType && this.paymentDetails.paymentMethod) {
+      if (this.paymentDetails.orderType && this.paymentDetails.paymentMethod && this.paymentDetails.name && this.paymentDetails.email && this.paymentDetails.phoneNumber) {
         return false;
       } else {
         return true;
