@@ -16,7 +16,7 @@
       </v-chip-group>
     </v-row>
     <v-row>
-      <SpecialDealCard
+      <MenuItemCard
         :menuItem="menuItem"
         v-if="menuItem.todaySpecial"
         v-for="menuItem of menuItems"
