@@ -220,6 +220,8 @@ export default {
   },
   methods: {
     async checkout() {
+        const validate = this.$refs.form.validate();
+        if (validate) {
         this.loading = true;
         this.$store.dispatch("cart/updateCartItem", this.paymentDetails);
         try {
@@ -251,6 +253,7 @@ export default {
           this.$dialog.message.error(error.response.data.message, {
             position: "top-right",
           });
+        }
         }
     }
   },
