@@ -6,7 +6,7 @@ const auth = require('../../middlewares/authorization');
 const controller = require('../../controllers/payment.controller');
 const validations = require('../../validations/payment.validation');
 
-router.post('/', auth(), validator(validations.create), controller.create);
+router.post('/', validator(validations.create), controller.create);
 router.post('/webhook', controller.createdHook);
 router.get('/session/:id', auth(), validator(validations.createStripePaymentSession), controller.createStripePaymentSession);
 router.get('/list', auth(), controller.list);

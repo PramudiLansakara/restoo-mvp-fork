@@ -6,7 +6,7 @@ const auth = require('../../middlewares/authorization');
 const controller = require('../../controllers/order.controller');
 const validations = require('../../validations/order.validation');
 
-router.post('/new', validator(validations.placeOrder), auth('user'), controller.placeOrder);
+router.post('/new', validator(validations.placeOrder), controller.placeOrder);
 
 router.get('/list', validator(validations.listOrders), auth('waiter', 'admin'), controller.listOrders);
 
@@ -14,7 +14,7 @@ router.get('/list/my', validator(validations.listMyOrders), auth('user'), contro
 
 router.get('/:id', validator(validations.viewMyOrder), auth(), controller.viewOrder);
 
-router.put('/:id', validator(validations.update), auth(), controller.update);
+router.put('/:id', validator(validations.update), controller.update);
 
 router.put('/:id/status', validator(validations.changeOrderStatus), auth('waiter', 'admin'), controller.changeOrderStatus);
 

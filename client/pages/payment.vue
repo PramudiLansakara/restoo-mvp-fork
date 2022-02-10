@@ -76,7 +76,7 @@
             <v-row justify="center">
               <p>
                 Already have an account?<nuxt-link
-                  :to="'login'"
+                  :to='{name:"login", query: { redirect: "/payment" }}'
                   style="text-decoration: none"
                 >
                   Login</nuxt-link
@@ -220,7 +220,6 @@ export default {
   },
   methods: {
     async checkout() {
-      if (this.$store.state.auth.authToken) {
         this.loading = true;
         this.$store.dispatch("cart/updateCartItem", this.paymentDetails);
         try {
@@ -253,10 +252,7 @@ export default {
             position: "top-right",
           });
         }
-      } else {
-        this.$router.push({ name: "login", query: { redirect: "/payment" } });
-      }
-    },
+    }
   },
 };
 </script>
