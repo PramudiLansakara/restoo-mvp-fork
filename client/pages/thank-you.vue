@@ -31,13 +31,6 @@
       </v-row>
     </div>
     <div v-if="status == 'failed'">
-      <!-- <v-row >
-      <v-col cols="12">
-        <center>
-          <h2>Thank You 😍</h2>
-        </center>
-      </v-col>
-    </v-row> -->
       <v-row justify="center">
         <img src="../assets/images/paymenterror.svg" class="mt-5" height="300" />
       </v-row>
