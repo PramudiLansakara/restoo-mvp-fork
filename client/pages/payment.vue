@@ -27,6 +27,7 @@
                     filled
                     dense
                     rounded
+                    :disabled="disableEditing"
                     :rules="rules.nameRules"
                     v-model="paymentDetails.name"
                     label="Name"
@@ -45,6 +46,7 @@
                     filled
                     dense
                     rounded
+                    :disabled="disableEditing"
                     :rules="rules.phoneNumberRules"
                     v-model="paymentDetails.phoneNumber"
                     label="Phone Number"
@@ -63,6 +65,7 @@
                     filled
                     dense
                     rounded
+                    :disabled="disableEditing"
                     :rules="rules.emailRules"
                     v-model="paymentDetails.email"
                     label="E-mail"
@@ -183,9 +186,9 @@ export default {
       paymentDetails: {
         orderType: null,
         paymentMethod: null,
-        name: "",
-        email: "",
-        phoneNumber:"",
+        name: this.$store.state.auth.user.name,
+        email: this.$store.state.auth.user.email,
+        phoneNumber: this.$store.state.auth.user.phoneNumber,
       },
       valid: true,
       rules: {
@@ -203,12 +206,35 @@ export default {
       loading: false,
     };
   },
+  //   async asyncData({ store, error, params }) {
+  //   try {
+  //     if(store.state.auth.user){
+  //     this.name = this.$store.state.auth.user.name
+  //     console.log(this.name)
+  //   }
+  //   } catch (err) {
+  //     console.log(err);
+  //     return error({ statusCode: 404 });
+  //   }
+  // },
+  // async fetch() {
+  //   if(this.$store.state.auth.user != null){
+  //   this.disableEditing = true;
+  //   }
+  // },
   computed: {
     isDisabled() {
-      if (this.paymentDetails.orderType && this.paymentDetails.paymentMethod && this.paymentDetails.name && this.paymentDetails.email && this.paymentDetails.phoneNumber) {
+      if (this.paymentDetails.orderType && this.paymentDetails.paymentMethod) {
         return false;
       } else {
         return true;
+      }
+    },
+    disableEditing() {
+      if (this.$store.state.auth.user.name && this.$store.state.auth.user.email && this.$store.state.auth.user.phoneNumber) {
+        return true;
+      } else {
+        return false;
       }
     },
     ...mapGetters("payment", {
@@ -223,6 +249,7 @@ export default {
         const validate = this.$refs.form.validate();
         if (validate) {
         this.loading = true;
+        console.log(this.paymentDetails);
         this.$store.dispatch("cart/updateCartItem", this.paymentDetails);
         try {
           await this.$store.dispatch("cart/newOrder");

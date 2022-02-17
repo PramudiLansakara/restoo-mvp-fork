@@ -1,6 +1,13 @@
 export const state = () => ({
   authToken: null,
-  user: null,
+  user: {
+  name: "",
+  email: "",
+  phoneNumber:"",
+  },
+  name: "",
+  email: "",
+  phoneNumber:"",
   headers: null
 });
 
@@ -21,6 +28,9 @@ export const getters = {
 export const mutations = {
   SET_USER(state, user) {
     state.user = user;
+    state.name = user.name;
+    state.email = user.email;
+    state.phoneNumber = user.phoneNumber;
   },
 
   REMOVE_USER(state) {
