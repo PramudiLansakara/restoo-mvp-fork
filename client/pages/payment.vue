@@ -176,7 +176,7 @@
 
 <script>
 import payments from "@/util/payments";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 export default {
   // middleware: "redirectIfNotAuth",
@@ -206,32 +206,16 @@ export default {
       loading: false,
     };
   },
-  //   async asyncData({ store, error, params }) {
-  //   try {
-  //     if(store.state.auth.user){
-  //     this.name = this.$store.state.auth.user.name
-  //     console.log(this.name)
-  //   }
-  //   } catch (err) {
-  //     console.log(err);
-  //     return error({ statusCode: 404 });
-  //   }
-  // },
-  // async fetch() {
-  //   if(this.$store.state.auth.user != null){
-  //   this.disableEditing = true;
-  //   }
-  // },
   computed: {
     isDisabled() {
-      if (this.paymentDetails.orderType && this.paymentDetails.paymentMethod) {
+      if (this.paymentDetails.orderType && this.paymentDetails.paymentMethod && this.paymentDetails.name && this.paymentDetails.email && this.paymentDetails.phoneNumber) {
         return false;
       } else {
         return true;
       }
     },
     disableEditing() {
-      if (this.$store.state.auth.user.name && this.$store.state.auth.user.email && this.$store.state.auth.user.phoneNumber) {
+      if ( this.user.name && this.user.email && this.user.phoneNumber) {
         return true;
       } else {
         return false;
@@ -242,6 +226,9 @@ export default {
     }),
     ...mapGetters("cart", {
       orderId: "getOrderId",
+    }),
+    ...mapState("auth",{
+       user: "user",
     }),
   },
   methods: {
