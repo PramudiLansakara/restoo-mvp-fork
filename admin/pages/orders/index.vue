@@ -77,9 +77,9 @@ export default {
       filterStatusList: filterStatusList,
       headers: [
         {
-          text: "ID",
+          text: "Name",
           align: "start",
-          value: "_id"
+          value: "customer.name"
         },
         { text: "Date", value: "placedAt" },
         { text: "Order Note", value: "note" },
