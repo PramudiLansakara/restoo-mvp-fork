@@ -128,6 +128,36 @@ paths:
       description: deletes an event
       security:
         - bearerAuth: []
+    put:
+      summary: ''
+      operationId: put-events-id
+      responses:
+        '200':
+          description: OK
+      description: edit event details
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: DJ Night
+                description:
+                  type: string
+                  example: Fun DJ Night
+                date:
+                  type: string
+                  example: '2021-10-21T00:00:00.000+00:00'
+                bannerImg:
+                  type: string
+                  example: damas-lounge/media/04bd3fc8-3156-46c3-9d44-a4e16c7b44e9.png
+                time:
+                  type: string
+                  example: '01:05'
+      security:
+        - bearerAuth: []
   /events/list:
     get:
       summary: Your GET endpoint
@@ -333,6 +363,33 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/UnknownError'
+    put:
+      summary: ''
+      operationId: put-order-id
+      responses:
+        '200':
+          description: OK
+      description: Edit Order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderType:
+                  type: string
+                note:
+                  type: string
+                paymentMethod:
+                  type: string
+                  enum:
+                    - cash
+                    - card
+                  example: cash
+                items:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/OrderItemSchema'
   '/order/{id}/selfassign':
     put:
       description: Self assign waiter to order by id
@@ -1193,6 +1250,8 @@ components:
           example: 10.5
     CreateOrderItemSchema:
       type: object
+      title: ''
+      description: ''
       properties:
         item:
           type: string
@@ -1202,8 +1261,12 @@ components:
           type: integer
           example: 1
           description: quantity of item
-      title: ''
-      description: ''
+        price:
+          type: number
+          example: 4
+        name:
+          type: string
+          example: cake
     CreateOrderSchema:
       type: object
       properties:
@@ -1631,3 +1694,23 @@ components:
             - active
             - deactive
           example: deactive
+    OrderItemSchema:
+      title: OrderItemSchema
+      type: object
+      properties:
+        item:
+          $ref: '#/components/schemas/Id'
+        quantity:
+          type: number
+          example: 5
+        name:
+          type: string
+          example: Cake
+        price:
+          type: number
+          example: 4
+      required:
+        - item
+        - quantity
+        - name
+        - price
