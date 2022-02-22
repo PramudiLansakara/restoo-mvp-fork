@@ -1,15 +1,15 @@
 openapi: 3.0.1
 info:
   title: Restoo API
-  description: "API document for Restoo app"
-  termsOfService: "http://swagger.io/terms/"
+  description: API document for Restoo app
+  termsOfService: 'http://swagger.io/terms/'
   version: 1.0.0
 externalDocs:
   description: Find out more about Swagger
-  url: "http://swagger.io"
+  url: 'http://swagger.io'
 servers:
-  - url: "http://localhost:3001/api/"
-  - url: "https://restoo-backend.herokuapp.com/api/"
+  - url: 'http://localhost:3001/api/'
+  - url: 'https://restoo-backend.herokuapp.com/api/'
 tags:
   - name: Auth
     description: Everything about authendication
@@ -35,15 +35,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Login"
+              $ref: '#/components/schemas/Login'
         required: true
       responses:
-        "200":
+        '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/LogRes"
+                $ref: '#/components/schemas/LogRes'
   /auth/register:
     post:
       tags:
@@ -55,15 +55,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Register"
+              $ref: '#/components/schemas/Register'
         required: true
       responses:
-        "200":
+        '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RegisterRes"
+                $ref: '#/components/schemas/RegisterRes'
   /waiters/list:
     get:
       tags:
@@ -73,7 +73,7 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        "200":
+        '200':
           description: list of waiters
   /events/new:
     post:
@@ -88,16 +88,55 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EventSchema"
+              $ref: '#/components/schemas/EventSchema'
       responses:
-        "201":
-          $ref: "#/components/schemas/EventSchema"
-        "400":
-          $ref: "#/components/responses/ValidationError"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "500":
-          $ref: "#/components/responses/UnknownError"
+        '201':
+          $ref: '#/components/schemas/EventSchema'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnknownError'
+  '/events/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventSchema'
+      operationId: get-events-id
+      description: get event details
+      security:
+        - bearerAuth: []
+    delete:
+      summary: ''
+      operationId: deleteEvent
+      responses:
+        '200':
+          description: OK
+      description: deletes an event
+      security:
+        - bearerAuth: []
+  /events/list:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/EventLisitingResponse'
+      operationId: get-events-list
+      description: Get all events
   /food/category:
     post:
       description: Creates a new food category
@@ -113,27 +152,27 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateFoodSchema"
+              $ref: '#/components/schemas/CreateFoodSchema'
       responses:
-        "201":
+        '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/IdSchema"
-        "400":
-          $ref: "#/components/responses/ValidationError"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "500":
-          $ref: "#/components/responses/UnknownError"
-  "/food/category/{id}":
+                $ref: '#/components/schemas/IdSchema'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnknownError'
+  '/food/category/{id}':
     put:
       description: Updates a food category
       summary: Updates a food category
       operationId: updateFoodCategory
       parameters:
-        - $ref: "#/components/parameters/IdPathParam"
+        - $ref: '#/components/parameters/IdPathParam'
       tags:
         - Admin
         - FoodCategory
@@ -144,45 +183,45 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdateFoodSchema"
+              $ref: '#/components/schemas/UpdateFoodSchema'
       responses:
-        "200":
+        '200':
           description: Updated
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MessageResponse"
-        "400":
-          $ref: "#/components/responses/ValidationError"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "500":
-          $ref: "#/components/responses/UnknownError"
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnknownError'
     delete:
       description: Deletes a food category
       summary: Deletes a food category
       operationId: deleteFoodCategory
       parameters:
-        - $ref: "#/components/parameters/IdPathParam"
+        - $ref: '#/components/parameters/IdPathParam'
       tags:
         - Admin
         - FoodCategory
       security:
         - bearerAuth: []
       responses:
-        "200":
+        '200':
           description: Deleted
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MessageResponse"
-        "400":
-          $ref: "#/components/responses/ValidationError"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "500":
-          $ref: "#/components/responses/UnknownError"
-  "/food/category/list":
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnknownError'
+  /food/category/list:
     get:
       description: Get all categories
       summary: Get all categories
@@ -190,15 +229,15 @@ paths:
       tags:
         - FoodCategory
       responses:
-        "200":
-          $ref: "#/components/responses/FoodCategoryListing"
-        "400":
-          $ref: "#/components/responses/ValidationError"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "500":
-          $ref: "#/components/responses/UnknownError"
-  "/order/new":
+        '200':
+          $ref: '#/components/responses/FoodCategoryListing'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnknownError'
+  /order/new:
     post:
       description: Creates a new order
       summary: Creates a new order
@@ -212,17 +251,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateOrderSchema"
+              $ref: '#/components/schemas/CreateOrderSchema'
       responses:
-        "201":
-          $ref: "#/components/responses/OrderCreatedResponse"
-        "400":
-          $ref: "#/components/responses/ValidationError"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "500":
-          $ref: "#/components/responses/UnknownError"
-  "/order/list":
+        '201':
+          $ref: '#/components/responses/OrderCreatedResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnknownError'
+  /order/list:
     get:
       description: List all orders
       summary: List all orders
@@ -234,22 +273,22 @@ paths:
         - Order
       operationId: listOrders
       parameters:
-        - $ref: "#/components/parameters/LimitQueryParam"
-        - $ref: "#/components/parameters/OffsetQueryParam"
-        - $ref: "#/components/parameters/OrderStatusQueryParam"
-        - $ref: "#/components/parameters/SortQueryParam"
-        - $ref: "#/components/parameters/UserIdQueryParam"
-        - $ref: "#/components/parameters/WaiterIdQueryParam"
+        - $ref: '#/components/parameters/LimitQueryParam'
+        - $ref: '#/components/parameters/OffsetQueryParam'
+        - $ref: '#/components/parameters/OrderStatusQueryParam'
+        - $ref: '#/components/parameters/SortQueryParam'
+        - $ref: '#/components/parameters/UserIdQueryParam'
+        - $ref: '#/components/parameters/WaiterIdQueryParam'
       responses:
-        "200":
-          $ref: "#/components/responses/OrderLisitingResponse"
-        "400":
-          $ref: "#/components/responses/ValidationError"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "500":
-          $ref: "#/components/responses/UnknownError"
-  "/order/list/my":
+        '200':
+          $ref: '#/components/responses/OrderLisitingResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnknownError'
+  /order/list/my:
     get:
       description: List my orders
       summary: List my orders
@@ -260,20 +299,20 @@ paths:
         - Order
       operationId: listMyOrders
       parameters:
-        - $ref: "#/components/parameters/LimitQueryParam"
-        - $ref: "#/components/parameters/OffsetQueryParam"
-        - $ref: "#/components/parameters/OrderStatusQueryParam"
-        - $ref: "#/components/parameters/SortQueryParam"
+        - $ref: '#/components/parameters/LimitQueryParam'
+        - $ref: '#/components/parameters/OffsetQueryParam'
+        - $ref: '#/components/parameters/OrderStatusQueryParam'
+        - $ref: '#/components/parameters/SortQueryParam'
       responses:
-        "200":
-          $ref: "#/components/responses/OrderLisitingResponse"
-        "400":
-          $ref: "#/components/responses/ValidationError"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "500":
-          $ref: "#/components/responses/UnknownError"
-  "/order/{id}":
+        '200':
+          $ref: '#/components/responses/OrderLisitingResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnknownError'
+  '/order/{id}':
     get:
       description: Get order
       summary: Get order
@@ -284,17 +323,17 @@ paths:
         - Order
       operationId: getOrder
       parameters:
-        - $ref: "#/components/parameters/IdPathParam"
+        - $ref: '#/components/parameters/IdPathParam'
       responses:
-        "200":
-          $ref: "#/components/responses/OrderViewResponse"
-        "400":
-          $ref: "#/components/responses/ValidationError"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "500":
-          $ref: "#/components/responses/UnknownError"
-  "/order/{id}/selfassign":
+        '200':
+          $ref: '#/components/responses/OrderViewResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnknownError'
+  '/order/{id}/selfassign':
     put:
       description: Self assign waiter to order by id
       summary: Self assign waiter to order by id
@@ -305,17 +344,17 @@ paths:
         - Waiter
       operationId: selfAssignWaiterToOrder
       parameters:
-        - $ref: "#/components/parameters/IdPathParam"
+        - $ref: '#/components/parameters/IdPathParam'
       responses:
-        "200":
-          $ref: "#/components/responses/OkResponse"
-        "400":
-          $ref: "#/components/responses/ValidationError"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "500":
-          $ref: "#/components/responses/UnknownError"
-  "/order/{id}/status":
+        '200':
+          $ref: '#/components/responses/OkResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnknownError'
+  '/order/{id}/status':
     put:
       description: Change status of an order
       summary: Change status of an order
@@ -327,9 +366,9 @@ paths:
         - Waiter
       operationId: changeOrderStatus
       externalDocs:
-        url: https://github.com/syetalabs/Restoo_Backend/blob/main/docs/diagrams/Order-State.png
+        url: 'https://github.com/syetalabs/Restoo_Backend/blob/main/docs/diagrams/Order-State.png'
       parameters:
-        - $ref: "#/components/parameters/IdPathParam"
+        - $ref: '#/components/parameters/IdPathParam'
       requestBody:
         content:
           application/json:
@@ -337,16 +376,541 @@ paths:
               type: object
               properties:
                 status:
-                  $ref: "#/components/schemas/OrderStatusEnum"
+                  $ref: '#/components/schemas/OrderStatusEnum'
       responses:
-        "200":
-          $ref: "#/components/responses/OkResponse"
-        "400":
-          $ref: "#/components/responses/ValidationError"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-        "500":
-          $ref: "#/components/responses/UnknownError"
+        '200':
+          $ref: '#/components/responses/OkResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnknownError'
+  /mail/reservationFeedback:
+    post:
+      summary: ''
+      operationId: post-mail-reservationFeedback
+      responses:
+        '200':
+          description: OK
+      description: save reservation Feedback
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                receiverEmail:
+                  type: string
+                  example: jay122@gmail.com
+                name:
+                  type: string
+                  example: Jay diz
+                reservationDate:
+                  type: string
+                  format: date
+                  example: '2021-12-24T00:00:00.000+00:00'
+                from:
+                  type: string
+                  example: '10:00'
+                to:
+                  type: string
+                  example: '11:50'
+                personCount:
+                  type: string
+                  example: '2'
+                tableNumber:
+                  type: string
+                  example: '5'
+                reservationStatus:
+                  type: string
+                  enum:
+                    - accepted
+                    - declined
+                  example: declined
+                note:
+                  type: string
+                  example: table for 2
+              required:
+                - receiverEmail
+                - name
+                - reservationDate
+                - from
+                - to
+                - personCount
+                - tableNumber
+                - reservationStatus
+  /payment/:
+    post:
+      summary: ''
+      operationId: post-payment
+      responses:
+        '200':
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    $ref: '#/components/schemas/Id'
+      description: Creates a payment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _id:
+                  $ref: '#/components/schemas/Id'
+                paymentMethod:
+                  type: string
+                  example: card
+                totalAmount:
+                  type: number
+                  example: '120'
+                currency:
+                  type: string
+                  example: eur
+                status:
+                  type: string
+                  example: unpaid
+                  enum:
+                    - unpaid
+                    - paid
+                    - cancelled
+                orderId:
+                  $ref: '#/components/schemas/Id'
+                paidAt:
+                  type: string
+                  format: date
+                  example: '2022-02-17T03:59:13.192+00:00'
+  /payment/webhook:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  paymentId:
+                    $ref: '#/components/schemas/Id'
+      operationId: get-payment-webhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventSchema'
+  '/payment/session/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    $ref: '#/components/schemas/Id'
+      operationId: get-payment-session-id
+      description: createStripePaymentSession
+  '/payment/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+      operationId: get-payment-id
+  /payment/list:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/PaymentLisitingResponse'
+      operationId: get-payment-list
+      security:
+        - bearerAuth: []
+  /reservations/new:
+    post:
+      summary: ''
+      operationId: post-reservations
+      responses:
+        '200':
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    $ref: '#/components/schemas/Id'
+      description: Creates a reservations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Jay diz
+                email:
+                  type: string
+                  example: jay1344@gmail.com
+                note:
+                  type: string
+                  example: table for 4
+                reservationDate:
+                  type: string
+                  example: '2021-12-24T00:00:00.000+00:00'
+                from:
+                  type: string
+                  example: '07:00'
+                to:
+                  type: string
+                  example: '09:00'
+                personCount:
+                  type: number
+                  example: 4
+    parameters: []
+  '/reservations/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/ViewReservationResponse'
+      operationId: get-reservations-id
+      description: Deletes a reservation
+    delete:
+      summary: ''
+      operationId: delete-reservations-id
+      responses:
+        '200':
+          description: OK
+  /reservations/list:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/ReservationLisitingResponse'
+      operationId: get-reservations-list
+  '/reservations/{id}/update':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    put:
+      summary: ''
+      operationId: put-reservations-id-update
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: john doe
+                email:
+                  type: string
+                  format: email
+                  example: john1344@gmail.com
+                note:
+                  type: string
+                  example: reservation note
+                reservationDate:
+                  type: string
+                  format: date
+                  example: '2021-12-23T00:00:00.000+00:00'
+                from:
+                  type: string
+                  example: '07:00'
+                to:
+                  type: string
+                  example: '09:00'
+                personCount:
+                  type: string
+                  example: '5'
+                adminNote:
+                  type: string
+                  example: adminNote
+                tableNumber:
+                  type: string
+              required:
+                - name
+                - email
+                - reservationDate
+                - from
+                - to
+                - personCount
+  '/reservations/{id}/status':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    put:
+      summary: ''
+      operationId: put-reservations-id-status
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reservationStatus:
+                  type: string
+                  example: accepted
+                  enum:
+                    - accepted
+                    - declined
+                adminNote:
+                  type: string
+                  example: adminNote
+                tableNumber:
+                  type: string
+                  example: '5'
+              required:
+                - reservationStatus
+                - tableNumber
+  /specials/new:
+    parameters: []
+    post:
+      summary: ''
+      operationId: post-specials-new
+      responses:
+        '200':
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    $ref: '#/components/schemas/Id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Specials'
+  '/specials/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Specials'
+      operationId: get-specials-id
+      description: ''
+    put:
+      summary: ''
+      operationId: put-specials-id
+      responses:
+        '200':
+          description: OK
+      description: Updates specials
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Monday specials
+                description:
+                  type: string
+                  example: 'specials details '
+                bannerImg:
+                  type: string
+                  example: damas-lounge/media/9d466908-df6e-4017-add5-26d29af4bb16.jfif
+        description: ''
+    delete:
+      summary: ''
+      operationId: delete-specials-id
+      responses:
+        '200':
+          description: OK
+      description: delete specials
+  /specials/list:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/SpecialsLisitingResponse'
+      operationId: get-specials-list
+  /table/:
+    post:
+      summary: ''
+      operationId: post-table
+      responses:
+        '200':
+          $ref: '#/components/responses/CreateTableResponse'
+      description: Create table
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tableNumber:
+                  type: number
+                  example: 4
+                status:
+                  type: string
+                  default: active
+                  enum:
+                    - active
+                    - deactive
+                  example: active
+              required:
+                - tableNumber
+                - status
+  '/table/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Table'
+      operationId: get-table-id
+      security:
+        - bearerAuth: []
+    delete:
+      summary: ''
+      operationId: delete-table-id
+      responses:
+        '200':
+          description: OK
+      description: delete a table
+  /table/list:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/TableLisitingResponse'
+      operationId: get-table-list
+  '/table/update/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    put:
+      summary: ''
+      operationId: put-table-update-id
+      responses:
+        '200':
+          description: OK
+      description: update table
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tableNumber:
+                  type: number
+                  example: 5
+                status:
+                  type: string
+                  default: active
+                  enum:
+                    - active
+                  example: active
+              required:
+                - tableNumber
+  /table/alltablestatus:
+    put:
+      summary: ''
+      operationId: put-table-all
+      responses:
+        '200':
+          description: OK
+        '':
+          description: OK
+      description: Set All Table Status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - active
+                    - deactive
+                  example: active
+                  default: active
+    parameters: []
 components:
   securitySchemes:
     bearerAuth:
@@ -359,25 +923,25 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/APIError"
+            $ref: '#/components/schemas/APIError'
     OkResponse:
       description: Ok
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/MessageResponse"
+            $ref: '#/components/schemas/MessageResponse'
     UnknownError:
       description: Unknown Error
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/APIError"
+            $ref: '#/components/schemas/APIError'
     ValidationError:
       description: ValidationError Error
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/APIError"
+            $ref: '#/components/schemas/APIError'
     FoodCategoryListing:
       description: Food category listing
       content:
@@ -387,7 +951,7 @@ components:
               categories:
                 type: array
                 items:
-                  $ref: "#/components/schemas/FoodCategoryListingSchema"
+                  $ref: '#/components/schemas/FoodCategoryListingSchema'
     OrderCreatedResponse:
       description: order created
       content:
@@ -395,7 +959,7 @@ components:
           schema:
             properties:
               order:
-                $ref: "#/components/schemas/OrderCreatedResponse"
+                $ref: '#/components/schemas/OrderCreatedResponse'
     OrderLisitingResponse:
       description: order list
       content:
@@ -410,7 +974,7 @@ components:
                 type: array
                 items:
                   allOf:
-                    - $ref: "#/components/schemas/OrderBase"
+                    - $ref: '#/components/schemas/OrderBase'
                   properties:
                     customer:
                       type: string
@@ -421,7 +985,101 @@ components:
         application/json:
           schema:
             allOf:
-              - $ref: "#/components/schemas/OrderView"
+              - $ref: '#/components/schemas/OrderView'
+    EventLisitingResponse:
+      description: event list
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              events:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/EventSchema'
+        application/xml:
+          schema:
+            type: object
+            properties:
+              events:
+                type: string
+    PaymentLisitingResponse:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              payments:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/Payment'
+    ViewReservationResponse:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              reservation:
+                $ref: '#/components/schemas/Reservation'
+    ReservationLisitingResponse:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              reservations:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/Reservation'
+    SpecialsLisitingResponse:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              specials:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/Specials'
+    CreateTableResponse:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              _id:
+                type: string
+                example: 6172f543d1a1bd3f84074b1f
+              tableNumber:
+                type: number
+                example: 4
+              status:
+                type: string
+                example: active
+            required:
+              - _id
+              - tableNumber
+    TableLisitingResponse:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tables:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/Table'
   parameters:
     IdPathParam:
       in: path
@@ -494,12 +1152,12 @@ components:
           example: Kasun
           description: Name of user
         role:
-          $ref: "#/components/schemas/UserRole"
+          $ref: '#/components/schemas/UserRole'
         _id:
-          $ref: "#/components/schemas/Id"
+          $ref: '#/components/schemas/Id'
     OrderView:
       allOf:
-        - $ref: "#/components/schemas/OrderBase"
+        - $ref: '#/components/schemas/OrderBase'
       properties:
         items:
           type: array
@@ -507,9 +1165,9 @@ components:
             type: object
             properties:
               _id:
-                $ref: "#/components/schemas/Id"
+                $ref: '#/components/schemas/Id'
               item:
-                $ref: "#/components/schemas/FoodIteam"
+                $ref: '#/components/schemas/FoodIteam'
               quantity:
                 type: integer
                 description: quantity of item
@@ -518,13 +1176,13 @@ components:
       type: object
       properties:
         _id:
-          $ref: "#/components/schemas/Id"
+          $ref: '#/components/schemas/Id'
         name:
           type: string
           description: name of item
           example: apple
         category:
-          $ref: "#/components/schemas/Id"
+          $ref: '#/components/schemas/Id'
         description:
           type: string
           description: description of category
@@ -544,17 +1202,60 @@ components:
           type: integer
           example: 1
           description: quantity of item
+      title: ''
+      description: ''
     CreateOrderSchema:
       type: object
       properties:
         note:
           type: string
-          nullable: true
           example: prepare soon
+          nullable: true
         items:
           type: array
           items:
-            $ref: "#/components/schemas/CreateOrderItemSchema"
+            $ref: '#/components/schemas/CreateOrderItemSchema'
+        orderType:
+          type: string
+        paymentMethod:
+          type: string
+          enum:
+            - cash
+            - card
+          example: card
+        currency:
+          type: string
+          example: usd
+        reference:
+          type: string
+        status:
+          type: string
+          example: waiting
+          enum:
+            - waiting
+            - accepted
+            - preparing
+            - served
+            - completed
+            - cancelled
+        total:
+          type: number
+          example: 9
+        table:
+          type: number
+          example: 5
+        customer:
+          type: object
+          properties:
+            name:
+              type: string
+              example: John doe
+            email:
+              type: string
+              example: joe224@gmail.com
+            phoneNumber:
+              type: string
+              example: '0712456787'
     OrderStatusEnum:
       type: string
       description: status of order
@@ -573,31 +1274,28 @@ components:
           description: Id of order
           example: 5ffd8dc6faa662038750c4a6
         status:
-          $ref: "#/components/schemas/OrderStatusEnum"
+          $ref: '#/components/schemas/OrderStatusEnum'
         note:
           type: string
           description: note
           example: do it quickly
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateOrderItemSchema'
+        paymentMethod:
+          type: string
+          enum:
+            - cash
+            - card
+          example: card
         placedAt:
           type: string
           description: order placed at
-          example: 2021-01-12T11:53:42.602Z
-        acceptedAt:
+          example: '2021-01-12T11:53:42.602Z'
+        currency:
           type: string
-          description: order accepted at
-          example: 2021-01-12T11:53:42.602Z
-        servedAt:
-          type: string
-          description: order served at
-          example: 2021-01-12T11:53:42.602Z
-        completedAt:
-          type: string
-          description: order completed at
-          example: 2021-01-12T11:53:42.602Z
-        cancelledAt:
-          type: string
-          description: order cancelled at
-          example: 2021-01-12T11:53:42.602Z
+          example: usd
         total:
           type: integer
           format: int32
@@ -611,9 +1309,21 @@ components:
           type: string
           description: order referenece
           example: 2PrWIV2-_arrAfC_QEf5X
+        customer:
+          type: object
+          properties:
+            name:
+              type: string
+              example: John doe
+            email:
+              type: string
+              example: joe224@gmail.com
+            phoneNumber:
+              type: string
+              example: '0712456787'
     OrderCreatedResponse:
       allOf:
-        - $ref: "#/components/schemas/OrderBase"
+        - $ref: '#/components/schemas/OrderBase'
       properties:
         items:
           type: array
@@ -654,11 +1364,20 @@ components:
       properties:
         name:
           type: string
-          example: Drink
+          example: Beef Burger
         description:
           type: string
-          example: All cold drinks
+          example: All Meals
           maximum: 500
+        price:
+          type: number
+          example: 5
+        discountPrice:
+          type: number
+          example: 3
+        category:
+          type: string
+          example: Meals
     FoodCategoryListingSchema:
       type: object
       description: Category
@@ -684,13 +1403,13 @@ components:
           example: All cool events
         date:
           type: string
-          example: "2021-09-26"
+          example: '2021-09-26'
         bannerImg:
           type: string
-          example: "http//test.com/test.img"
+          example: http//test.com/test.img
         time:
           type: string
-          example: "12PM"
+          example: 12PM
       required:
         - name
     IdSchema:
@@ -717,6 +1436,8 @@ components:
               type: string
             email:
               type: string
+            phoneNumber:
+              type: string
             createdAt:
               type: string
             role:
@@ -734,10 +1455,6 @@ components:
           type: string
           example: password
     Register:
-      required:
-        - email
-        - password
-        - name
       type: object
       properties:
         email:
@@ -746,6 +1463,9 @@ components:
           type: string
         name:
           type: string
+          example: Iean key
+        phoneNumber:
+          type: string
         role:
           type: string
           default: user
@@ -753,6 +1473,11 @@ components:
             - user
             - waiter
             - admin
+      required:
+        - email
+        - password
+        - name
+        - phoneNumber
     RegisterRes:
       type: object
       description: user object with token role and other main user properties
@@ -762,6 +1487,8 @@ components:
         name:
           type: string
         email:
+          type: string
+        phoneNumber:
           type: string
         createdAt:
           type: string
@@ -804,3 +1531,103 @@ components:
             extra:
               type: string
               format: nullable
+    Payment:
+      title: Payment
+      type: object
+      properties:
+        _id:
+          $ref: '#/components/schemas/Id'
+        paymentMethod:
+          type: string
+          example: card
+        totalAmount:
+          type: number
+          example: 12
+        currency:
+          type: string
+          example: eur
+        status:
+          type: string
+          enum:
+            - unpaid
+            - paid
+            - cancelled
+          example: unpaid
+          default: unpaid
+        order:
+          $ref: ''
+        paidAt:
+          type: string
+          format: date
+          example: '2021-12-24'
+    Reservation:
+      title: Reservation
+      type: object
+      properties:
+        _id:
+          $ref: '#/components/schemas/Id'
+        name:
+          type: string
+          example: John doe
+        email:
+          type: string
+          example: john878@gmail.com
+          format: email
+        reservationDate:
+          type: string
+          example: '2022-02-17T03:59:13.192+00:00'
+          format: date
+        from:
+          type: string
+          example: '09:00'
+        to:
+          type: string
+          example: '11:00'
+        personCount:
+          type: number
+          example: '3'
+        note:
+          type: string
+          example: table for 3
+        reservationStatus:
+          type: string
+          example: accepted
+          enum:
+            - accepted
+            - pending
+            - declined
+        adminNote:
+          type: string
+          example: table no 5
+        tableNumber:
+          type: number
+          example: 5
+      required:
+        - email
+    Specials:
+      title: Specials
+      type: object
+      properties:
+        _id:
+          $ref: '#/components/schemas/Id'
+        name:
+          type: string
+        description:
+          type: string
+        bannerImg:
+          type: string
+    Table:
+      title: Table
+      type: object
+      properties:
+        _id:
+          $ref: '#/components/schemas/Id'
+        tableNumber:
+          type: number
+        status:
+          type: string
+          default: active
+          enum:
+            - active
+            - deactive
+          example: deactive
