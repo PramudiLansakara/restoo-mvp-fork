@@ -10,9 +10,14 @@ const transformer = (obj, fields = []) => fields.reduce((target, field) => {
   return target;
 }, {});
 
-const userDetails = (user) => {
-  transformer(user, ['email', 'name', 'role', 'createdAt', 'updatedAt']);
-};
+const userDetails = (user) => ({
+  name: user.name,
+  email: user.email,
+  phoneNumber: user.phoneNumber,
+  role: user.role,
+  createdAt: user.createdAt,
+  updatedAt: user.updatedAt
+});
 
 const checkDuplicateEmailError = (err) => {
   if (err.code === 11000) {

@@ -30,6 +30,24 @@
                   ></v-text-field>
                 </v-col>
               </v-row>
+               <v-row justify="center">
+                <v-col
+                  cols="12"
+                  md="6"
+                  style="padding-top: 0px; padding-bottom: 0px"
+                >
+                  <v-text-field
+                    class="rounded-sm"
+                    filled
+                    dense
+                    rounded
+                    :rules="rules.phoneNumberRules"
+                    v-model="user.phoneNumber"
+                    label="Phone Number"
+                    required
+                  ></v-text-field>
+                </v-col>
+              </v-row>
               <v-row justify="center">
                 <v-col
                   cols="12"
@@ -124,10 +142,15 @@ export default {
         name: "",
         email: "",
         password: "",
+        phoneNumber:"",
       },
       rules: {
         nameRules: [(v) => !!v || "Name is required"],
         passwordRules: [(v) => !!v || "Password is required"],
+        phoneNumberRules:[
+          (v) => !!v || "Phone Number is required",
+          (v) => /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(v) || "Phone Number must be valid",
+        ],
         emailRules: [
           (v) => !!v || "E-mail is required",
           (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",

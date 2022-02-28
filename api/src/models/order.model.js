@@ -57,8 +57,15 @@ const schema = new Schema({
     ],
   },
   customer: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
+    name: {
+      type: String,
+    },
+    email: {
+      type: String,
+    },
+    phoneNumber: {
+      type: String,
+    },
   },
   waiter: {
     type: Schema.Types.ObjectId,
