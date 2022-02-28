@@ -1,6 +1,32 @@
 <template>
   <div>
     <v-app-bar flat app color="transparent">
+      <!-- <h2>Restoo</h2> -->
+  <!-- <div class="mt-3 mb-2" id="navigation" v-for="[icon,title, route] in menuItems" :key="title">
+    <ul >
+      <div link :to="route">
+      <li><h5><v-icon>{{ icon }}</v-icon>{{ $t(title) }}</h5></li>
+      </div>
+    </ul>
+  </div> -->
+        <v-spacer></v-spacer>
+      <div v-show="!mobileView" v-for="[icon,title, route] in menuItems" :key="title" class="item">
+          <v-list-item >
+            <!-- <v-list-item-icon>
+              <v-icon>{{ icon }}</v-icon>
+            </v-list-item-icon> -->
+            <v-chip
+              link
+              :to="route" 
+              class=" p-2 pl-4 pr-4"
+              large
+              color="transparent"
+            > <v-icon>{{ icon }}</v-icon> <h5>{{ $t(title) }}</h5></v-chip>
+            <!-- <v-list-item-content  class=" pb-5">
+            <v-list-item-title><h5>{{ $t(title) }}</h5></v-list-item-title>
+          </v-list-item-content> -->
+          </v-list-item>
+        </div>
       <v-spacer></v-spacer>
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
@@ -37,7 +63,7 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-btn icon @click="drawer = !drawer">
+      <v-btn v-show="mobileView" icon @click="drawer = !drawer">
         <v-icon large color="primary darken-1">mdi-menu</v-icon>
       </v-btn>
 
@@ -111,6 +137,7 @@ export default {
     return {
       menuItems: menu,
       drawer: false,
+      mobileView: false,
     };
   },
   computed: {
@@ -141,8 +168,39 @@ export default {
     resetNotification() {
       this.$store.dispatch("notification/resetNotification");
     },
+    handleView() {
+      this.mobileView = window.innerWidth <= 1200;
+    }
+  },
+  created() {
+    this.handleView();
+    window.addEventListener('resize', this.handleView);
   },
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+#navigation {
+  display: flex;
+  width: 100%;
+  margin-bottom: 50px;
+  ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0 20px 0 0;
+    li {
+      font-size: 2rem;
+      padding: 2px 10px;
+      cursor: pointer;
+      &:hover {
+        color: #7ca971;
+      }
+    }
+  }
+}
+
+.item{
+    border-radius: 25px;
+}
+</style>

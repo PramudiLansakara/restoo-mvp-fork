@@ -1,11 +1,16 @@
 <template>
   <v-container fluid>
-    <v-img
-      height="250"
-      src="https://i.picsum.photos/id/310/4928/3264.jpg?hmac=kNgLnBe4zK1Ph8cgA4ZkW_0zIPqgZGyLXVwGUSS86lk"
-      class="mb-3"
-    ></v-img>
     <h2>RESERVATION</h2>
+    <v-row cols="12" justify="center" class="mt-2">
+      <v-col cols="12" align="center">
+        <img
+          height="250"
+          width="350"
+          src="../assets/images/reservation.png"
+          class="mb-3 rounded-xl"
+        />
+      </v-col>
+    </v-row>
     <h5 class="secondary--text mt-2 mb-5">
       You will receive an e-mail after we confirm your reservation request
     </h5>

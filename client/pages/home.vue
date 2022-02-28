@@ -18,12 +18,15 @@
     </div>-->
     <v-container fluid>
       <v-row>
+      <v-col cols="12">
+        <h2>{{ $t("Restoo") }}</h2>
+      </v-col>
         <v-col cols="12" align="center">
           <img
             height="250"
             width="350"
             src="../assets/images/home.jpg"
-            class="rounded-xl mt-10"
+            class="rounded-xl mt-8"
           />
         </v-col>
       </v-row>
