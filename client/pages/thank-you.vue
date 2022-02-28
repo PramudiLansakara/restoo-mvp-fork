@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="mt-10">
     <div v-if="status == 'success'">
       <v-row>
         <v-col cols="12">

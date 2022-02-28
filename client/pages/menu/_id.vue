@@ -1,11 +1,13 @@
 <template>
   <v-container fluid>
-    <v-img
+    <div align="center"> <v-img
       :height="imgHight"
+      width="350"
       :src="ItemDetails.itemUrl"
       @click="onImageClick()"
-      class="mb-3"
+      class="mb-3 mt-10 rounded"
     ></v-img>
+    </div>
     <h2>{{ ItemDetails.name }}</h2>
     <h5 class="danger--text mt-2">
       {{ ItemDetails.category.name }}
