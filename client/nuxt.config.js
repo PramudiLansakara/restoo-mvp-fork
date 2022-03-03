@@ -24,7 +24,7 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ["~/plugins/axios", "~/plugins/filters","~/plugins/cookies.js", {
+  plugins: ["~/plugins/axios", "~/plugins/filters", "~/plugins/cookies.js", {
     src: '~/plugins/socket-io.js',
     ssr: false,                    // <-- this line is required
   }, { src: '~/plugins/vue-stripe.js', ssr: false },],
@@ -90,7 +90,17 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    extend(config, ctx) {
+      config.module.rules.push({
+        test: /\.(ogg|mp3|wav|mpe?g)$/i,
+        loader: 'file-loader',
+        options: {
+          name: '[path][name].[ext]'
+        }
+      })
+    }
+  },
 
   publicRuntimeConfig: {
     socketHost: process.env.SOCKET_HOST || 'http://localhost:3001'

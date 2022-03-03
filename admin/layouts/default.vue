@@ -16,8 +16,14 @@ import AppBar from "../components/AppBar.vue";
 import Footer from "../components/Footer.vue";
 import NavDrawer from "../components/NavDrawer.vue";
 import initGlobalHooks from "~/mixins/global-hooks.js";
+const notificationSound = require("@/assets/sounds/notification.mp3").default;
 
 export default {
+  data() {
+    return {
+      notificationSound,
+    };
+  },
   components: { AppBar, Footer, NavDrawer },
   mixins: [initGlobalHooks],
   sockets: {
@@ -26,6 +32,11 @@ export default {
     },
     newTableRequest(val) {
       console.log(val);
+      if (val) {
+        var audio = new Audio(this.notificationSound);
+        audio.play();
+        console.log(audio);
+      }
       this.$store.dispatch("waiter/addRequest", val);
     },
   },
