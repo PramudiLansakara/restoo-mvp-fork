@@ -14,6 +14,11 @@ const questions = [
     name: 'password',
     message: 'Password:',
   },
+  {
+    type: 'input',
+    name: 'phoneNumber',
+    message: 'Phone Number:',
+  },
 ];
 
 inquirer.prompt(questions).then((answers) => {
@@ -22,6 +27,7 @@ inquirer.prompt(questions).then((answers) => {
     const admin = new User({
       email: answers.email,
       password: answers.password,
+      phoneNumber: answers.phoneNumber,
       role: 'admin',
       active: true,
     });

@@ -2,31 +2,39 @@
   <div>
     <v-app-bar flat app color="transparent">
       <!-- <h2>Restoo</h2> -->
-  <!-- <div class="mt-3 mb-2" id="navigation" v-for="[icon,title, route] in menuItems" :key="title">
+      <!-- <div class="mt-3 mb-2" id="navigation" v-for="[icon,title, route] in menuItems" :key="title">
     <ul >
       <div link :to="route">
       <li><h5><v-icon>{{ icon }}</v-icon>{{ $t(title) }}</h5></li>
       </div>
     </ul>
   </div> -->
-        <v-spacer></v-spacer>
-      <div v-show="!mobileView" v-for="[icon,title, route] in menuItems" :key="title" class="item">
-          <v-list-item >
-            <!-- <v-list-item-icon>
+      <v-spacer></v-spacer>
+      <div
+        v-show="!mobileView"
+        v-for="[icon, title, route] in menuItems"
+        :key="title"
+        class="item"
+      >
+        <v-list-item>
+          <!-- <v-list-item-icon>
               <v-icon>{{ icon }}</v-icon>
             </v-list-item-icon> -->
-            <v-chip
-              link
-              :to="route" 
-              class=" p-2 pl-4 pr-4"
-              large
-              color="transparent"
-            > <v-icon>{{ icon }}</v-icon> <h5>{{ $t(title) }}</h5></v-chip>
-            <!-- <v-list-item-content  class=" pb-5">
+          <v-chip
+            link
+            :to="route"
+            class="p-2 pl-4 pr-4"
+            large
+            color="transparent"
+          >
+            <v-icon>{{ icon }}</v-icon>
+            <h5>{{ $t(title) }}</h5></v-chip
+          >
+          <!-- <v-list-item-content  class=" pb-5">
             <v-list-item-title><h5>{{ $t(title) }}</h5></v-list-item-title>
           </v-list-item-content> -->
-          </v-list-item>
-        </div>
+        </v-list-item>
+      </div>
       <v-spacer></v-spacer>
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
@@ -109,14 +117,16 @@
         </v-list-item-content>
       </v-list-item>
       <v-list dense nav>
-        <div v-for="[icon,title, route] in menuItems" :key="title">
-          <v-list-item link :to="route" class=" pb-5">
+        <div v-for="[icon, title, route] in menuItems" :key="title">
+          <v-list-item link :to="route" class="pb-5">
             <v-list-item-icon>
               <v-icon>{{ icon }}</v-icon>
             </v-list-item-icon>
-            <v-list-item-content  class="list-item-name pb-5">
-            <v-list-item-title><h5>{{ $t(title) }}</h5></v-list-item-title>
-          </v-list-item-content>
+            <v-list-item-content class="list-item-name pb-5">
+              <v-list-item-title
+                ><h5>{{ $t(title) }}</h5></v-list-item-title
+              >
+            </v-list-item-content>
           </v-list-item>
         </div>
         <v-spacer></v-spacer>
@@ -131,6 +141,7 @@
 <script>
 import menu from "@/util/menu";
 import { mapGetters } from "vuex";
+const notificationSound = require("@/assets/sounds/notification.mp3").default;
 
 export default {
   data() {
@@ -138,12 +149,12 @@ export default {
       menuItems: menu,
       drawer: false,
       mobileView: false,
+      notificationSound,
     };
   },
   computed: {
-    
     ...mapGetters("cart", {
-      cartCount: "getCartItemCount"
+      cartCount: "getCartItemCount",
     }),
     ...mapGetters("notification", {
       count: "getNotificationsCount",
@@ -158,6 +169,11 @@ export default {
     },
     requestStatus(val) {
       console.log(val);
+      if (val) {
+        var audio = new Audio(this.notificationSound);
+        audio.play();
+        console.log(audio);
+      }
       this.$store.dispatch("notification/addNotification", val);
     },
   },
@@ -170,11 +186,11 @@ export default {
     },
     handleView() {
       this.mobileView = window.innerWidth <= 1200;
-    }
+    },
   },
   created() {
     this.handleView();
-    window.addEventListener('resize', this.handleView);
+    window.addEventListener("resize", this.handleView);
   },
 };
 </script>
@@ -200,7 +216,7 @@ export default {
   }
 }
 
-.item{
-    border-radius: 25px;
+.item {
+  border-radius: 25px;
 }
 </style>
