@@ -7,9 +7,9 @@
     >
       <div class="d-flex flex-no-wrap">
         <v-card-text>
-          <h3>{{ menuItem.name }}</h3>
-          <h5 class="secondary--text mt-2">{{ menuItem.category.name }}</h5>
-          <v-row justify="space-between" align="center" class="mt-8 mx-3">
+          <h4>{{ menuItem.name }}</h4>
+          <h5 class="secondary--text">{{ menuItem.category.name }}</h5>
+          <v-row justify="space-between" align="center" class="mt-10 mx-3">
             <div>
               <v-row>
                 <div v-if="menuItem.todaySpecial">
