@@ -10,6 +10,7 @@ const passportJwt = require('./passport');
 const apiRouter = require('../routes/api');
 const errorHandler = require('../middlewares/error-handler');
 const config = require('../config');
+const useHttps = require('../middlewares/use-https');
 
 const swaggerDocument = YAML.load(path.resolve(__dirname, '../../openapi/api.yaml'));
 const socketHandler = require('../realtime/socketHandler');
@@ -32,9 +33,9 @@ app.use('/api', apiRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use(express.static(path.resolve(__dirname, '../../../www')));
+app.use(useHttps(), express.static(path.resolve(__dirname, '../../../www')));
 
-app.use((_req, res, _next) => {
+app.use(useHttps(), (_req, res, _next) => {
   res.sendFile(path.resolve(__dirname, '../../../www/index.html'));
 });
 
