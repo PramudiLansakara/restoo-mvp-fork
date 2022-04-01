@@ -25,5 +25,5 @@ module.exports = {
   },
   mediaPrefix: process.env.MEDIA_PREFIX,
   stripeSK: process.env.STRIPE_SK,
-  forceHttps: process.env.FORCE_SSL ? process.env.FORCE_SSL === 'true' : false
+  forceHttps: process.env.FORCE_HTTPS || false
 };

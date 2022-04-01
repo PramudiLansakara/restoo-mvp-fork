@@ -1,6 +1,6 @@
 const config = require('../config')
 
-module.exports = (req, res, next) => {
+module.exports = () => (req, res, next) => {
   if (
    req.headers["x-forwarded-proto"] !== "https" &&
    config.forceHttps

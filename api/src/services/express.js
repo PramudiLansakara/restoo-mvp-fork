@@ -10,7 +10,7 @@ const passportJwt = require('./passport');
 const apiRouter = require('../routes/api');
 const errorHandler = require('../middlewares/error-handler');
 const config = require('../config');
-const useHttps = require('../middlewares/use-https');
+const useHttps = require('../middlewares/use-https')
 
 const swaggerDocument = YAML.load(path.resolve(__dirname, '../../openapi/api.yaml'));
 const socketHandler = require('../realtime/socketHandler');
