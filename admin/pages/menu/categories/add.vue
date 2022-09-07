@@ -8,7 +8,7 @@
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row>
             <v-col cols="12" md="3">
-              <h5 class="mb-3">Category Name</h5>
+              <h5 class="mb-3">{{ $t("Category Name") }}</h5>
               <v-text-field
                 v-model="item.name"
                 class="rounded-sm"
@@ -20,7 +20,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="4">
-              <h5 class="mb-3">Item Description</h5>
+              <h5 class="mb-3">{{ $t("Item Description") }}</h5>
               <v-textarea
                 v-model="item.description"
                 class="rounded-sm"
@@ -43,7 +43,7 @@
             color="primary lighten-1 white--text"
             @click="addCategory"
             :loading="loading"
-            >Save</v-btn
+            >{{ $t("Save") }}</v-btn
           >
           <v-btn color="black--text" @click="cancel">{{ $t("Cancel") }}</v-btn>
         </div>

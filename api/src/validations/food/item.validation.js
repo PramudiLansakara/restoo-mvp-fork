@@ -7,10 +7,15 @@ module.exports = {
     body: {
       name: Joi.string().required(),
       description: Joi.string().max(500).allow(''),
-      price: Joi.number().required(),
+      prices: Joi.array().items(Joi.object({
+        name: Joi.string().allow(null, '').required(),
+        amount: Joi.number().required(),
+        discountPrice: Joi.number().optional(),
+        currency: Joi.string(),
+      })).min(1).required(),
       category: Joi.objectId().required(),
       discountPrice: Joi.number().optional(),
-      itemUrl: Joi.string(),
+      itemUrl: Joi.string().optional(),
     },
   },
   delete: {

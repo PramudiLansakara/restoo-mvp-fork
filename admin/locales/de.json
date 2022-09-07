@@ -58,5 +58,21 @@
   "Reject": "Ablehnen",
   "Success Message":"erfolgreich geändert",
   "Delete Confirm":"Item löschen ?",
-  "OK":"Löschen"
+  "OK":"Löschen",
+  "Users": "Nutzer",
+  "Delivery Cities": "Lieferorte",
+  "Reports": "Report",
+  "Add Another Price": "Neuen Preis hinzufügen",
+  "Decline Order": "Bestellung ablehnen",
+  "Discount": "Rabatt",
+  "Contact Number": "Kontaktnummer",
+  "City": "Stadt",
+  "Delivery Charge": "Lieferkosten",
+  "Add City": "Stadt hinzufügen",
+  "Generate Report": "Report generieren",
+  "Phone Number": "Telefonnummer",
+  "Address": "Adresse",
+  "Order For": "Bestellung für",
+  "Minimum Order Price":"Minimum Order Price",
+  "Order Report":"Bestellungsreport"
 }

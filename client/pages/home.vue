@@ -25,7 +25,7 @@
           <img
             height="250"
             width="350"
-            src="../assets/images/home.jpg"
+            src="../assets/images/home.png"
             class="rounded-xl mt-8"
           />
         </v-col>
@@ -35,33 +35,35 @@
           <h1>Hello 😍</h1>
         </v-col>
       </v-row>
-      <div v-if="topDeals.length > 0">
-        <v-row>
-          <v-col cols="12" align="center" class="mt-5">
-            <h4>{{ $t("Our Specials") }}</h4>
-          </v-col>
-        </v-row>
-        <v-row justify="center">
-          <v-col sm="12" md="4" lg="4">
-            <v-carousel height="450" cycle hide-delimiters>
-              <v-carousel-item v-for="menuItem of topDeals" :key="menuItem._id">
-                <SpecialDealCard :menuItem="menuItem" />
-              </v-carousel-item>
-            </v-carousel>
-          </v-col>
-        </v-row>
-        <v-row justify="center" class="mb-7">
-          <v-btn
-            :to="'menu/top-deals'"
-            rounded
+            <v-row>
+        <v-col cols="12" align="center">
+          <!-- <v-btn
             large
-            outlined
-            color="primary lighten-1"
+            icon
+            href="https://www.instagram.com/hummusundco/"
+            target="_blank"
           >
-            <h4 class="primary--text text--lighten-1">{{ $t("View More") }}</h4>
+            <v-icon large>mdi-instagram</v-icon>
+          </v-btn> -->
+          <v-btn
+            large
+            icon
+            href="https://www.google.de/search?hl=de-de&output=search&q=Hummus+und+Co.&ludocid=6229937089646722356&gsas=1&client=safari&lsig=AB86z5WKd1zWw2EyhPaWM_DAgYiY&kgs=dfb318fc5fbd0a40&shndl=-1&source=sh/x/kp/local/3&entrypoint=sh/x/kp/local#lrd=0x47991726fdc85c0f:0x56752ec6816c7d34,3"
+            target="_blank"
+          >
+            <v-icon large>mdi-google</v-icon>
           </v-btn>
-        </v-row>
-      </div>
+          <v-btn
+            large
+            icon
+            href="tel:123-456-7890"
+            target="_blank"
+            class="ml-2"
+          >
+            <v-icon large>mdi-phone-forward-outline</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
       <div v-if="events.length > 0">
         <v-row>
           <v-col cols="12" align="center">
@@ -81,7 +83,7 @@
       <div v-if="specials.length > 0">
         <v-row>
           <v-col cols="12" align="center">
-            <h4>{{ $t("Specials") }}</h4>
+            <h4>{{ $t("Our Specials") }}</h4>
           </v-col>
         </v-row>
         <v-row justify="center">

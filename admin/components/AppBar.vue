@@ -12,7 +12,7 @@
           <!-- <v-btn icon v-bind="attrs" v-on="on">
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn> -->
-          <v-btn icon v-bind="attrs" v-on="on">
+          <v-btn icon v-bind="attrs" v-on="on" v-on:click="resetNotification">
             <v-badge color="danger" :content="count" :value="count">
               <v-icon color="primary darken-1" large>mdi-bell</v-icon>
             </v-badge>
@@ -20,12 +20,19 @@
         </template>
 
         <v-list flat>
-          <v-list-item>
+          <v-list-item
+            v-for="notification of notifications"
+            :key="notification.userToken"
+          >
             <v-list-item-icon>
-              <v-icon>mdi-account-edit-outline</v-icon>
+              <v-icon small>mdi-bell</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title><h5>Edit profile</h5></v-list-item-title>
+              <v-list-item-title
+                ><h5>
+                  New order placed from {{notification.order.email}}
+                </h5></v-list-item-title
+              >
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -63,14 +70,14 @@
     <v-navigation-drawer v-model="drawer" app>
       <v-list-item two-line>
         <v-list-item-icon>
-          <img height="50" src="../assets/images/logo.png" />
+          <img height="45" src="../assets/images/logo.png" />
         </v-list-item-icon>
-        <!-- 
+        
         <v-list-item-content>
           <v-list-item-title
-            ><h1>{{ $t("Hello") }}</h1></v-list-item-title
+            ><h4>PIZZA SERVICE</h4></v-list-item-title
           >
-        </v-list-item-content> -->
+        </v-list-item-content>
       </v-list-item>
 
       <v-list>
@@ -120,22 +127,47 @@
 <script>
 import { mapGetters } from "vuex";
 import menu from "@/util/menu";
+const notificationSound = require("@/assets/sounds/notification.mp3").default;
 
 export default {
   data() {
     return {
       drawer: null,
       menuItems: menu,
+      notificationSound
     };
   },
   computed: {
-    ...mapGetters("waiter", {
-      count: "getRequestsCount",
+    ...mapGetters("notification", {
+      count: "getNotificationsCount",
     }),
+    ...mapGetters("notification", {
+      notifications: "getNotifications",
+    }),
+    //  ...mapGetters("waiter", {
+    //   count: "getRequestsCount",
+    // }),
+  },
+  sockets: {
+    connect() {
+      console.log("socket connected");
+    },
+    newOrder(val) {
+      console.log(val);
+      if (val) {
+        var audio = new Audio(this.notificationSound);
+        audio.play();
+        console.log(audio);
+      }
+      this.$store.dispatch("notification/addNotification", val);
+    },
   },
   methods: {
     handleLogout() {
       this.$store.dispatch("login/logoutUser");
+    },
+    resetNotification() {
+      this.$store.dispatch("notification/resetNotification");
     },
   },
 };

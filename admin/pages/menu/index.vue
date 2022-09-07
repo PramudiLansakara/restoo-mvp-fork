@@ -34,16 +34,6 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:item.price="{ item }">
-        {{ item.price + " " }}$
-      </template>
-      <template v-slot:item.todaySpecial="{ item }">
-        <v-simple-checkbox
-          :ripple="false"
-          @click="handleTodaySpecial(item._id, item.todaySpecial)"
-          v-model="item.todaySpecial"
-        ></v-simple-checkbox>
-      </template>
       <template v-slot:item.actions="{ item }">
         <v-tooltip left>
           <template v-slot:activator="{ on, attrs }">
@@ -60,20 +50,6 @@
             </v-btn>
           </template>
           <span>Edit</span>
-        </v-tooltip>
-        <v-tooltip top>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              :disabled="!item.todaySpecial"
-              icon
-              @click="addDiscount(item._id)"
-              v-bind="attrs"
-              v-on="on"
-            >
-              <v-icon>mdi-tag-outline</v-icon>
-            </v-btn>
-          </template>
-          <span>Add discount</span>
         </v-tooltip>
         <v-tooltip right>
           <template v-slot:activator="{ on, attrs }">
@@ -109,12 +85,6 @@ export default {
         },
         { text: this.$t("Name"), value: "name" },
         { text: this.$t("Description"), value: "description" },
-        { text: `${this.$t("Price")} (€)`, value: "price" },
-        {
-          text: this.$t("Today Special"),
-          value: "todaySpecial",
-          align: "center",
-        },
         { text: this.$t("Actions"), value: "actions", sortable: false },
       ],
     };

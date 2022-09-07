@@ -8,7 +8,7 @@ const validations = require('../../validations/table.validation');
 
 router.post('/', auth('admin'), validator(validations.create), controller.create);
 router.get('/list', controller.tableList);
-router.get('/:id',validator(validations.getOneTable), controller.getOneTable);
+router.get('/:id', validator(validations.getOneTable), controller.getOneTable);
 router.put('/update/:id', auth('admin'), validator(validations.update), controller.update);
 router.put('/alltablestatus', auth('admin'), validator(validations.setAllStatus), controller.setAllStatus);
 router.delete('/:id', auth('admin'), validator(validations.delete), controller.delete);

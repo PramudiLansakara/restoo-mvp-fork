@@ -10,7 +10,7 @@
             color="primary lighten-1 white--text"
           >
             <v-icon left color="white" size="20px"> mdi-plus </v-icon>
-            Add Category</v-btn
+           {{ $t("Add Category") }}</v-btn
           >
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
@@ -114,6 +114,7 @@ export default {
           position: "top-right",
         });
         this.categories.splice(this.itemIndex, 1);
+        this.loading = false;
         this.closeDelete();
       } catch (error) {
         this.loading = false;

@@ -17,7 +17,7 @@ async function getPlacedOrder(orderId) {
 
 exports.create = async (req, res, next) => {
   try {
-    const { paymentMethod, status, orderId } = req.body;
+    const { status, orderId } = req.body;
     const placedOrder = await getPlacedOrder(orderId);
 
     if (!placedOrder) {
@@ -25,7 +25,6 @@ exports.create = async (req, res, next) => {
     }
 
     const result = await Payment.create({
-      paymentMethod,
       totalAmount: placedOrder.total,
       currency: 'eur',
       status,
@@ -49,7 +48,6 @@ exports.createdHook = async (req, res, next) => {
         throw new APIError('Order not found', httpStatus.NOT_FOUND);
       }
       const result = await Payment.create({
-        paymentMethod: placedOrder.paymentMethod,
         totalAmount: placedOrder.total,
         currency: eventData.currency,
         status: eventData.payment_status,

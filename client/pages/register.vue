@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-row align="center" justify="center" style="height: 90vh">
+    <v-row align="center" justify="center">
       <v-col class="justify-center align-center" cols="12" md="6">
         <v-card>
           <v-card-text>
@@ -46,6 +46,44 @@
                     label="Phone Number"
                     required
                   ></v-text-field>
+                </v-col>
+              </v-row>
+                <v-row justify="center">
+                <v-col
+                  cols="12"
+                  md="6"
+                  style="padding-bottom: 0px"
+                >
+                  <v-text-field
+                    class="rounded-sm"
+                    filled
+                    dense
+                    rounded
+                    :rules="rules.addressRules"
+                    v-model="user.address"
+                    label="Address"
+                    required
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row justify="center">
+                <v-col
+                  cols="12"
+                  md="6"
+                  style="padding-top: 0px; padding-bottom: 0px"
+                >
+                  <v-select
+                    label="City"
+                    :items="cities"
+                    v-model="user.city"
+                    item-text="city"
+                    item-value="_id"
+                    class="rounded-sm"
+                    filled
+                    dense
+                    rounded
+                    required
+                  ></v-select>
                 </v-col>
               </v-row>
               <v-row justify="center">
@@ -143,9 +181,13 @@ export default {
         email: "",
         password: "",
         phoneNumber:"",
+        address:"",
+        city:"",
       },
       rules: {
         nameRules: [(v) => !!v || "Name is required"],
+        cityRules: [(v) => !!v || "City is required"],
+        addressRules: [(v) => !!v || "address is required"],
         passwordRules: [(v) => !!v || "Password is required"],
         phoneNumberRules:[
           (v) => !!v || "Phone Number is required",
@@ -157,6 +199,16 @@ export default {
         ],
       },
     };
+  },
+   async asyncData({ store, error }) {
+    try {
+      const cities = await store.dispatch("payment/getCityList");
+      console.log(cities);
+      return { cities };
+    } catch (err) {
+      console.log(err);
+      return error({ statusCode: 404 });
+    }
   },
   methods: {
     async register() {

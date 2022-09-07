@@ -54,5 +54,45 @@ export const actions = {
   authenticateUserInMiddleware({ commit }, { authToken, headers }) {
     commit("SET_AUTH_TOKEN", authToken);
     commit("SET_HEADERS", headers);
-  }
+  },
+
+  async getUserList(_, filter) {
+    try {
+      // console.log(filter.status);
+      let url = "auth/list";
+      // if (filter.status) {
+      //   console.log(url);
+      //   url = url.concat(`&status=${filter.status}`);
+      //   console.log(url);
+      // }
+
+      const response = await this.$axios.$get(url);
+      return response.users;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+  async activateUser(_, user) {
+    try {
+      const response = await this.$axios.$put(
+        `auth/active/${user._id}`
+      );
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+  async deactivateUser(_, user) {
+    try {
+      const response = await this.$axios.$put(
+        `auth/deactive/${user._id}`
+      );
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
 };

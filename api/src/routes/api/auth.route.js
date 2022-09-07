@@ -9,6 +9,9 @@ const auth = require('../../middlewares/authorization');
 router.post('/register', validator(create), authController.register); // validate and register
 router.post('/login', authController.login); // login
 router.get('/confirm', authController.confirm);
+router.get('/list', validator(authController.listUsers), auth('admin'), authController.listUsers);
+router.put('/active/:id', auth('admin'), authController.activateUser);
+router.put('/deactive/:id', auth('admin'), authController.deactivateUser);
 
 // Authentication example
 router.get('/secret1', auth(), (_req, res) => {

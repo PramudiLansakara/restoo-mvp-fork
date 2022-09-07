@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <h3>Checkout 🥣</h3>
+        <h3>{{ $t("Checkout") }} 🥣</h3>
       </v-col>
     </v-row>
     <v-row>
@@ -15,7 +15,7 @@
     <v-divider class="my-5"></v-divider>
     <v-row>
       <v-col cols="12" md="3">
-        <h5 class="mb-3">Comments</h5>
+        <h5 class="mb-3">{{ $t("Comments") }}</h5>
         <v-text-field
           v-model="orderDetails.note"
           class="rounded-sm"
@@ -25,22 +25,22 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-row>
+    <!-- <v-row>
       <v-row justify="space-between" align="center" class="mx-3">
-        <h5 class="secondary--text">Subtotal</h5>
-        <h5 class="secondary--text">{{ total }}$</h5>
+        <h5 class="secondary--text">{{ $t("Subtotal") }}</h5>
+        <h5 class="secondary--text">{{ total }}€</h5>
       </v-row>
     </v-row>
     <v-row>
       <v-row justify="space-between" align="center" class="mt-2 mx-3">
-        <h5 class="secondary--text">Discount</h5>
-        <h5 class="secondary--text">0$</h5>
+        <h5 class="secondary--text">{{ $t("Discount") }}</h5>
+        <h5 class="secondary--text">0€</h5>
       </v-row>
-    </v-row>
+    </v-row> -->
     <v-row>
       <v-row justify="space-between" align="center" class="mt-5 mx-3">
-        <h4>Total</h4>
-        <h4>{{ total }}$</h4>
+        <h4>{{ $t("Total") }}</h4>
+        <h4>{{ total |toCurrency}}</h4>
       </v-row>
     </v-row>
     <v-row>
@@ -56,7 +56,7 @@
           @click="confirm"
           :disabled="isCartEmpty"
         >
-          <h3 class="white--text">Confirm</h3>
+          <h3 class="white--text">{{ $t("Confirm") }}</h3>
         </v-btn>
       </v-col>
     </v-row>

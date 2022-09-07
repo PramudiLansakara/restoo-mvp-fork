@@ -8,7 +8,7 @@ export default {
 
   head: {
     titleTemplate: "%s - Mezomia",
-    title: "Damas Lounge Admin",
+    title: "Pizza Admin",
     htmlAttrs: {
       lang: "en"
     },
@@ -33,7 +33,7 @@ export default {
   plugins: ["~/plugins/axios", "~/plugins/filters", {
     src: '~/plugins/socket-io.js',
     ssr: false,                    // <-- this line is required
-  },],
+  }, { src: '@/plugins/vue-html2pdf', mode: 'client' },],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

@@ -24,7 +24,10 @@ async function generateOrderRef() {
 exports.placeOrder = async (req, res, next) => {
   try {
     const { user } = req;
-    const { note = null, orderType = null, paymentMethod, items , customer} = req.body;
+    const {
+      note = null, orderType = null, paymentMethod,
+      items, customer, deliveryCharge, discount,
+    } = req.body;
 
     const itemsObjects = await FoodItem.find({
       _id: {
@@ -32,11 +35,19 @@ exports.placeOrder = async (req, res, next) => {
       },
     });
 
-    if (itemsObjects.length !== items.length) {
-      throw new APIError('Invalid items', httpStatus.BAD_REQUEST);
-    }
+    // if (itemsObjects.length !== items.length) {
+    //   throw new APIError('Invalid items', httpStatus.BAD_REQUEST);
+    // }
+    console.log(itemsObjects.length);
 
-    const total = items.reduce((tot, item) => tot + item.price * item.quantity, 0);
+    let total = items.reduce((tot, item) => tot + item.priceDetails.price
+    * item.priceDetails.quantity, 0);
+
+    if (orderType === 'takeaway') {
+      total -= (total * 0.1);
+    } else {
+      total += deliveryCharge;
+    }
 
     const reference = await generateOrderRef();
 
@@ -51,6 +62,8 @@ exports.placeOrder = async (req, res, next) => {
       customer,
       total,
       reference,
+      deliveryCharge,
+      discount,
       table: Math.round(1 + Math.random() * 20),
     });
 
@@ -109,7 +122,7 @@ exports.listOrders = async (req, res, next) => {
 
     const total = await Order.countDocuments(filter);
     const orders = await Order.find(filter)
-      .select('-items -__v')
+      .select('-__v')
       .skip(offset)
       .limit(limit)
       .sort({ placedAt: sort === 'asc' ? 1 : -1 });
@@ -119,17 +132,51 @@ exports.listOrders = async (req, res, next) => {
   }
 };
 
+exports.ordersReport = async (req, res, next) => {
+  try {
+    const {
+      from = null,
+      offset = 0,
+      limit = 10,
+      sort = 'asc',
+      to = null,
+    } = req.query;
+    const filter = {};
+
+    if (from && to) {
+      filter.fromDate = Date.parse(from);
+      filter.toDate = Date.parse(to);
+      const orders = await Order.find({
+        placedAt: {
+          $gte: new Date(filter.fromDate),
+          $lt: new Date(filter.toDate),
+        },
+      });
+      const total = orders.reduce((tot, item) => tot + item.total, 0);
+      return res.json({ orders, total });
+    }
+
+    const orders = await Order.find(filter)
+      .select('-__v')
+      .skip(offset)
+      .limit(limit)
+      .sort({ placedAt: sort === 'asc' ? 1 : -1 });
+
+    const total = orders.reduce((tot, item) => tot + item.total, 0);
+
+    return res.json({ orders, total });
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.viewOrder = async (req, res, next) => {
   try {
-    const { user } = req;
     const { id } = req.params;
 
     const filter = {
       _id: id,
     };
-    if (user.role === 'user') {
-      filter.customer = user._id;
-    }
 
     const order = await Order
       .findOne(filter)
@@ -170,12 +217,9 @@ exports.selfAssignWaiter = async (req, res, next) => {
 };
 
 const validStates = {
-  waiting: ['accepted', 'cancelled'],
-  accepted: ['preparing'],
-  preparing: ['served'],
-  served: ['completed'],
-  completed: [],
-  cancelled: [],
+  waiting: ['accepted', 'declined'],
+  accepted: [],
+  declined: [],
 };
 
 function canDoStateTransition(fromState, toState) {
@@ -188,15 +232,7 @@ async function stateAction(state, order) {
       order.acceptedAt = new Date();
       break;
 
-    case 'served':
-      order.servedAt = new Date();
-      break;
-
-    case 'completed':
-      order.completedAt = new Date();
-      break;
-
-    case 'cancelled':
+    case 'declined':
       order.cancelledAt = new Date();
       break;
 
@@ -223,7 +259,7 @@ exports.changeOrderStatus = async (req, res, next) => {
     }
     await stateAction(status, order);
 
-    return res.status(httpStatus.OK).json({ message: 'ok' });
+    return res.status(httpStatus.OK).json({ order });
   } catch (err) {
     next(err);
   }

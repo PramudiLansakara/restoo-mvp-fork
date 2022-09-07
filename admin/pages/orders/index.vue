@@ -3,19 +3,64 @@
     <v-toolbar flat>
       <v-toolbar-title><h2>Orders</h2></v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-col lg="3" md="3" sm="12">
-        <h5>Filter status</h5>
-        <v-select
-          v-model="filter.status"
-          class="rounded-sm"
-          filled
-          dense
-          rounded
-          label="Select a status"
-          :items="filterStatusList"
-          @change="onSelectStatus"
-        ></v-select>
-      </v-col>
+      <v-dialog v-model="dialogAccept" persistent max-width="600px">
+        <v-card>
+          <v-card-title>
+            <span class="text-h5">Accept Order</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="order.note"
+                    label="Admin Note*"
+                    required
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="closeOrderConfirm()">
+              Close
+            </v-btn>
+            <v-btn color="blue darken-1" text @click="acceptOrderConfirm()">
+              Save
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialogDecline" persistent max-width="600px">
+        <v-card>
+          <v-card-title>
+            <span class="text-h5">Decline Order</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="order.adminNote"
+                    label="Admin Note*"
+                    required
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="closeOrderDecline()">
+              Close
+            </v-btn>
+            <v-btn color="blue darken-1" text @click="orderDeclineConfirm()">
+              Save
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-toolbar>
     <v-data-table
       :headers="headers"
@@ -39,26 +84,39 @@
         >
       </template>
       <template v-slot:item.changeStatus="{ item }">
-        <v-select
-          class="rounded-sm mt-2"
-          filled
-          dense
-          rounded
-          v-model="item.status"
-          :items="items"
-          @change="onChangeStatus(item)"
-        ></v-select>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon @click="handleAccept(item)" v-bind="attrs" v-on="on">
+              <v-icon color="green"> mdi-clipboard-check-outline </v-icon>
+            </v-btn>
+          </template>
+          <span>Accept</span>
+        </v-tooltip>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon @click="handleDecline(item)" v-bind="attrs" v-on="on">
+              <v-icon color="red"> mdi-clipboard-remove-outline </v-icon>
+            </v-btn>
+          </template>
+          <span>Decline</span>
+        </v-tooltip>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-tooltip left>
+        <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
             <v-btn @click="viewOrder(item._id)" icon v-bind="attrs" v-on="on">
-              <v-icon color="secondary">
-                mdi-eye-outline
-              </v-icon>
+              <v-icon color="secondary"> mdi-eye-outline </v-icon>
             </v-btn>
           </template>
           <span>View</span>
+        </v-tooltip>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn @click="viewInvoice(item._id)" icon v-bind="attrs" v-on="on">
+              <v-icon color="secondary"> mdi-printer </v-icon>
+            </v-btn>
+          </template>
+          <span>View Invoice</span>
         </v-tooltip>
       </template>
     </v-data-table>
@@ -71,24 +129,27 @@ export default {
   middleware: "redirectIfNotAuth",
   data() {
     return {
+      dialogAccept: false,
+      dialogDecline: false,
       items: statusList,
       filter: {},
+      order: {},
       orderItems: [],
       filterStatusList: filterStatusList,
       headers: [
         {
-          text: "Name",
+          text: this.$t("Name"),
           align: "start",
-          value: "customer.name"
+          value: "customer.name",
         },
-        { text: "Date", value: "placedAt" },
-        { text: "Order Note", value: "note" },
-        { text: "Table", value: "table" },
-        { text: "Order Price", value: "total" },
-        { text: "Order Status", value: "status" },
-        { text: "Change Status", value: "changeStatus" },
-        { text: "Actions", value: "actions", sortable: false }
-      ]
+        { text: this.$t("Date"), value: "placedAt" },
+        { text: this.$t("Note"), value: "note" },
+        // { text: "Table", value: "table" },
+        { text: this.$t("Price"), value: "total" },
+        { text: this.$t("Status"), value: "status" },
+        { text: this.$t("Change Status"), value: "changeStatus", sortable: false },
+        { text: this.$t("Actions"), value: "actions", sortable: false },
+      ],
     };
   },
   async asyncData({ store, error }) {
@@ -104,41 +165,117 @@ export default {
   methods: {
     async onChangeStatus(item) {
       console.log(item);
-      try { 
-      await this.$store
-        .dispatch("order/changeStatus", item)
-          this.$dialog.message.success(this.$t('Success Message'), {
-            position: "top-right"
-          });
-      }catch (error) {
-      console.log(error);
-      this.$dialog.message.error(error.response.data.message, {
-      position: "top-right",
-      });        
+      try {
+        await this.$store.dispatch("order/changeStatus", item);
+        this.$dialog.message.success(this.$t("Success Message"), {
+          position: "top-right",
+        });
+      } catch (error) {
+        console.log(error);
+        this.$dialog.message.error(error.response.data.message, {
+          position: "top-right",
+        });
       }
     },
     async onSelectStatus() {
       if (this.filter.status === "all") {
         this.filter = {};
       }
-      try { 
-      const response = await this.$store
-        .dispatch("order/getOrderList", this.filter)
-          this.orderItems = response;
-      }catch (error) {
-      console.log(error);
-      this.$dialog.message.error(error.response.data.message, {
-      position: "top-right",
-      });        
-      }    
+      try {
+        const response = await this.$store.dispatch(
+          "order/getOrderList",
+          this.filter
+        );
+        this.orderItems = response;
+      } catch (error) {
+        console.log(error);
+        this.$dialog.message.error(error.response.data.message, {
+          position: "top-right",
+        });
+      }
     },
-     viewOrder(orderId) {
+    viewOrder(orderId) {
       this.$router.push({
         name: "orders-id",
-        params: { id: orderId }
+        params: { id: orderId },
       });
     },
-  }
+    viewInvoice(orderId) {
+      this.$router.push({
+        name: "orders-id-invoice",
+        params: { id: orderId },
+      });
+    },
+    async handleAccept(item) {
+      try {
+        console.log(item);
+        item.status = "accepted";
+        await this.$store.dispatch("order/acceptOrder", item);
+        this.$dialog.message.success(this.$t("Success Message"), {
+          position: "top-right",
+        });
+      } catch (error) {
+        console.log(error);
+        this.$dialog.message.error(error.response.data.message, {
+          position: "top-right",
+        });
+      }
+    },
+    async acceptOrderConfirm() {
+      try {
+        this.loading = true;
+        this.order.status = "accepted";
+        console.log(this.order.status);
+        await this.$store.dispatch("order/acceptOrder", this.order);
+        this.$dialog.message.success(this.$t("Success Message"), {
+          position: "top-right",
+        });
+        this.closeOrderConfirm();
+      } catch (error) {
+        this.loading = false;
+        console.log(error);
+        this.$dialog.message.error(error.response.data.message, {
+          position: "top-right",
+        });
+      }
+    },
+    closeOrderConfirm() {
+      this.dialogAccept = false;
+    },
+    async handleDecline(item) {
+      try {
+        console.log(item);
+        this.order = item;
+        this.dialogDecline = true;
+      } catch (error) {
+        console.log(error);
+        this.$dialog.message.error(error.response.data.message, {
+          position: "top-right",
+        });
+      }
+    },
+    async orderDeclineConfirm() {
+      try {
+        this.loading = true;
+        this.order.status = "declined";
+        console.log(this.order.status);
+        await this.$store.dispatch("order/declineOrder", this.order);
+        this.$dialog.message.success(this.$t("Success Message"), {
+          position: "top-right",
+        });
+        this.closeOrderDecline();
+      } catch (error) {
+        this.loading = false;
+        console.log(error);
+        this.$dialog.message.error(error.response.data.message, {
+          position: "top-right",
+        });
+      }
+    },
+    closeOrderDecline() {
+      this.dialogDecline = false;
+    },
+  },
 };
 </script>
 

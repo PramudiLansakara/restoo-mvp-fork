@@ -1,0 +1,31 @@
+    IHRE BESTELLUNG WURDE AKZEPTIERT!
+    BESTELLUNGSNUMMER #<%= reference %>
+    <%= acceptedAt %>
+
+    LIEBE-/R <%= customer.name %> deine Bestellungsanfrage wurde akzeptiert.
+
+<% items.forEach(function(item){ %>
+    <%= item.name %> 
+    Größe: <%= item.priceDetails.name %>  
+    x <%= item.priceDetails.quantity %>  <%= item.priceDetails.price %>€
+<%  }); %> 
+
+<% if(discount){ %>
+    Rabatt: <%= discount %>%
+<%  }; %>
+<% if(deliveryCharge){ %>
+    Fahrtkosten: <%= deliveryCharge %>€
+<%  }; %>
+
+    Gesamtkosten (inkl. Mwst): <%= total %>€
+
+    Kunde: <%= customer.name %>
+    Telefonnummer: <%= customer.phoneNumber %>
+    Email: <%= customer.email %>
+    Kommentar: <%= customer.note %>
+    Bestellungsart: <%= orderType %>
+    Bestellungs-Status: <%= status %>
+    Datum: <%= placedAt %>
+    Bestellungsnummer: #<%= reference %>
+
+    We hope you have a pleasant meal

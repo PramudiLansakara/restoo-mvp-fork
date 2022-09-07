@@ -1,3 +1,5 @@
+const Cookie = process.client ? require("js-cookie") : undefined;
+
 export default function setAuthHeader({ $axios, store }) {
   $axios.onRequest(config => {
     // TODO: don't set header when authToken is null
@@ -5,8 +7,8 @@ export default function setAuthHeader({ $axios, store }) {
       delete config.headers["No-Token"];
       return config;
     }
-    if (store.state.auth.authToken) {
-      config.headers.Authorization = `Bearer ${store.state.auth.authToken}`;
+    if (Cookie.get("authToken")) {
+      config.headers.Authorization = `Bearer ${Cookie.get("authToken")}`;
       console.log(`Making request to ${config.url}`);
     }
     return config;
