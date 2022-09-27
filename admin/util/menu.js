@@ -15,6 +15,7 @@ export default [
       ["mdi-format-list-bulleted-square", "Specials", "/events/specials"]
   ]],
   ["mdi-table-chair", "Reservations", "/reservations", []],
+  ["mdi-table-furniture", "Tables", "/tables", []],
   ["mdi-account-multiple", "Users", "/users", []],
   ["mdi-map-marker-radius-outline", "Delivery Cities", "/cities", []],
   ["mdi-file-document-multiple-outline", "Reports", "/reports", []],

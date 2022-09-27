@@ -1,12 +1,12 @@
 <template>
-  <!-- <v-row>
+  <v-row>
     <WaiterCard
       :request="request"
       v-for="request of requests"
       :key="request.userId"
     />
-  </v-row> -->
-   <v-container fluid>
+  </v-row>
+   <!-- <v-container fluid>
     <v-row align="center" justify="center" style="height: 90vh">
       <div class="layout column align-center">
               <img height="500" src="../assets/images/logo.png" alt="Clean Globe" />
@@ -17,7 +17,7 @@
               </center>
             </div>
     </v-row>
-  </v-container>
+  </v-container> -->
 </template>
 
 <script>
@@ -35,15 +35,15 @@ export default {
       requests: "getRequests",
     }),
   },
-  // sockets: {
-  //   connect() {
-  //     console.log("socket connected");
-  //   },
-  //   newTableRequest(val) {
-  //     console.log(val);
-  //     this.$store.dispatch("waiter/addRequest", val);
-  //   },
-  // },
+  sockets: {
+    connect() {
+      console.log("socket connected");
+    },
+    newTableRequest(val) {
+      console.log(val);
+      this.$store.dispatch("waiter/addRequest", val);
+    },
+  },
 };
 </script>
 
