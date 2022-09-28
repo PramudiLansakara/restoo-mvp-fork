@@ -13,7 +13,7 @@
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn> -->
           <v-btn icon v-bind="attrs" v-on="on" v-on:click="resetNotification">
-            <v-badge color="danger" :content="count" :value="count">
+            <v-badge color="danger" :content="mailCount+reqCount" :value="mailCount+reqCount">
               <v-icon color="primary darken-1" large>mdi-bell</v-icon>
             </v-badge>
           </v-btn>
@@ -31,6 +31,21 @@
               <v-list-item-title
                 ><h5>
                   New order placed from {{notification.order.email}}
+                </h5></v-list-item-title
+              >
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item
+            v-for="request of requests"
+            :key="request.userId"
+          >
+            <v-list-item-icon>
+              <v-icon small>mdi-bell</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title
+                ><h5>
+                  Table {{request.tableId}} call for {{request.requestType}}
                 </h5></v-list-item-title
               >
             </v-list-item-content>
@@ -139,14 +154,17 @@ export default {
   },
   computed: {
     ...mapGetters("notification", {
-      count: "getNotificationsCount",
+      mailCount: "getNotificationsCount",
     }),
     ...mapGetters("notification", {
       notifications: "getNotifications",
     }),
-    //  ...mapGetters("waiter", {
-    //   count: "getRequestsCount",
-    // }),
+     ...mapGetters("waiter", {
+      reqCount: "getRequestsCount",
+    }),
+    ...mapGetters("waiter", {
+      requests: "getRequests",
+    }),
   },
   sockets: {
     connect() {
@@ -168,6 +186,7 @@ export default {
     },
     resetNotification() {
       this.$store.dispatch("notification/resetNotification");
+      this.$store.dispatch("waiter/resetRequestCount");
     },
   },
 };
