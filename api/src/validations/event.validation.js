@@ -17,7 +17,7 @@ module.exports = {
   },
   list: {
     query: {
-      category: Joi.objectId().optional(),
+      // category: Joi.objectId().optional(),
     },
   },
   update: {

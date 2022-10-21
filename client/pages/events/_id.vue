@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-img height="250" :src="event.bannerImg" class="mb-3"></v-img>
+    <v-img height="250" :src="event.bannerImg" class="mb-3 mt-9"></v-img>
     <h2>{{ event.name }}</h2>
     <h5 class="secondary--text mt-2">
       {{ event.description }}
