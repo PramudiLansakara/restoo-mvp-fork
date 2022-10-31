@@ -78,7 +78,7 @@ exports.placedOrderMail = async (req, res, next) => {
     });
 
     const response = await email.send({
-      template: path.join(__dirname, 'emails', 'placedOrderDe'),
+      template: path.join(__dirname, 'emails', 'placedOrder'),
       message: {
         from: username,
         to: '"senderNameSameLikeTheZohoOne"info@pizzaservice-mgs.de',
@@ -130,7 +130,7 @@ exports.orderStatusMail = async (req, res, next) => {
 
     if (status === 'declined') {
       const response = await email.send({
-        template: path.join(__dirname, 'emails', 'rejectOrderDe'),
+        template: path.join(__dirname, 'emails', 'rejectOrder'),
         message: {
           from: username,
           to: customerMail,
@@ -154,7 +154,7 @@ exports.orderStatusMail = async (req, res, next) => {
     }
 
     const response = await email.send({
-      template: path.join(__dirname, 'emails', 'acceptOrderDe'),
+      template: path.join(__dirname, 'emails', 'acceptOrder'),
       message: {
         from: username,
         to: customerMail,

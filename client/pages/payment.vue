@@ -152,7 +152,7 @@
               <v-radio value="takeaway" color="primary lighten-1">
                 <template v-slot:label>
                   <div>
-                    <h5>{{ $t("Takeaway") }}</h5>
+                    <h5>{{ $t("Dining") }}</h5>
                   </div>
                 </template>
               </v-radio>
