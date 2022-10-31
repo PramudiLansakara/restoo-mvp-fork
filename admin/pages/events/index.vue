@@ -134,6 +134,7 @@ export default {
           position: "top-right",
         });
         this.events.splice(this.itemIndex, 1);
+        this.loading = false;
         this.closeDelete();
       } catch (error) {
         this.loading = false;

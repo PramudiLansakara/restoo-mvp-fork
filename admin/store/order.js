@@ -22,6 +22,25 @@ export const actions = {
       throw error;
     }
   },
+  async getOrdersReport(_, filter) {
+    try {
+      
+      let url = "order/ordersreport?limit=100&sort=desc";
+      if (filter.fromDate && filter.toDate ) {
+        console.log(filter.fromDate);
+        console.log(filter.toDate);
+        console.log(url);
+        url = url.concat(`&from=${filter.fromDate}&to=${filter.toDate}`);
+        console.log(url);
+      }
+
+      const response = await this.$axios.$get(url);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
   async changeStatus(_, item) {
     try {
       const status = {
@@ -31,6 +50,39 @@ export const actions = {
         `order/${item._id}/status`,
         status
       );
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+  async acceptOrder(_, item) {
+    try {
+      const status = {
+        status: item.status
+      };
+      const order = await this.$axios.$put(
+        `order/${item._id}/status`,
+        status
+      );
+      console.log(order)
+      const response = await this.$axios.$post("mail/orderStatusMail", order.order);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+  async declineOrder(_, item) {
+    try {
+      const status = {
+        status: item.status
+      };
+      const order =await this.$axios.$put(
+        `order/${item._id}/status`,
+        status
+      );
+      const response = await this.$axios.$post("mail/orderStatusMail", order.order);
       return response;
     } catch (error) {
       console.log(error);

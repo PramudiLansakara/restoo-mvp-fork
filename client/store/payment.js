@@ -44,5 +44,25 @@ export const actions = {
       console.log(error);
       throw error;
     }
-  }
+  },
+  
+  async getCityList() {
+    try {
+      const response = await this.$axios.$get("city/list");
+      return response.cities;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+  async getCityDetails(_, itemId) {
+    try {
+      const response = await this.$axios.$get(`city/${itemId}`);
+      return response.city;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  },
+  
 };

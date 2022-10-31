@@ -22,18 +22,6 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="3">
-              <h5 class="mb-3">{{ $t("Item Price") }} (€)</h5>
-              <v-text-field
-                v-model="item.price"
-                class="rounded-sm"
-                filled
-                dense
-                rounded
-                required
-                :rules="rules.priceRules"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" md="3">
               <h5 class="mb-3">{{ $t("Item Category") }}</h5>
               <v-select
                 :items="categories"
@@ -87,6 +75,93 @@
               ></v-textarea>
             </v-col>
           </v-row>
+          <v-data-table
+            :headers="headers"
+            :items="item.prices"
+            sort-by="calories"
+            class="elevation-1"
+          >
+            <template v-slot:top>
+              <v-toolbar flat>
+                <v-toolbar-title>PRICES</v-toolbar-title>
+                <v-divider class="mx-4" inset vertical></v-divider>
+                <v-spacer></v-spacer>
+                <v-dialog v-model="dialog" max-width="500px">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      color="primary lighten-1 white--text"
+                      class="mb-2"
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      <v-icon left color="white" size="20px"> mdi-plus </v-icon>
+                      {{ $t("Add Another Price") }}
+                    </v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title>
+                      <span class="text-h5">{{ formTitle }}</span>
+                    </v-card-title>
+
+                    <v-card-text>
+                      <v-container>
+                        <v-row>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field
+                              v-model="editedItem.name"
+                              :label="$t('Price')+' Name'"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field
+                              v-model="editedItem.amount"
+                              :label="$t('Amount')"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" text @click="close">
+                        {{ $t("Cancel") }}
+                      </v-btn>
+                      <v-btn color="blue darken-1" text @click="save">
+                        {{ $t("Save") }}
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+                <v-dialog v-model="dialogDelete" max-width="500px">
+                  <v-card>
+                    <v-card-title class="text-h5"
+                      >{{ $t("Delete Confirm") }}</v-card-title
+                    >
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" text @click="closeDelete"
+                        >{{ $t("Cancel") }}</v-btn
+                      >
+                      <v-btn
+                        color="blue darken-1"
+                        text
+                        @click="deleteItemConfirm"
+                        >{{ $t("OK") }}</v-btn
+                      >
+                      <v-spacer></v-spacer>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-toolbar>
+            </template>
+            <template v-slot:item.actions="{ item }">
+              <v-icon small class="mr-2" @click="editItem(item)">
+                mdi-pencil
+              </v-icon>
+              <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+            </template>
+          </v-data-table>
         </v-form>
       </v-card-text>
       <v-card-actions>
@@ -97,6 +172,7 @@
             color="primary lighten-1 white--text"
             @click="addItem"
             :loading="loading"
+            :disabled="isDisabled"
             >{{ $t("Save") }}</v-btn
           >
           <v-btn color="black--text" @click="cancel">{{ $t("Cancel") }}</v-btn>
@@ -117,8 +193,8 @@ export default {
       item: {
         name: "",
         category: "",
+        prices: [],
         description: "",
-        price: "",
         itemUrl: "",
       },
       url: null,
@@ -126,8 +202,31 @@ export default {
       rules: {
         nameRules: [(v) => !!v || "Name is required"],
         descriptionRules: [(v) => !!v || "Description is required"],
-        priceRules: [(v) => !!v || "Price is required"],
         categoryRules: [(v) => !!v || "Category is required"],
+      },
+      dialog: false,
+      dialogDelete: false,
+      headers: [
+        {
+          text: this.$t("Name"),
+          align: "start",
+          sortable: false,
+          value: "name",
+        },
+        { text: this.$t("Price"), value: "amount" },
+        { text: this.$t('Discount'), value: "discountPrice" },
+        { text: this.$t("Actions"), value: "actions", sortable: false },
+      ],
+      editedIndex: -1,
+      editedItem: {
+        name: "",
+        amount: 0,
+        discountPrice: 0,
+      },
+      defaultItem: {
+        name: "",
+        amount: 0,
+        discountPrice: 0,
       },
     };
   },
@@ -194,6 +293,63 @@ export default {
       this.$router.push({
         name: "menu",
       });
+    },
+    editItem(item) {
+      this.editedIndex = this.item.prices.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+    deleteItem(item) {
+      this.editedIndex = this.item.prices.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+    deleteItemConfirm() {
+      this.item.prices.splice(this.editedIndex, 1);
+      this.closeDelete();
+    },
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.item.prices[this.editedIndex], this.editedItem);
+      } else {
+       this.editedItem.discountPrice =this.editedItem.amount;
+        this.item.prices.push(this.editedItem);
+      }
+      this.close();
+    },
+  },
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1 ? "New Price" : "Edit Price";
+    },
+    isDisabled() {
+      if (!this.item.prices.length) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+  watch: {
+    dialog(val) {
+      val || this.close();
+    },
+    dialogDelete(val) {
+      val || this.closeDelete();
     },
   },
 };

@@ -1,17 +1,17 @@
 <template>
   <v-container fluid>
-    <v-img height="250" :src="event.bannerImg" class="mb-3"></v-img>
+    <v-img height="250" :src="event.bannerImg" class="mb-3 mt-9"></v-img>
     <h2>{{ event.name }}</h2>
     <h5 class="secondary--text mt-2">
       {{ event.description }}
     </h5>
     <v-row justify="space-between" align="center" class="mt-15 mx-1">
       <div>
-        <h5 class="secondary--text">Date</h5>
+        <h5 class="secondary--text">{{ $t("Date") }}</h5>
         <h3>{{ event.date | formatDate }}</h3>
       </div>
       <div>
-        <h5 class="secondary--text">Time</h5>
+        <h5 class="secondary--text">{{ $t("Time") }}</h5>
         <h3>{{ event.time }}</h3>
       </div>
     </v-row>

@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container style="padding: 0px 0px;" fluid>
     <v-toolbar flat>
       <v-toolbar-title><h2>Order Details</h2></v-toolbar-title>
     </v-toolbar>
@@ -11,8 +11,8 @@
             {{ order.customer.name }}
           </v-col>
           <v-col cols="12" md="3">
-            <h5 class="mb-3">Order Notes</h5>
-            {{ order.note }}
+            <h5 class="mb-3">Order Type</h5>
+            {{ order.orderType }}
           </v-col>
           <v-col cols="12" md="2">
             <h5 class="mb-3">Order Status</h5>
@@ -22,27 +22,11 @@
               >{{ order.status }}</v-chip
             >
           </v-col>
-          <v-col cols="12" md="4">
-            <h5 class="mb-3">Change Status</h5>
-            <v-select
-              class="rounded-sm mt-2"
-              filled
-              dense
-              rounded
-              v-model="order.status"
-              :items="items"
-              @change="onChangeStatus(order)"
-            ></v-select>
-          </v-col>
         </v-row>
-        <v-row>
+        <v-row v-if="order.note">
           <v-col cols="12" md="3">
-            <h5 class="mb-3">Order Type</h5>
-            {{ order.orderType }}
-          </v-col>
-          <v-col cols="12" md="3">
-            <h5 class="mb-3">Payment Method</h5>
-            {{ order.paymentMethod }}
+            <h5 class="mb-3">Order Notes</h5>
+            {{ order.note }}
           </v-col>
         </v-row>
         <v-row>
@@ -53,29 +37,34 @@
                   <tr>
                     <th class="text-left">Item ID</th>
                     <th class="text-left">Item Name</th>
+                    <th class="text-center">Size</th>
+                    <th class="text-center">Price</th> 
                     <th class="text-center">Quantity</th>
-                    <th class="text-center">Price</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="item in order.items" :key="item._id">
                     <td>{{ item.item._id }}</td>
                     <td>{{ item.name }}</td>
-                    <td class="text-center">{{ item.quantity }}</td>
-                    <td class="text-center">{{ item.price }} $</td>
+                    <td class="text-center">{{ item.priceDetails.name }}</td>
+                    <td class="text-center">{{ item.priceDetails.price }} $</td>
+                    <td class="text-center">{{ item.priceDetails.quantity }}</td>
                   </tr>
                 </tbody>
               </template>
             </v-simple-table>
           </v-col>
         </v-row>
-        <v-row>
-          <v-col cols="12" md="3">
-            <h4 class="mb-3">Total Price</h4>
-            <h2 class="success--text">{{ order.total }} $</h2>
-          </v-col></v-row
-        >
+        
       </v-card-text>
+      <v-divider class="py-3"></v-divider>
+        <v-row class="ml-5">
+            <h5 v-if="order.discount" class="mb-3"><strong>Discount: </strong><span class="success--text"> {{ order.discount }}</span></h5>
+            <h5 v-if="order.deliveryCharge" class="mb-3"><strong>Delivery Charge: </strong><span class="success--text"> {{ order.deliveryCharge | toCurrency }}</span></h5>
+        </v-row>
+        <v-row class="ml-5">
+          <h4 class="mb-0"><strong>Total Price: </strong><span class="success--text"> {{ order.total |toCurrency}}</span></h4>
+        </v-row>
       <v-card-actions>
         <v-spacer></v-spacer>
         <div class="form-btn ma-5">

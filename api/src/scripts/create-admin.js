@@ -19,6 +19,11 @@ const questions = [
     name: 'phoneNumber',
     message: 'Phone Number:',
   },
+  {
+    type: 'input',
+    name: 'address',
+    message: 'Address:',
+  }
 ];
 
 inquirer.prompt(questions).then((answers) => {
@@ -28,6 +33,7 @@ inquirer.prompt(questions).then((answers) => {
       email: answers.email,
       password: answers.password,
       phoneNumber: answers.phoneNumber,
+      address: answers.address,
       role: 'admin',
       active: true,
     });

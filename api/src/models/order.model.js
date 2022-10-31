@@ -1,3 +1,4 @@
+const { number } = require('joi');
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
@@ -6,15 +7,11 @@ const schema = new Schema({
   note: {
     type: String,
   },
-  orderType: {
+  adminNote: {
     type: String,
   },
-  paymentMethod: {
+  orderType: {
     type: String,
-    enum: [
-      'cash',
-      'card',
-    ],
   },
   currency: {
     type: String,
@@ -26,6 +23,12 @@ const schema = new Schema({
   total: {
     type: Number,
   },
+  deliveryCharge: {
+    type: Number,
+  },
+  discount: {
+    type: Number,
+  },
   table: {
     type: Number,
   },
@@ -34,11 +37,19 @@ const schema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'FoodItem',
     },
-    quantity: {
-      type: Number,
-    },
-    price: {
-      type: Number,
+    priceDetails:{
+      id: {
+        type: Schema.Types.ObjectId,
+      },
+      name: {
+        type: String,
+      },
+      price: {
+        type: Number,
+      },
+      quantity: {
+        type: Number,
+      },
     },
     name: {
       type: String,
@@ -50,10 +61,7 @@ const schema = new Schema({
     enum: [
       'waiting',
       'accepted',
-      'preparing',
-      'served',
-      'completed',
-      'cancelled',
+      'declined',
     ],
   },
   customer: {

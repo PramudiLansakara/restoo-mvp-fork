@@ -4,10 +4,13 @@ export const state = () => ({
   name: "",
   email: "",
   phoneNumber:"",
+  address:"",
+  city:"",
   },
   name: "",
   email: "",
   phoneNumber:"",
+  address:"",
   headers: null
 });
 
@@ -31,6 +34,8 @@ export const mutations = {
     state.name = user.name;
     state.email = user.email;
     state.phoneNumber = user.phoneNumber;
+    state.address = user.address;
+    state.city = user.city;
   },
 
   REMOVE_USER(state) {

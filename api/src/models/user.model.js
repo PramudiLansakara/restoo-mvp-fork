@@ -24,6 +24,14 @@ const userSchema = new Schema({
     minlength: 4,
     maxlength: 128,
   },
+  address:{
+    type: String,
+    required: true,
+  },
+  city: {
+    type: Schema.ObjectId,
+    ref: 'City',
+  },
   name: {
     type: String,
     maxlength: 50,

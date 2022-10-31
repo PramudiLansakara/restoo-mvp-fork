@@ -10,9 +10,11 @@ router.post('/new', validator(validations.placeOrder), controller.placeOrder);
 
 router.get('/list', validator(validations.listOrders), auth('waiter', 'admin'), controller.listOrders);
 
+router.get('/ordersreport', validator(validations.ordersReport), auth('waiter', 'admin'), controller.ordersReport);
+
 router.get('/list/my', validator(validations.listMyOrders), auth('user'), controller.listMyOrders);
 
-router.get('/:id', validator(validations.viewMyOrder), auth(), controller.viewOrder);
+router.get('/:id', validator(validations.viewMyOrder), controller.viewOrder);
 
 router.put('/:id', validator(validations.update), controller.update);
 

@@ -16,7 +16,9 @@ const userDetails = (user) => ({
   phoneNumber: user.phoneNumber,
   role: user.role,
   createdAt: user.createdAt,
-  updatedAt: user.updatedAt
+  updatedAt: user.updatedAt,
+  address: user.address,
+  city: user.city,
 });
 
 const checkDuplicateEmailError = (err) => {
@@ -43,6 +45,8 @@ const findAndGenerateToken = async (payload) => {
   const user = await User.findOne({ email }).exec();
 
   if (!user) throw new APIError(`No user associated with ${email}`, httpStatus.NOT_FOUND);
+
+  if (!user.active) throw new APIError('Access denied', httpStatus.FORBIDDEN);
 
   const passwordOK = await passwordMatches(password, user.password);
 

@@ -3,6 +3,8 @@ const httpStatus = require('http-status');
 const uuidv1 = require('uuid/v1');
 const config = require('../config');
 const User = require('../models/user.model');
+const APIError = require('../utils/APIError');
+
 const {
   userDetails,
   checkDuplicateEmailError,
@@ -51,3 +53,46 @@ exports.confirm = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.listUsers = async (req, res, next) => {
+  try {
+    const { user = null } = req.query;
+    const filter = {};
+    if (user) {
+      filter.user = user;
+    }
+    const users = await User.find(filter).sort('createdAt').select('-__v');
+    return res.status(httpStatus.OK).json({ users });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.activateUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findByIdAndUpdate(id, { $set: { active: true } });
+    if (!user) {
+      throw new APIError('User not found', httpStatus.NOT_FOUND);
+    }
+    return res.status(httpStatus.OK).json({ message: 'ok' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deactivateUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findByIdAndUpdate(id, { $set: { active: false } });
+    if (!user) {
+      throw new APIError('User not found', httpStatus.NOT_FOUND);
+    }
+    return res.status(httpStatus.OK).json({ message: 'ok' });
+  } catch (err) {
+    next(err);
+  }
+};
+

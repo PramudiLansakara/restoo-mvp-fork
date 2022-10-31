@@ -9,10 +9,14 @@ export const state = () => ({
       name: "",
       email: "",
       phoneNumber:"",
-    },
+    },  
+    deliveryCharge:0,
+    discount:0,
   },
   total: 0,
-  orderId:""
+  orderId:"",
+  deliveryCharge:0,
+  minAmount: 0,
 });
 
 export const getters = {
@@ -25,7 +29,7 @@ export const getters = {
   getTotal(state) {
     let total = 0;
     state.order.items.forEach(item => {
-      total += item.price * item.quantity;
+      total += item.priceDetails.price*item.priceDetails.quantity;
     });
     return total;
   },
@@ -39,6 +43,7 @@ export const mutations = {
     state.order.items.push({
       item: item._id,
       quantity: item.quantity,
+      priceDetails: item.priceDetails,
       price: item.price,
       name: item.name,
       itemUrl: item.itemUrl
@@ -49,9 +54,14 @@ export const mutations = {
   },
   EMPTY_CART(state) {
     state.order.items = [];
+    state.deliveryCharge = 0;
+    state.total = 0;
+    state.order.discount= 0;
+    state.order.deliveryCharge= 0;
+    state.minAmount= 0;
   },
   INCREMENT_QUANTITY(_, { cartItem, foodItem }) {
-    cartItem.quantity += foodItem.quantity;
+    cartItem.priceDetails.quantity += foodItem.priceDetails.quantity;
   },
   UPDATE_ITEM(state, item) {
     if (item.note) {
@@ -72,6 +82,19 @@ export const mutations = {
     if (item.phoneNumber) {
       state.order.customer.phoneNumber = item.phoneNumber;
     }
+    if (item.total) {
+      state.order.total = item.total;
+    }
+    if (item.deliveryCharge) {
+      state.order.deliveryCharge = item.deliveryCharge;
+    }
+    if (item.discount) {
+      state.order.discount = item.discount;
+    }
+  },
+  SAVE_DELIVERY_DETAILS(state, deliveryDetails) {
+    state.deliveryCharge = deliveryDetails.deliveryCharge;
+    state.minAmount = deliveryDetails.minAmount;
   },
   SAVE_ORDER_ID(state, id) {
     state.orderId = id;
@@ -82,12 +105,21 @@ export const mutations = {
 export const actions = {
   addItemToCart({ commit, state }, foodItem) {
     const cartItem = state.order.items.find(item => item.item === foodItem._id);
-    if (!cartItem) {
+    if (!cartItem ) {
       commit("PUSH_ITEM", foodItem);
-      console.log(state.order.items);
     } else {
-      commit("INCREMENT_QUANTITY", { cartItem, foodItem });
-      console.log(state.order.items);
+      // const priceDetail = cartItem.priceDetails.find(item => item.id === foodItem.priceDetails.id);
+      console.log(foodItem.priceDetails.id);
+      console.log("price id");
+      console.log(cartItem.priceDetails.id);
+
+      if (cartItem.priceDetails.id === foodItem.priceDetails.id) {
+        commit("INCREMENT_QUANTITY", { cartItem , foodItem });
+        console.log(state.order.items);
+      }else{
+        commit("PUSH_ITEM", foodItem);
+        console.log(state.order.items);
+      }
     }
   },
   removeItemFromCart({ commit, state }, foodItem) {
@@ -114,33 +146,29 @@ export const actions = {
   updateCartItem({ commit }, cartItem) {
     commit("UPDATE_ITEM", cartItem);
   },
+  saveDeliveryDetails({ commit }, deliveryDetails) {
+    commit("SAVE_DELIVERY_DETAILS", deliveryDetails);
+  },
   async newOrder({ commit, state }) {
     console.log(state.order)
     try {
-      let response={};
+      // let response={};
+      let order ={};
       if(state.orderId){
         const update = {
           orderType: state.order.orderType, 
           paymentMethod: state.order.paymentMethod,
           customer:  state.order.customer,
         }
-        response = await this.$axios.$put(`order/${state.orderId}`, update );
+        order = await this.$axios.$put(`order/${state.orderId}`, update );
       }else{
-        response = await this.$axios.$post("order/new", state.order);
-        console.log(response);
+        order = await this.$axios.$post("order/new", state.order);
       }
       
-      if(state.order.paymentMethod == 'card'){
-      const session = await this.$axios.$get(`payment/session/${response.order._id}`);
-        commit("payment/SAVE_SESSION", session.id, { root: true });
-      }else{
-        const payment = {status: 'paid', orderId: response.order._id, paymentMethod: state.order.paymentMethod}
-        commit("payment/ADD_PAYMENT", payment, { root: true });
-      }
       commit("review/ADD_ITEMS", state.order.items, { root: true });
       commit("EMPTY_CART");
       // console.log(session.id)
-      return response;
+      return order.order._id;
     } catch (error) {
       console.log(error);
       throw error;
@@ -149,5 +177,24 @@ export const actions = {
   saveOrderId({ commit }, id) {
     commit("SAVE_ORDER_ID", id);
     console.log(id);
+  },
+  async placedOrderMail(_, orderId) {
+    try {
+      const order = await this.$axios.$get(`order/${orderId}`);
+      const response = await this.$axios.$post("mail/placedOrderMail", order.order);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+  async getOrderDetails(_, orderId) {
+    try {
+      const response = await this.$axios.$get(`order/${orderId}`);
+      return response.order;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 };

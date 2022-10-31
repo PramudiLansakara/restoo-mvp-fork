@@ -49,4 +49,22 @@ io.on('connection', (socket) => {
       console.log(error);
     }
   });
+
+  socket.on('new-order', (order) => {
+    try {
+      if (!socket.user && !socket.guestId) {
+        throw new Error('user/guest token not set');
+      }
+
+      const userId = socket.user ? socket.user.id : socket.guestId;
+
+      socket.join(userId);
+      console.log(order);
+      socket
+        .to('admin')
+        .emit('newOrder', { userId, order});
+    } catch (error) {
+      console.log(error);
+    }
+  });
 });

@@ -126,6 +126,7 @@ export default {
         });
         this.specials.splice(this.itemIndex, 1);
         this.closeDelete();
+        this.loading = false;
       } catch (error) {
         this.loading = false;
         console.log(error);

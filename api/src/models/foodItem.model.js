@@ -17,9 +17,21 @@ const itemSchema = new Schema({
   description: {
     type: String,
   },
-  price: {
-    type: Number,
-  },
+  prices: [{
+    name: {
+      type: String,
+    },
+    amount: {
+      type: Number,
+    },
+    discountPrice: {
+      type: Number,
+    },
+    currency: {
+      type: String,
+      default: 'EUR',
+    },
+  }],
   discountPrice: {
     type: Number,
     default: 0,

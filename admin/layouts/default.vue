@@ -26,20 +26,7 @@ export default {
   },
   components: { AppBar, Footer, NavDrawer },
   mixins: [initGlobalHooks],
-  sockets: {
-    connect() {
-      console.log("socket connected");
-    },
-    newTableRequest(val) {
-      console.log(val);
-      if (val) {
-        var audio = new Audio(this.notificationSound);
-        audio.play();
-        console.log(audio);
-      }
-      this.$store.dispatch("waiter/addRequest", val);
-    },
-  },
+  
 };
 </script>
 

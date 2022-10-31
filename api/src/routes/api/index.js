@@ -13,6 +13,7 @@ const tablesRouter = require('./tables.route');
 const paymentRouter = require('./payment.route');
 const mailRouter = require('./mail.route');
 const specialsRouter = require('./specials.route');
+const cityRouter = require('./city.route');
 
 router.get('/status', (_req, res) => {
   res.send({ status: 'OK' });
@@ -41,5 +42,7 @@ router.use('/payment', paymentRouter);
 router.use('/mail', mailRouter);
 
 router.use('/specials', specialsRouter);
+
+router.use('/city', cityRouter);
 
 module.exports = router;

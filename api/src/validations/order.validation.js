@@ -5,15 +5,18 @@ module.exports = {
   placeOrder: {
     body: {
       note: Joi.string().allow('', null).optional(),
-      orderType: Joi.string().allow('', null).required(),
-      paymentMethod: Joi.string().allow('', null).valid(
-        'cash',
-        'card',
-      ).required(),
+      orderType: Joi.string().allow('', null).valid(
+        'delivery',
+        'takeaway',
+      ).optional(),
       items: Joi.array().items(Joi.object({
         item: Joi.objectId().required(),
-        quantity: Joi.number().integer().required(),
-        price: Joi.number().required(),
+        priceDetails: Joi.object({
+          id: Joi.objectId().required(),
+          name: Joi.string().required(),
+          price: Joi.number().required(),
+          quantity: Joi.number().integer().required(),
+        }).required(),
         name: Joi.string().required(),
       })).min(1).required(),
       customer: Joi.object({
@@ -25,14 +28,6 @@ module.exports = {
   },
   listMyOrders: {
     query: {
-      status: Joi.string().allow(null).valid(
-        'waiting',
-        'accepted',
-        'preparing',
-        'served',
-        'completed',
-        'cancelled',
-      ).optional(),
       offset: Joi.number().integer().min(0).optional(),
       limit: Joi.number().integer().min(0).optional(),
       sort: Joi.string().allow(null).valid('asc', 'desc').optional(),
@@ -40,16 +35,17 @@ module.exports = {
   },
   listOrders: {
     query: {
-      status: Joi.string().allow(null).valid(
-        'waiting',
-        'accepted',
-        'preparing',
-        'served',
-        'completed',
-        'cancelled',
-      ).optional(),
       userId: Joi.objectId().allow(null).optional(),
       waiterId: Joi.objectId().allow(null).optional(),
+      offset: Joi.number().integer().min(0).optional(),
+      limit: Joi.number().integer().min(0).optional(),
+      sort: Joi.string().allow(null).valid('asc', 'desc').optional(),
+    },
+  },
+  ordersReport: {
+    query: {
+      from: Joi.date().optional(),
+      to: Joi.date().optional(),
       offset: Joi.number().integer().min(0).optional(),
       limit: Joi.number().integer().min(0).optional(),
       sort: Joi.string().allow(null).valid('asc', 'desc').optional(),
@@ -73,10 +69,7 @@ module.exports = {
       status: Joi.string().valid(
         'waiting',
         'accepted',
-        'preparing',
-        'served',
-        'completed',
-        'cancelled',
+        'declined',
       ).required(),
     },
   },
@@ -87,10 +80,6 @@ module.exports = {
     body: {
       note: Joi.string().allow('', null).optional(),
       orderType: Joi.string().allow('', null).optional(),
-      paymentMethod: Joi.string().allow('', null).valid(
-        'cash',
-        'card',
-      ).optional(),
       items: Joi.array().items(Joi.object({
         item: Joi.objectId().required(),
         quantity: Joi.number().integer().required(),

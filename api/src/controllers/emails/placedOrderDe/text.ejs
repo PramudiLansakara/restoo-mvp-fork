@@ -1,0 +1,31 @@
+    NEUE BESTELLUNGSANFRAGE 
+    BESTELLUNGSNUMMER #<%= reference %>
+    <%= placedAt %>
+
+    ES IST EINE NEUE BESTELLUNGSANFRAGE EINGEGANGEN.
+
+<% items.forEach(function(item){ %>
+    <%= item.name %> 
+    Größe: <%= item.priceDetails.name %>  
+    x <%= item.priceDetails.quantity %>  <%= item.priceDetails.price %>€
+<%  }); %> 
+
+<% if(discount){ %>
+    Rabatt: <%= discount %>%
+<%  }; %>
+<% if(deliveryCharge){ %>
+    Fahrtkosten: <%= deliveryCharge %>€
+<%  }; %>
+
+    Gesamtkosten (inkl. Mwst): <%= total %>€
+
+    Kunde: <%= customer.name %>
+    Telefonnummer: <%= customer.phoneNumber %>
+    Email: <%= customer.email %>
+    Kommentar: <%= customer.note %>
+    Bestellungsart: <%= orderType %>
+    Bestellungs-Status: <%= status %>
+    Datum: <%= placedAt %>
+    Bestellungsnummer: #<%= reference %>
+
+    SIE KÖNNEN JETZT AUF IHRER APP ANTWORTEN.

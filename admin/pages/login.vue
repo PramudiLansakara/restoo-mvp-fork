@@ -27,7 +27,7 @@
                     rounded
                     :rules="rules.emailRules"
                     v-model="user.email"
-                    label="E-mail"
+                    :label="$t('E-Mail')"
                     required
                   ></v-text-field>
                 </v-col>
@@ -44,7 +44,7 @@
                     @click:append="show = !show"
                     v-model="user.password"
                     :rules="rules.passwordRules"
-                    label="Password"
+                    :label="$t('Password')"
                     required
                   ></v-text-field>
                 </v-col>
