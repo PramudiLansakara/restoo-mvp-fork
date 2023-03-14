@@ -4,7 +4,6 @@
       <v-row>
         <v-toolbar-title><h2>Orders</h2></v-toolbar-title>
         <v-spacer></v-spacer>
-
         <v-btn
           color="primary lighten-1 white--text"
           @click="acceptAllInomingOrders()"
@@ -286,7 +285,7 @@ export default {
         this.$dialog.message.success(this.$t("Success Message"), {
           position: "top-right",
         });
-        await this.$nuxt.refresh()
+        await this.$nuxt.refresh();
       } catch (error) {
         console.log(error);
         this.$dialog.message.error(error.response.data.message, {
