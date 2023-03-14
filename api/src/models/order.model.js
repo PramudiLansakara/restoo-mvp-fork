@@ -1,4 +1,3 @@
-const { number } = require('joi');
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
@@ -37,7 +36,7 @@ const schema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'FoodItem',
     },
-    priceDetails:{
+    priceDetails: {
       id: {
         type: Schema.Types.ObjectId,
       },
@@ -52,6 +51,9 @@ const schema = new Schema({
       },
     },
     name: {
+      type: String,
+    },
+    itemNote: {
       type: String,
     },
   }],

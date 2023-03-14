@@ -33,7 +33,7 @@
     </v-row>
     <v-row justify="space-between" align="center" class="mt-15 mx-3">
       <div>
-        
+
       <v-row>
       <v-col cols="12">
         <v-card class="rounded-lg" elevation="2">
@@ -101,6 +101,18 @@
         </v-row>
       </div>
     </v-row>
+    <v-row>
+      <v-col cols="12" md="3">
+        <h5 class="my-2">{{ $t("Comments") }}</h5>
+        <v-text-field
+          v-model="cartItem.itemNote"
+          class="rounded-sm"
+          filled
+          dense
+          rounded
+        ></v-text-field>
+      </v-col>
+    </v-row>
     <v-btn
       @click="addToCart"
       large
@@ -135,6 +147,7 @@ export default {
         price: "",
         name: "",
         itemUrl: "",
+        itemNote:"",
       },
       imgHight: "250",
     };
@@ -188,6 +201,7 @@ export default {
         },
         // price: this.itemPrice,
         name: this.ItemDetails.name,
+        itemNote: this.cartItem.itemNote,
         itemUrl: this.ItemDetails.itemUrl,
       };
       console.log(this.cartItem);

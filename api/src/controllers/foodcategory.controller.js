@@ -43,7 +43,7 @@ exports.delete = async (req, res, next) => {
 
 exports.list = async (_req, res, next) => {
   try {
-    const categories = await FoodCategory.find().sort('name').select('-__v');
+    const categories = await FoodCategory.find().sort('name').select('-__v').populate({ path: 'category', select: 'name' });
     return res.status(httpStatus.OK).json({ categories });
   } catch (err) {
     next(err);

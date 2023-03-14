@@ -24,7 +24,7 @@ export const actions = {
   },
   async getOrdersReport(_, filter) {
     try {
-      
+
       let url = "order/ordersreport?limit=100&sort=desc";
       if (filter.fromDate && filter.toDate ) {
         console.log(filter.fromDate);
@@ -84,6 +84,15 @@ export const actions = {
       );
       const response = await this.$axios.$post("mail/orderStatusMail", order.order);
       return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+  async acceptAllInomingOrders() {
+    try {
+
+     await this.$axios.$put(`order/accept-all`);
     } catch (error) {
       console.log(error);
       throw error;

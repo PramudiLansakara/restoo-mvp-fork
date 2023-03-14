@@ -16,10 +16,12 @@ router.get('/list/my', validator(validations.listMyOrders), auth('user'), contro
 
 router.get('/:id', validator(validations.viewMyOrder), controller.viewOrder);
 
-router.put('/:id', validator(validations.update), controller.update);
+// router.put('/:id', validator(validations.update), controller.update);
 
 router.put('/:id/status', validator(validations.changeOrderStatus), auth('waiter', 'admin'), controller.changeOrderStatus);
 
 router.put('/:id/selfassign', validator(validations.selfAssignWaiter), auth('waiter'), controller.selfAssignWaiter);
+
+router.put('/accept-all', auth('admin'), controller.acceptAllNewOrders);
 
 module.exports = router;

@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-toolbar flat>
       <v-toolbar-title><h3>{{ $t("Generate Report") }}</h3></v-toolbar-title>
-      <v-spacer></v-spacer>  
+      <v-spacer></v-spacer>
       <v-btn
           @click="printReport"
           rounded
@@ -11,7 +11,7 @@
           class="px-0 mr-2"
         >
           <v-icon color="white">mdi-printer</v-icon>
-        </v-btn>  
+        </v-btn>
     </v-toolbar>
     <v-form ref="form" v-model="valid" lazy-validation>
     <v-row class="ml-5">
@@ -83,7 +83,7 @@
           class="mt-12 ml-5 mr-2"
         >
           <v-icon color="white">mdi-file-document-outline</v-icon>
-        </v-btn> 
+        </v-btn>
     </v-row>
   </v-form>
       <client-only>
@@ -91,7 +91,8 @@
           :html-to-pdf-options="htmlToPdfOptions"
           :show-layout="true"
           :float-layout="false"
-          :enable-download="true"
+          :enable-download="false"
+          :preview-modal="true"
           filename="Monthly Report"
           :pdf-quality="2"
           :paginate-elements-by-height="1400"
@@ -103,7 +104,7 @@
         >
           <section class=" ml-10 mr-10 my-2" slot="pdf-content">
       <h4>🍕 Pizza Service {{$t("Order Report")}} </h4>
-      <h5 class="mb-2 ml-5">Total Income: {{orderDetails.total | toCurrency}}</h5>    
+      <h5 class="mb-2 ml-5">Total Income: {{orderDetails.total | toCurrency}}</h5>
     <v-data-table
         hide-default-footer
         disable-pagination
@@ -122,7 +123,7 @@
       <template v-slot:item.status="{ item }">
         <v-chip
           small
-          
+
           >{{ item.status }}</v-chip
         >
       </template>
@@ -195,7 +196,7 @@ export default {
   methods: {
     async onChangeStatus(item) {
       console.log(item);
-      try { 
+      try {
       await this.$store
         .dispatch("order/changeStatus", item)
           this.$dialog.message.success(this.$t('Success Message'), {
@@ -205,14 +206,14 @@ export default {
       console.log(error);
       this.$dialog.message.error(error.response.data.message, {
       position: "top-right",
-      });        
+      });
       }
     },
     async onSelectStatus() {
       if (this.filter.status === "all") {
         this.filter = {};
       }
-      try { 
+      try {
       const response = await this.$store
         .dispatch("order/getOrderList", this.filter)
           this.orderItems = response;
@@ -220,8 +221,8 @@ export default {
       console.log(error);
       this.$dialog.message.error(error.response.data.message, {
       position: "top-right",
-      });        
-      }    
+      });
+      }
     },
      viewOrder(orderId) {
       this.$router.push({
@@ -236,7 +237,7 @@ export default {
       });
     },
   async handleAccept(item) {
-      try { 
+      try {
       console.log(item)
       // this.order=item;
       // this.dialogAccept=true;
@@ -250,7 +251,7 @@ export default {
           console.log(error);
           this.$dialog.message.error(error.response.data.message, {
           position: "top-right",
-          });        
+          });
       }
     },
     async acceptOrderConfirm() {
@@ -269,14 +270,14 @@ export default {
         console.log(error);
         this.$dialog.message.error(error.response.data.message, {
             position: "top-right",
-        });        
+        });
       }
     },
     closeOrderConfirm() {
       this.dialogAccept = false;
     },
     async handleDecline(item) {
-      try { 
+      try {
       console.log(item)
       this.order=item;
       this.dialogDecline = true;
@@ -290,7 +291,7 @@ export default {
           console.log(error);
           this.$dialog.message.error(error.response.data.message, {
           position: "top-right",
-          });        
+          });
       }
     },
     async orderDeclineConfirm() {
@@ -309,7 +310,7 @@ export default {
         console.log(error);
         this.$dialog.message.error(error.response.data.message, {
             position: "top-right",
-        });        
+        });
       }
     },
     closeOrderDecline() {
@@ -322,7 +323,7 @@ export default {
     const validate = this.$refs.form.validate();
     if (validate) {
     this.loading = true;
-    try { 
+    try {
       const response = await this.$store
         .dispatch("order/getOrdersReport", this.filter)
           this.orderDetails = response;
@@ -330,8 +331,8 @@ export default {
       console.log(error);
       this.$dialog.message.error(error.response.data.message, {
       position: "top-right",
-      });        
-    }      
+      });
+    }
     }
     },
   }

@@ -1,26 +1,26 @@
 <template>
   <v-container fluid>
     <v-toolbar flat>
-      <v-toolbar-title><h2>Orders</h2></v-toolbar-title>
-      <v-spacer></v-spacer>
+      <v-row>
+        <v-toolbar-title><h2>Orders</h2></v-toolbar-title>
+        <v-spacer></v-spacer>
+
+        <v-btn
+          color="primary lighten-1 white--text"
+          @click="acceptAllInomingOrders()"
+        >
+          <v-icon left color="white" size="20px">
+            mdi-clipboard-check-outline
+          </v-icon>
+          {{ $t("Accept All") }}</v-btn
+        >
+      </v-row>
       <v-dialog v-model="dialogAccept" persistent max-width="600px">
         <v-card>
           <v-card-title>
             <span class="text-h5">Accept Order</span>
           </v-card-title>
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    v-model="order.note"
-                    label="Admin Note*"
-                    required
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-text>
+          <v-card-text> Confirm Accept Order </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="closeOrderConfirm()">
@@ -73,7 +73,7 @@
         {{ item.placedAt | formatDate }}
       </template>
       <template v-slot:item.total="{ item }">
-        {{ item.total + " " }}$
+        {{ item.total | toCurrency }}
       </template>
       <template v-slot:item.status="{ item }">
         <v-chip
@@ -147,7 +147,11 @@ export default {
         // { text: "Table", value: "table" },
         { text: this.$t("Price"), value: "total" },
         { text: this.$t("Status"), value: "status" },
-        { text: this.$t("Change Status"), value: "changeStatus", sortable: false },
+        {
+          text: this.$t("Change Status"),
+          value: "changeStatus",
+          sortable: false,
+        },
         { text: this.$t("Actions"), value: "actions", sortable: false },
       ],
     };
@@ -209,11 +213,12 @@ export default {
     async handleAccept(item) {
       try {
         console.log(item);
-        item.status = "accepted";
-        await this.$store.dispatch("order/acceptOrder", item);
-        this.$dialog.message.success(this.$t("Success Message"), {
-          position: "top-right",
-        });
+        this.order = item;
+        this.dialogAccept = true;
+        // await this.$store.dispatch("order/acceptOrder", item);
+        // this.$dialog.message.success(this.$t("Success Message"), {
+        //   position: "top-right",
+        // });
       } catch (error) {
         console.log(error);
         this.$dialog.message.error(error.response.data.message, {
@@ -274,6 +279,20 @@ export default {
     },
     closeOrderDecline() {
       this.dialogDecline = false;
+    },
+    async acceptAllInomingOrders() {
+      try {
+        await this.$store.dispatch("order/acceptAllInomingOrders");
+        this.$dialog.message.success(this.$t("Success Message"), {
+          position: "top-right",
+        });
+        await this.$nuxt.refresh()
+      } catch (error) {
+        console.log(error);
+        this.$dialog.message.error(error.response.data.message, {
+          position: "top-right",
+        });
+      }
     },
   },
 };

@@ -18,6 +18,7 @@ module.exports = {
           quantity: Joi.number().integer().required(),
         }).required(),
         name: Joi.string().required(),
+        itemNote: Joi.string().allow('', null).optional(),
       })).min(1).required(),
       customer: Joi.object({
         name: Joi.string().required(),

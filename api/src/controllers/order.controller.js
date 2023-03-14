@@ -23,7 +23,6 @@ async function generateOrderRef() {
 
 exports.placeOrder = async (req, res, next) => {
   try {
-    const { user } = req;
     const {
       note = null, orderType = null, paymentMethod,
       items, customer, deliveryCharge, discount,
@@ -260,6 +259,20 @@ exports.changeOrderStatus = async (req, res, next) => {
     await stateAction(status, order);
 
     return res.status(httpStatus.OK).json({ order });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.acceptAllNewOrders = async (_req, res, next) => {
+  try {
+    const acceptedAt = new Date();
+
+    const orders = await Order.updateMany({ status: 'waiting' }, { $set: { status: 'accepted', acceptedAt } });
+    if (orders.n < 1) {
+      throw new APIError('No Incoming Orders', httpStatus.NOT_FOUND);
+    }
+    return res.status(httpStatus.OK).json({ orders });
   } catch (err) {
     next(err);
   }

@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const httpStatus = require('http-status');
 const uuidv1 = require('uuid/v1');
+const bcrypt = require('bcryptjs');
 const config = require('../config');
 const User = require('../models/user.model');
 const APIError = require('../utils/APIError');
@@ -96,3 +97,16 @@ exports.deactivateUser = async (req, res, next) => {
   }
 };
 
+exports.resetPassword = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const user = await findAndGenerateToken({ email, password });
+    const { id } = user;
+    req.body.newPassword = bcrypt.hashSync(req.body.newPassword, 10);
+
+    await User.findByIdAndUpdate(id, { $set: { password: req.body.newPassword } });
+    return res.json({ message: 'OK' });
+  } catch (error) {
+    next(error);
+  }
+};
