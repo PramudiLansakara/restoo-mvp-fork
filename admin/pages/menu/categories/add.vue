@@ -19,6 +19,29 @@
                 :rules="rules.nameRules"
               ></v-text-field>
             </v-col>
+                        <v-col cols="12" md="4">
+              <h5 class="mb-3">{{ $t("Category Image") }}</h5>
+              <v-row class="mt-2">
+                <v-file-input
+                  @change="uploadImage"
+                  v-model="image"
+                  class="rounded-sm"
+                  filled
+                  dense
+                  rounded
+                  required
+                >
+                </v-file-input>
+              </v-row>
+              <div class="text-center">
+                <v-progress-circular
+                  indeterminate
+                  color="primary"
+                  v-if="imageLoading"
+                ></v-progress-circular>
+                <v-img :src="url" max-height="200" contain></v-img>
+              </div>
+            </v-col>
             <v-col cols="12" md="4">
               <h5 class="mb-3">{{ $t("Item Description") }}</h5>
               <v-textarea
@@ -59,10 +82,14 @@ export default {
     return {
       valid: true,
       loading: false,
+      imageLoading: false,
       item: {
         name: "",
         description: "",
+        categoryUrl: "",
       },
+      url: null,
+      image: null,
       rules: {
         nameRules: [(v) => !!v || "Name is required"],
         descriptionRules: [(v) => !!v || "Description is required"],
@@ -95,6 +122,32 @@ export default {
       this.$router.push({
         name: "menu-categories",
       });
+    },
+    async uploadImage() {
+      console.log(this.image);
+      if (this.image != null) {
+        this.imageLoading = true;
+        let fd = new FormData();
+        fd.append("file", this.image);
+        try {
+          const response = await this.$store.dispatch("images/uploadImage", fd);
+          console.log(response);
+          this.item.categoryUrl = response.imgPath;
+          this.url = URL.createObjectURL(this.image);
+          this.$dialog.message.success(this.$t("Success Message"), {
+            position: "top-right",
+          });
+          this.imageLoading = false;
+        } catch (error) {
+          console.log(error);
+          this.$dialog.message.error(error.response.data.message, {
+            position: "top-right",
+          });
+          this.imageLoading = false;
+        }
+      } else {
+        this.url = "";
+      }
     },
   },
 };

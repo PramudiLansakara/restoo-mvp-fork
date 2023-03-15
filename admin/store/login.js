@@ -37,5 +37,15 @@ export const actions = {
     commit("auth/REMOVE_USER", null, { root: true });
     commit("auth/REMOVE_HEADERS", null, { root: true });
     this.$router.push({ name: "login" });
+  },
+
+  async resetPassword(_, user) {
+    try {
+      const response = await this.$axios.$put("auth/reset-password", user);
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 };

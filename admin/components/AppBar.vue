@@ -71,6 +71,14 @@
               <v-list-item-title><h5>Edit profile</h5></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item @click="handleResetPassword">
+            <v-list-item-icon>
+              <v-icon>mdi-lock-reset</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title><h5>Reset Password</h5></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item @click="handleLogout">
             <v-list-item-icon>
               <v-icon>mdi-logout</v-icon>
@@ -87,7 +95,7 @@
         <v-list-item-icon>
           <img height="45" src="../assets/images/logo.png" />
         </v-list-item-icon>
-        
+
         <v-list-item-content>
           <v-list-item-title
             ><h4>PIZZA SERVICE</h4></v-list-item-title
@@ -187,6 +195,9 @@ export default {
     resetNotification() {
       this.$store.dispatch("notification/resetNotification");
       this.$store.dispatch("waiter/resetRequestCount");
+    },
+    handleResetPassword() {
+      this.$router.push({ name: "reset-password" });
     },
   },
 };

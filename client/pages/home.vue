@@ -102,7 +102,7 @@
             <h4>{{ $t("Our Menu") }}</h4>
           </v-col>
         </v-row>
-        <v-row cols="12" justify="center">
+        <!-- <v-row cols="12" justify="center">
           <v-chip-group active-class="blue-grey lighten-4">
             <CategoryChip
               @getCategoryId="viewCategoryList(category)"
@@ -111,14 +111,22 @@
               :key="category._id"
             />
           </v-chip-group>
+        </v-row> -->
+        <v-row cols="6" justify="center">
+            <CategoryCard
+              @getCategoryId="viewCategoryList(category)"
+              :category="category"
+              v-for="category of categories"
+              :key="category._id"
+            />
         </v-row>
-        <v-row>
+        <!-- <v-row>
           <MenuItemCard
             :menuItem="menuItem"
             v-for="menuItem of menuItems"
             :key="menuItem._id"
           />
-        </v-row>
+        </v-row> -->
         <v-row justify="center" class="mb-5">
           <v-btn
             :to="'menu/all'"
@@ -141,6 +149,8 @@ import EventCard from "../components/Event/EventCard.vue";
 import SpecialCard from "../components/Event/SpecialCard.vue";
 import MenuItemCard from "../components/Menu/MenuItemCard.vue";
 import SpecialDealCard from "../components/Menu/SpecialDealCard.vue";
+import CategoryCard from "../components/Category/CategoryCard.vue";
+
 export default {
   components: { MenuItemCard, SpecialDealCard, SpecialCard },
   computed: {

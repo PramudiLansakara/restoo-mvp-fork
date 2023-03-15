@@ -13,45 +13,99 @@
           :manual-pagination="false"
           pdf-format="a4"
           pdf-orientation="landscape"
-          pdf-content-width="92%"
+          pdf-content-width="97%"
           ref="html2Pdf"
         >
-          <section class="ml-5" slot="pdf-content">
+         <section class="ml-5" slot="pdf-content">
             <v-row>
               <v-col>
-                <h3>🍕 Restoo Pizza - Invoice</h3>
+                <v-row
+                  ><v-col
+                    ><img
+                    width="120"
+                      height="90"
+                      src="../assets/images/home.png"
+                      alt="Clean Globe"
+                  /></v-col>
+                  <v-col align="right" class="mt-1">
+                    <h5>Carl-Schwenk-Straße 22,</h5>
+                    <h5>89522 Heidenheim an der Brenz,</h5>
+                    <h5>Deutschland</h5>
+                  </v-col></v-row
+                >
+                <h3 class="mt-1">Order Invoice</h3>
                 <h5 class="secondary--text">
-                  Ref: <strong> {{ order.reference }}</strong>
+                  Ref: {{ order.reference }}
                 </h5>
               </v-col>
             </v-row>
-            <v-row v-for="item of order.items" :key="item._id" class="mt-1">
-              <v-col cols="12" md="6" lg="4">
+            <v-row class="mt-2 d-flex">
+              <v-col cols="12" align="left">
+                <h4 class="font-weight-bold">Customer Details</h4>
+                <h4 class="mt-1">
+                  {{ $t("Name") }}: {{ order.customer.name }}
+                </h4>
+                <h4 >
+                  {{ $t("Email") }}:
+                   {{ order.customer.email }}
+                </h4>
+                <h4 >
+                  {{ $t("Phone Number") }}:
+                   {{ order.customer.phoneNumber }}
+                </h4>
+                <h4 >
+                  {{ $t("Address") }}:
+                   {{ order.customer.address }}
+                </h4>
+              </v-col>
+              <v-col cols="12" align="left">
+                <h4 class="font-weight-bold">Order Details</h4>
+                <h4 class="mt-1">
+                  {{ $t("Order For") }}: {{ order.orderType }}
+                </h4>
+                <h4 class="">
+                  {{ $t("Status") }}: {{ order.status }}
+                </h4>
+                <h4 >
+                  {{ $t("Date") }}:
+                   {{ order.placedAt | formatDate }}
+                </h4>
+                <h4 v-if="order.deliveryCharge">
+                  {{ $t("Delivery City") }}:
+                   {{ order.customer.city}}
+                </h4>
+              </v-col>
+            </v-row>
+            <v-row v-for="item of order.items" :key="item._id" >
+              <v-col cols="12" lg="8">
                 <div class="rounded-lg elevation-0">
                   <div class="d-flex flex-no-wrap">
                     <v-card-text>
-                      <v-row class="ml-1">
+                      <v-row no-gutters>
                         <div>
                           <h4>{{ item.name }}</h4>
-                          <h5 class="secondary--text ml-1">
+                          <h4 class="secondary--text">
                             {{ item.priceDetails.name }}
+                          </h4>
+                          <h5 v-if="item.itemNote" class="secondary--text">
+                            {{ item.itemNote }}
                           </h5>
                         </div>
-                        <v-col class="" align="center">
-                          <h5>
+                        <v-col align="center">
+                          <h4>
                             {{ item.priceDetails.price }}€
                             <span class="secondary--text ml-1">
                               x{{ item.priceDetails.quantity }}</span
                             >
-                          </h5>
+                          </h4>
                         </v-col>
                         <v-col align="right" class="mr-1">
-                          <h5>
+                          <h4>
                             {{
                               item.priceDetails.price *
                               item.priceDetails.quantity
                             }}€
-                          </h5>
+                          </h4>
                         </v-col>
                       </v-row>
                     </v-card-text>
@@ -59,52 +113,38 @@
                 </div>
               </v-col>
             </v-row>
-            <v-divider class="my-1"></v-divider>
-            <div class="rounded-lg elevation-0">
-              <div class="d-flex flex-no-wrap">
-                <v-card-text>
-                  <v-row class="ml-1">
-                    <div v-if="order.deliveryCharge">
-                      <h4>
-                        Delivery Charge: {{ order.deliveryCharge | toCurrency }}
-                      </h4>
-                    </div>
-                    <div v-if="order.discount">
-                      <h4>Discount: {{ order.discount }}%</h4>
-                    </div>
-                  </v-row>
-                  <v-row class="ml-1 mb-2">
-                    <h4>Total: {{ order.total | toCurrency }}</h4>
-                  </v-row>
-                </v-card-text>
-              </div>
-            </div>
-            <v-row class="mt-5">
-              <v-col cols="" align="left">
-                <h5 class=""><u> Customer Details </u></h5>
-                <h5 class="">
-                  Name: <strong> {{ order.customer.name }}</strong>
-                </h5>
-                <h5 class="">
-                  Email: <strong> {{ order.customer.email }}</strong>
-                </h5>
-                <h5 class="">
-                  Contact No: <strong> {{ order.customer.phoneNumber }}</strong>
-                </h5>
-              </v-col>
-              <v-col cols="8" align="left">
-                <h5 class=""><u> Order Details </u></h5>
-                <h5 class="">
-                  Order type: <strong> {{ order.orderType }}</strong>
-                </h5>
-                <h5 class="">
-                  Order status: <strong> {{ order.status }}</strong>
-                </h5>
-                <h5 class="">
-                  Date: <strong> {{ order.placedAt | formatDate }}</strong>
-                </h5>
+            <v-divider class="mt-1"></v-divider>
+
+            <v-row>
+              <v-col cols="12" lg="8">
+                <div class="rounded-lg elevation-0">
+                  <div class="d-flex flex-no-wrap">
+                    <v-card-text>
+                      <v-row no-gutters>
+                        <div v-if="order.deliveryCharge">
+                          <h4>
+                            {{ $t("Delivery Charge") }}:
+                            {{ order.deliveryCharge | toCurrency }}
+                          </h4>
+                        </div>
+                        <div v-if="order.discount">
+                          <h4>{{ $t("Discount") }}: {{ order.discount }}%</h4>
+                        </div>
+                      </v-row>
+                      <v-row no-gutters>
+                       <h4 class="font-weight-bold mt-1">
+                          {{ $t("Total") }}: {{ order.total | toCurrency }}
+                        </h4>
+                      </v-row>
+                      <v-row>
+
+                      </v-row>
+                    </v-card-text>
+                  </div>
+                </div>
               </v-col>
             </v-row>
+            <v-divider class="my-1"></v-divider>
           </section>
         </VueHtml2pdf>
       </client-only>

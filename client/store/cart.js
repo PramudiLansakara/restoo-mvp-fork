@@ -5,11 +5,11 @@ export const state = () => ({
     note: "",
     orderType: "",
     paymentMethod: "",
-    customer:{    
+    customer:{
       name: "",
       email: "",
       phoneNumber:"",
-    },  
+    },
     deliveryCharge:0,
     discount:0,
   },
@@ -46,7 +46,8 @@ export const mutations = {
       priceDetails: item.priceDetails,
       price: item.price,
       name: item.name,
-      itemUrl: item.itemUrl
+      itemUrl: item.itemUrl,
+      itemNote: item.itemNote,
     });
   },
   REMOVE_ITEM(state, item) {
@@ -156,7 +157,7 @@ export const actions = {
       let order ={};
       if(state.orderId){
         const update = {
-          orderType: state.order.orderType, 
+          orderType: state.order.orderType,
           paymentMethod: state.order.paymentMethod,
           customer:  state.order.customer,
         }
@@ -164,7 +165,7 @@ export const actions = {
       }else{
         order = await this.$axios.$post("order/new", state.order);
       }
-      
+
       commit("review/ADD_ITEMS", state.order.items, { root: true });
       commit("EMPTY_CART");
       // console.log(session.id)

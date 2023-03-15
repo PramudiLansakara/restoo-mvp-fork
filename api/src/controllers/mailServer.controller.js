@@ -86,7 +86,7 @@ exports.placedOrderMail = async (req, res, next) => {
       locals: {
         orderType,
         customer,
-        total, 
+        total,
         reference,
         placedAt: new Date(placedAt).toISOString().slice(0, 10),
         items,
@@ -106,10 +106,10 @@ exports.placedOrderMail = async (req, res, next) => {
 exports.orderStatusMail = async (req, res, next) => {
   try {
     const {
-      orderType, total, note, 
-      status, 
+      orderType, total, note,
+      status,
       customer,
-      adminNote, 
+      adminNote,
       reference,
       acceptedAt,
       cancelledAt,

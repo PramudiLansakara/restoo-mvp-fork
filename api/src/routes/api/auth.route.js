@@ -12,6 +12,7 @@ router.get('/confirm', authController.confirm);
 router.get('/list', validator(authController.listUsers), auth('admin'), authController.listUsers);
 router.put('/active/:id', auth('admin'), authController.activateUser);
 router.put('/deactive/:id', auth('admin'), authController.deactivateUser);
+router.put('/reset-password', auth('admin'), authController.resetPassword);
 
 // Authentication example
 router.get('/secret1', auth(), (_req, res) => {

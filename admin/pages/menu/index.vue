@@ -1,12 +1,18 @@
 <template>
   <v-container fluid>
-    <v-data-table :headers="headers" :items="menuItems" class="elevation-1">
+    <v-data-table
+      :headers="headers"
+      :items="menuItems"
+      class="elevation-1"
+      :search="search"
+    >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title
-            ><h2>{{ $t("Menu") }}</h2></v-toolbar-title
-          >
-          <v-spacer></v-spacer>
+          <v-row>
+            <v-toolbar-title
+              ><h2>{{ $t("Menu") }}</h2></v-toolbar-title
+            >
+          </v-row>
           <v-btn :to="'menu/add'" color="primary lighten-1 white--text">
             <v-icon left color="white" size="20px"> mdi-plus </v-icon>
             {{ $t("Add Food") }}
@@ -33,6 +39,16 @@
             </v-card>
           </v-dialog>
         </v-toolbar>
+          <v-row>
+                        <v-col cols="12" md="3" class="ml-3 mb-3">
+              <v-text-field
+                v-model="search"
+                label="Search"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-col>
+          </v-row>
       </template>
       <template v-slot:item.actions="{ item }">
         <v-tooltip left>
@@ -69,6 +85,7 @@ export default {
   middleware: "redirectIfNotAuth",
   data() {
     return {
+      search: "",
       dialogDelete: false,
       loading: false,
       itemId: "",
