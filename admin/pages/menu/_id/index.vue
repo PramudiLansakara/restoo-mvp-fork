@@ -18,7 +18,7 @@
         <v-row>
           <v-col cols="12" md="4">
             <h5 class="mb-3">{{ $t("Item Description") }}</h5>
-            {{ item.description }}
+                  <span v-html="ItemDetails.description"></span>
           </v-col>
         </v-row>
         <v-data-table

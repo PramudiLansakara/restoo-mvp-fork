@@ -36,8 +36,6 @@
                 :rules="rules.categoryRules"
               ></v-select>
             </v-col>
-          </v-row>
-          <v-row>
             <v-col cols="12" md="4">
               <h5 class="mb-3">{{ $t("Item Image") }}</h5>
               <v-row class="mt-2">
@@ -61,8 +59,17 @@
                 <v-img :src="url" max-height="200" contain></v-img>
               </div>
             </v-col>
-            <v-col cols="12" md="4">
-              <h5 class="mb-3">{{ $t("Item Description") }}</h5>
+          </v-row>
+        <v-spacer></v-spacer>
+          <v-row>
+            <v-col cols="12" md="6">
+              <h5>{{ $t("Item Description") }}</h5>
+              <!-- <button @click="saveContent"></button> -->
+              <vue-editor
+                v-model="item.description"
+                :editorToolbar="customToolbar"
+              ></vue-editor>
+              <!-- <h5 class="mb-3">{{ $t("Item Description") }}</h5>
               <v-textarea
                 v-model="item.description"
                 class="rounded-sm"
@@ -72,7 +79,7 @@
                 rounded
                 required
                 :rules="rules.descriptionRules"
-              ></v-textarea>
+              ></v-textarea> -->
             </v-col>
           </v-row>
           <v-data-table
@@ -109,7 +116,7 @@
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
                               v-model="editedItem.name"
-                              :label="$t('Price')+' Name'"
+                              :label="$t('Price') + ' Name'"
                             ></v-text-field>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
@@ -135,14 +142,14 @@
                 </v-dialog>
                 <v-dialog v-model="dialogDelete" max-width="500px">
                   <v-card>
-                    <v-card-title class="text-h5"
-                      >{{ $t("Delete Confirm") }}</v-card-title
-                    >
+                    <v-card-title class="text-h5">{{
+                      $t("Delete Confirm")
+                    }}</v-card-title>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="closeDelete"
-                        >{{ $t("Cancel") }}</v-btn
-                      >
+                      <v-btn color="blue darken-1" text @click="closeDelete">{{
+                        $t("Cancel")
+                      }}</v-btn>
                       <v-btn
                         color="blue darken-1"
                         text
@@ -183,13 +190,29 @@
 </template>
 
 <script>
+import { VueEditor } from "vue2-quill-editor";
+
 export default {
   middleware: "redirectIfNotAuth",
+  components: {
+    VueEditor,
+  },
   data() {
     return {
       valid: true,
       loading: false,
       imageLoading: false,
+      customToolbar: [
+        ["bold", "italic", "underline", "strike"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["code-block"],
+    [
+        { align: "" },
+        { align: "center" },
+        { align: "right" },
+        { align: "justify" }
+    ],
+  [{ color: [] }, { background: [] }],  ["clean"]      ],
       item: {
         name: "",
         category: "",
@@ -214,7 +237,7 @@ export default {
           value: "name",
         },
         { text: this.$t("Price"), value: "amount" },
-        { text: this.$t('Discount'), value: "discountPrice" },
+        { text: this.$t("Discount"), value: "discountPrice" },
         { text: this.$t("Actions"), value: "actions", sortable: false },
       ],
       editedIndex: -1,
@@ -326,10 +349,13 @@ export default {
       if (this.editedIndex > -1) {
         Object.assign(this.item.prices[this.editedIndex], this.editedItem);
       } else {
-       this.editedItem.discountPrice =this.editedItem.amount;
+        this.editedItem.discountPrice = this.editedItem.amount;
         this.item.prices.push(this.editedItem);
       }
       this.close();
+    },
+    setEditorContent() {
+      this.htmlForEditor = "<h1>Html For Editor</h1>";
     },
   },
   computed: {

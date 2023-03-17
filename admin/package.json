@@ -23,6 +23,7 @@
     "socket.io-client": "^4.2.0",
     "vue-html2pdf": "^1.8.0",
     "vue-socket.io-extended": "^4.2.0",
+    "vue2-quill-editor": "^2.0.26",
     "vuetify-dialog": "^2.0.16"
   },
   "devDependencies": {}
