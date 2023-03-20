@@ -37,6 +37,14 @@
                 @change="selectCategory(item)"
               ></v-select>
             </v-col>
+                        <v-col cols="12" md="4">
+              <h5 class="mb-3">{{ $t("Discount") }}</h5>
+              <v-simple-checkbox
+                :ripple="false"
+                @click="handleTodaySpecial(item._id, item.todaySpecial)"
+                v-model="item.todaySpecial"
+              ></v-simple-checkbox>
+            </v-col>
           </v-row>
           <v-row>
              <v-col cols="12" md="4">
@@ -62,26 +70,12 @@
                 <v-img :src="url" max-height="200" contain></v-img>
               </div>
             </v-col>
-            <v-col cols="12" md="4">
-              <h5 class="mb-3">{{ $t("Item Description") }}</h5>
-              <v-textarea
+            <v-col cols="12" md="6">
+              <h5>{{ $t("Item Description") }}</h5>
+              <vue-editor
                 v-model="item.description"
-                class="rounded-sm"
-                auto-grow
-                filled
-                dense
-                rounded
-                required
-                :rules="rules.descriptionRules"
-              ></v-textarea>
-            </v-col>
-            <v-col cols="12" md="4">
-              <h5 class="mb-3">{{ $t("Discount") }}</h5>
-              <v-simple-checkbox
-                :ripple="false"
-                @click="handleTodaySpecial(item._id, item.todaySpecial)"
-                v-model="item.todaySpecial"
-              ></v-simple-checkbox>
+                :editorToolbar="customToolbar"
+              ></vue-editor>
             </v-col>
           </v-row>
         </v-form>
@@ -200,7 +194,7 @@
           <v-btn
             :disabled="discountisDisabled"
             icon
-            @click="discountPrice(item)"          
+            @click="discountPrice(item)"
           >
             <v-icon>mdi-tag-outline</v-icon>
           </v-btn>
@@ -227,8 +221,13 @@
 </template>
 
 <script>
+import { VueEditor } from "vue2-quill-editor";
+
 export default {
   middleware: "redirectIfNotAuth",
+    components: {
+    VueEditor,
+  },
   data() {
     return {
       valid: true,
@@ -242,6 +241,17 @@ export default {
         categoryRules: [(v) => !!v || "Category is required"],
       },
       dialog: false,
+            customToolbar: [
+        ["bold", "italic", "underline", "strike"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["code-block"],
+    [
+        { align: "" },
+        { align: "center" },
+        { align: "right" },
+        { align: "justify" }
+    ],
+  [{ color: [] }, { background: [] }],  ["clean"]      ],
       dialogDiscount:false,
       dialogDelete: false,
       todaySpecial: {

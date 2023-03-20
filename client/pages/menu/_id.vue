@@ -13,9 +13,7 @@
     <h5 class="danger--text mt-2">
       {{ ItemDetails.category.name }}
     </h5>
-    <h5 class="secondary--text mt-2">
-      {{ ItemDetails.description }}
-    </h5>
+      <span v-html="ItemDetails.description"></span>
     <v-row justify="space-between" align="center" class="mt-7 mx-3">
       <div>
         <v-row>
