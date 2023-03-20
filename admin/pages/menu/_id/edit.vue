@@ -72,22 +72,10 @@
             </v-col>
             <v-col cols="12" md="6">
               <h5>{{ $t("Item Description") }}</h5>
-              <!-- <button @click="saveContent"></button> -->
               <vue-editor
                 v-model="item.description"
                 :editorToolbar="customToolbar"
               ></vue-editor>
-              <!-- <h5 class="mb-3">{{ $t("Item Description") }}</h5>
-              <v-textarea
-                v-model="item.description"
-                class="rounded-sm"
-                auto-grow
-                filled
-                dense
-                rounded
-                required
-                :rules="rules.descriptionRules"
-              ></v-textarea> -->
             </v-col>
           </v-row>
         </v-form>

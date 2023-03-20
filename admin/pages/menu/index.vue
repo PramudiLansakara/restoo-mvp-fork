@@ -76,6 +76,9 @@
           <span>Delete</span>
         </v-tooltip>
       </template>
+            <template v-slot:item.description="{ item }">
+                  <span v-html="item.description"></span>
+      </template>
     </v-data-table>
   </v-container>
 </template>
