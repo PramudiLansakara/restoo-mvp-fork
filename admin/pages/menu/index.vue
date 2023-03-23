@@ -42,6 +42,7 @@
           <v-row>
                         <v-col cols="12" md="3" class="ml-3 mb-3">
               <v-text-field
+                append-icon="mdi-magnify"
                 v-model="search"
                 label="Search"
                 single-line
