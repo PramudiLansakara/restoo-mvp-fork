@@ -40,6 +40,7 @@
                     <th class="text-center">Size</th>
                     <th class="text-center">Price</th> 
                     <th class="text-center">Quantity</th>
+                    <th class="text-center">Item Note</th> 
                   </tr>
                 </thead>
                 <tbody>
@@ -49,6 +50,7 @@
                     <td class="text-center">{{ item.priceDetails.name }}</td>
                     <td class="text-center">{{ item.priceDetails.price }} $</td>
                     <td class="text-center">{{ item.priceDetails.quantity }}</td>
+                    <td class="text-center">{{ item.itemNote }}</td>
                   </tr>
                 </tbody>
               </template>
