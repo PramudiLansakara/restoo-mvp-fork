@@ -14,7 +14,7 @@ const userSchema = new Schema({
     unique: true,
     lowercase: true,
   },
-  phoneNumber:{
+  phoneNumber: {
     type: String,
     required: true,
   },
@@ -24,7 +24,7 @@ const userSchema = new Schema({
     minlength: 4,
     maxlength: 128,
   },
-  address:{
+  address: {
     type: String,
     required: true,
   },
@@ -39,6 +39,10 @@ const userSchema = new Schema({
   active: {
     type: Boolean,
     default: true,
+  },
+  isSubscribed: {
+    type: Boolean,
+    default: false,
   },
   role: {
     type: String,

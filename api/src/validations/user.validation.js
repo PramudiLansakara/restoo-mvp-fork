@@ -10,6 +10,7 @@ module.exports = {
       name: Joi.string().max(128).required(),
       phoneNumber: Joi.string().required(),
       address: Joi.string().required(),
+      isSubscribed: Joi.boolean(),
       // city: Joi.objectId().required(),
     },
   },
