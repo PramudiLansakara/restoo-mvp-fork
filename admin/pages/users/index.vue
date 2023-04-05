@@ -1,12 +1,12 @@
 <template>
   <v-container fluid>
-    <v-data-table 
+    <v-data-table
       :headers="headers"
       :items="userList"
       v-model="userList"
       sort-by="placedAt"
       :sort-desc="true"
-      class="elevation-1" 
+      class="elevation-1"
     >
     <template v-slot:top>
         <v-toolbar flat>
@@ -25,6 +25,22 @@
       </template>
       <template v-slot:item.phoneNumber="{ item }">
         {{ item.phoneNumber }}
+      </template>
+      <template v-slot:item.isSubscribed="{ item }">
+        <v-chip
+        v-if="item.isSubscribed"
+          small
+          color="green"
+          text-color="white"
+          >Subscribed</v-chip
+        >
+        <v-chip
+         v-else
+          small
+          color="red"
+          text-color="white"
+          >Non-subscribed</v-chip
+        >
       </template>
       <template  v-slot:item.status="{ item }">
         <v-chip
@@ -49,7 +65,7 @@
               <v-icon color="green"> mdi-account-check-outline </v-icon>
             </v-btn>
           </template>
-          <span>Activate</span> 
+          <span>Activate</span>
         </v-tooltip>
         <v-tooltip top>
           <template v-slot:activator="{ on, attrs }">
@@ -57,7 +73,7 @@
               <v-icon color="red"> mdi-account-off-outline </v-icon>
             </v-btn>
           </template>
-          <span>Deactivate </span> 
+          <span>Deactivate </span>
         </v-tooltip>
       </template>
     </v-data-table>
@@ -81,6 +97,7 @@ export default {
         { text: "Email", value: "email" },
         { text: "Contact No", value: "phoneNumber" },
         { text: "City", value: "city" },
+        { text: "Subscription Status ", value: "isSubscribed" },
         { text: "Active Status", value: "status" },
         { text: "Actions", value: "actions", sortable: false }
       ]
@@ -100,7 +117,7 @@ export default {
     async handleActivate(user) {
       this.user = user;
       console.log(user);
-      try { 
+      try {
         await this.$store
         .dispatch("auth/activateUser", user)
           this.$dialog.message.success(this.$t("Success Message"), {
@@ -111,13 +128,13 @@ export default {
           console.log(error);
           this.$dialog.message.error(error.response.data.message, {
           position: "top-right",
-          });        
+          });
       }
     },
     async handleDeactivate(user) {
       this.user = user;
       console.log(user);
-      try { 
+      try {
         await this.$store
         .dispatch("auth/deactivateUser", user)
           this.$dialog.message.success(this.$t("Success Message"), {
@@ -128,7 +145,7 @@ export default {
           console.log(error);
           this.$dialog.message.error(error.response.data.message, {
           position: "top-right",
-          });        
+          });
       }
     },
   }

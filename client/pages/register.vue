@@ -30,7 +30,7 @@
                   ></v-text-field>
                 </v-col>
               </v-row>
-               <v-row justify="center">
+              <v-row justify="center">
                 <v-col
                   cols="12"
                   md="6"
@@ -48,12 +48,8 @@
                   ></v-text-field>
                 </v-col>
               </v-row>
-                <v-row justify="center">
-                <v-col
-                  cols="12"
-                  md="6"
-                  style="padding-bottom: 0px"
-                >
+              <v-row justify="center">
+                <v-col cols="12" md="6" style="padding-bottom: 0px">
                   <v-text-field
                     class="rounded-sm"
                     filled
@@ -122,6 +118,15 @@
                 </v-col>
               </v-row>
               <v-row justify="center">
+                <v-col cols="12" md="6" style="padding-top: 0px">
+                  <v-checkbox v-model="user.isSubscribed">
+                    <template v-slot:label>
+                      <div>Subscribe to newsletter</div>
+                    </template>
+                  </v-checkbox>
+                </v-col>
+              </v-row>
+              <v-row justify="center">
                 <v-btn
                   :disabled="!valid"
                   color="primary lighten-1 white--text"
@@ -180,18 +185,22 @@ export default {
         name: "",
         email: "",
         password: "",
-        phoneNumber:"",
-        address:"",
-        city:"",
+        phoneNumber: "",
+        address: "",
+        city: "",
+        isSubscribed: false,
       },
       rules: {
         nameRules: [(v) => !!v || "Name is required"],
         cityRules: [(v) => !!v || "City is required"],
         addressRules: [(v) => !!v || "address is required"],
         passwordRules: [(v) => !!v || "Password is required"],
-        phoneNumberRules:[
+        phoneNumberRules: [
           (v) => !!v || "Phone Number is required",
-          (v) => /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(v) || "Phone Number must be valid",
+          (v) =>
+            /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(
+              v
+            ) || "Phone Number must be valid",
         ],
         emailRules: [
           (v) => !!v || "E-mail is required",
@@ -200,7 +209,7 @@ export default {
       },
     };
   },
-   async asyncData({ store, error }) {
+  async asyncData({ store, error }) {
     try {
       const cities = await store.dispatch("payment/getCityList");
       console.log(cities);
