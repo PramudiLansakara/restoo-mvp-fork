@@ -1,2 +1,5 @@
 [build]
+  base = "admin"
+  publish = "dist"
+  command = "npm run generate"
   node_version = "14"
