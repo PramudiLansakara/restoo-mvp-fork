@@ -83,7 +83,7 @@ export default {
    ** Module Configs
    */
   axios: {
-    baseURL: process.env.API_BASE_URL || "http://localhost:3001/api/"
+    baseURL: process.env.API_BASE_URL
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -100,6 +100,6 @@ export default {
   },
 
   publicRuntimeConfig: {
-    socketHost: process.env.SOCKET_HOST || 'http://localhost:3001'
+    socketHost: process.env.SOCKET_HOST
   },
 };
