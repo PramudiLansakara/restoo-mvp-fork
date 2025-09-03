@@ -21,7 +21,7 @@ export default {
   },
 
   router: {
-    base: '/admin/'
+    base: '/'
   },
 
   // ssr:false,
