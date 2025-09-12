@@ -67,7 +67,7 @@
                   color="primary"
                   v-if="imageLoading"
                 ></v-progress-circular>
-                <v-img :src="url" max-height="200" contain></v-img>
+                <v-img :src="url || item.itemUrl" max-height="200" contain></v-img>
               </div>
             </v-col>
             <v-col cols="12" md="6">
