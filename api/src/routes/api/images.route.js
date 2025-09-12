@@ -1,10 +1,10 @@
-const express = require('express');
-
+const express = require("express");
 const router = express.Router();
-const auth = require('../../middlewares/authorization');
-const controller = require('../../controllers/imageupload.controller');
-const fileUpload = require('../../middlewares/upload');
+const auth = require("../../middlewares/authorization");
+const multer = require("multer");
+const controller = require("../../controllers/imageupload.controller");
 
-router.post('/upload', auth('admin'), fileUpload, controller.getImagePath);
+const upload = multer(); // memory storage
+router.post("/upload", auth("admin"), upload.single("file"), controller.getImagePath);
 
 module.exports = router;
