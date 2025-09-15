@@ -11,7 +11,7 @@ exports.getImagePath = async (req, res, next) => {
     //   .replace(/\\/g, '/')
     //   .replace('public/', '/');
 
-    return res.status(httpStatus.OK).json({ imgPath: req.file.key });
+    return res.status(httpStatus.OK).json({ imgPath: "https://restoo-mvp.s3.ap-south-1.amazonaws.com/" +req.file.key });
   } catch (err) {
     next(err);
   }
