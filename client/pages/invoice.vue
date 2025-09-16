@@ -24,13 +24,13 @@
                     ><img
                     width="120"
                       height="90"
-                      src="../assets/images/home.png"
+                      src="../assets/images/logo.jpg"
                       alt="Clean Globe"
                   /></v-col>
                   <v-col align="right" class="mt-1">
-                    <h5>Carl-Schwenk-Straße 22,</h5>
-                    <h5>89522 Heidenheim an der Brenz,</h5>
-                    <h5>Deutschland</h5>
+                    <h5>105,</h5>
+                    <h5>Baudhaloka Mawatha,</h5>
+                    <h5>4 Colombo</h5>
                   </v-col></v-row
                 >
                 <h3 class="mt-1">Order Invoice</h3>
@@ -93,7 +93,7 @@
                         </div>
                         <v-col align="center">
                           <h4>
-                            {{ item.priceDetails.price }}€
+                            Rs.{{ item.priceDetails.price }}
                             <span class="secondary--text ml-1">
                               x{{ item.priceDetails.quantity }}</span
                             >
@@ -101,10 +101,10 @@
                         </v-col>
                         <v-col align="right" class="mr-1">
                           <h4>
-                            {{
+                            Rs.{{
                               item.priceDetails.price *
                               item.priceDetails.quantity
-                            }}€
+                            }}
                           </h4>
                         </v-col>
                       </v-row>
@@ -133,7 +133,7 @@
                       </v-row>
                       <v-row no-gutters>
                        <h4 class="font-weight-bold mt-1">
-                          {{ $t("Total") }}: {{ order.total | toCurrency }}
+                          {{ $t("Total") }}: Rs.{{ order.total }}
                         </h4>
                       </v-row>
                       <v-row>

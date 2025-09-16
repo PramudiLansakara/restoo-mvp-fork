@@ -20,7 +20,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="3">
-              <h5 class="mb-3">{{ $t("Delivery Charge") }} (€)</h5>
+              <h5 class="mb-3">{{ $t("Delivery Charge") }} (Rs)</h5>
               <v-text-field
                 v-model="item.deliveryCharge"
                 class="rounded-sm"
@@ -32,7 +32,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="3">
-              <h5 class="mb-3">{{ $t("Minimum Order Price") }} (€)</h5>
+              <h5 class="mb-3">{{ $t("Minimum Order Price") }} (Rs)</h5>
               <v-text-field
                 v-model="item.minAmount"
                 class="rounded-sm"

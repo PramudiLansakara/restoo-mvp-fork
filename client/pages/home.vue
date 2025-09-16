@@ -13,7 +13,7 @@
         >
         kiva.lounge
       </div>
-      <img width="100%" src="../assets/images/home.png" />
+      <img width="100%" src="../assets/images/home.jpeg" />
 
     </div>-->
     <v-container fluid>
@@ -25,7 +25,7 @@
           <img
             height="250"
             width="350"
-            src="../assets/images/home.png"
+            src="../assets/images/home.jpeg"
             class="rounded-xl mt-8"
           />
         </v-col>
@@ -48,7 +48,7 @@
           <v-btn
             large
             icon
-            href="https://www.google.de/search?hl=de-de&output=search&q=Hummus+und+Co.&ludocid=6229937089646722356&gsas=1&client=safari&lsig=AB86z5WKd1zWw2EyhPaWM_DAgYiY&kgs=dfb318fc5fbd0a40&shndl=-1&source=sh/x/kp/local/3&entrypoint=sh/x/kp/local#lrd=0x47991726fdc85c0f:0x56752ec6816c7d34,3"
+            href="https://www.google.com/search?sca_esv=8fb985a9e177f272&sxsrf=AE3TifN__222178JfhXdCSCg4p4piAsNEw:1758017552319&q=jumping+beans+cafe&sa=X&ved=2ahUKEwjdzdvdhd2PAxX3U2wGHX-0OloQ7xYoAHoECBMQAQ&biw=1920&bih=945&dpr=1"
             target="_blank"
           >
             <v-icon large>mdi-google</v-icon>

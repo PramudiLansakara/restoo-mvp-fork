@@ -41,10 +41,10 @@
                 <v-list-item-content class="ml-4">
 
                   <v-list-item-title v-if="ItemDetails.todaySpecial">
-                    <h5>{{ price.name }}</h5> {{ price.discountPrice }} €</v-list-item-title>
+                    <h5>{{ price.name }}</h5> Rs.{{ price.discountPrice }} </v-list-item-title>
 
                     <v-list-item-title v-else>
-                    <h5>{{ price.name }}</h5> {{ price.amount }} €</v-list-item-title>
+                    <h5>{{ price.name }}</h5> Rs.{{ price.amount }} </v-list-item-title>
 
                 </v-list-item-content>
                 <v-list-item-action>
@@ -81,7 +81,7 @@
           </div>
 
           <h5 class="text-decoration-line-through secondary--text pl-3">
-            <div v-if="ItemDetails.todaySpecial">{{ ItemDetails.price }}€</div>
+            <div v-if="ItemDetails.todaySpecial">Rs.{{ ItemDetails.price }}</div>
           </h5>
         </v-row> -->
       </div>

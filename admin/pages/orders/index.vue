@@ -72,7 +72,7 @@
         {{ item.placedAt | formatDate }}
       </template>
       <template v-slot:item.total="{ item }">
-        {{ item.total | toCurrency }}
+        Rs.{{ item.total}}
       </template>
       <template v-slot:item.status="{ item }">
         <v-chip

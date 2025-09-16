@@ -17,11 +17,11 @@
           </v-row>
           <v-row justify="space-between" align="center" class="">
             <v-col cols="6" class="">
-            <h5>{{ cartItem.priceDetails.price }}€
+            <h5>Rs.{{ cartItem.priceDetails.price }}
             <span class="secondary--text ml-1">  x{{ cartItem.priceDetails.quantity }}</span></h5>
             </v-col>
             <v-col align="right">
-            <h5>{{ cartItem.priceDetails.price*cartItem.priceDetails.quantity}}€</h5>
+            <h5>Rs.{{ cartItem.priceDetails.price*cartItem.priceDetails.quantity}}</h5>
             </v-col>
           </v-row>
         </v-card-text>

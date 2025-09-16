@@ -9,7 +9,7 @@
         <!-- <v-form ref="form" v-model="valid" lazy-validation>
           <v-row>
             <v-col cols="12" md="3">
-              <h5 class="mb-3">Discount Price (€)</h5>
+              <h5 class="mb-3">Discount Price (Rs)</h5>
               <v-text-field
                 v-model="item.discountPrice"
                 class="rounded-sm"
@@ -150,8 +150,8 @@ export default {
           sortable: false,
           value: "name",
         },
-        { text: "Amount (€.)", value: "amount" },
-        { text: "Discount price (€.)", value: "discountPrice" },
+        { text: "Amount (Rs.)", value: "amount" },
+        { text: "Discount price (Rs.)", value: "discountPrice" },
         { text: "Actions", value: "actions", sortable: false },
       ],
       editedIndex: -1,

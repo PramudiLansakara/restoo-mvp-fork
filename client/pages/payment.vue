@@ -189,7 +189,7 @@
     <v-row>
       <v-row justify="space-between" align="center" class="my-2 mx-3">
         <h4>{{ $t("Total") }}</h4>
-        <h4>{{ totalPrice | toCurrency }}</h4>
+        <h4>Rs.{{ totalPrice }}</h4>
       </v-row>
     </v-row>
     <v-row>

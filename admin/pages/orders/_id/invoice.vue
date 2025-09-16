@@ -24,13 +24,13 @@
                   ><v-col
                     ><img
                       height="100"
-                      src="../../../assets/images/logo.png"
+                      src="../../../assets/images/logo.jpg"
                       alt="Clean Globe"
                   /></v-col>
                   <v-col align="right" class="mt-5">
-                    <h3>Carl-Schwenk-Straße 22,</h3>
-                    <h3>89522 Heidenheim an der Brenz,</h3>
-                    <h3>Deutschland</h3>
+                    <h3>105,</h3>
+                    <h3>Baudhaloka Mawatha,</h3>
+                    <h3>4 Colombo</h3>
                   </v-col></v-row
                 >
                 <h3 class="mt-1">Order Invoice</h3>
@@ -93,7 +93,7 @@
                         </div>
                         <v-col class="" align="center">
                           <h3>
-                            {{ item.priceDetails.price }}€
+                            Rs.{{ item.priceDetails.price }}
                             <span class="secondary--text ml-1">
                               x{{ item.priceDetails.quantity }}</span
                             >
@@ -101,10 +101,10 @@
                         </v-col>
                         <v-col align="right" class="mr-1">
                           <h3>
-                            {{
+                            Rs.{{
                               item.priceDetails.price *
                               item.priceDetails.quantity
-                            }}€
+                            }}
                           </h3>
                         </v-col>
                       </v-row>
@@ -124,7 +124,7 @@
                         <div v-if="order.deliveryCharge">
                           <h3>
                             {{ $t("Delivery Charge") }}:
-                            {{ order.deliveryCharge | toCurrency }}
+                            Rs.{{ order.deliveryCharge}}
                           </h3>
                         </div>
                         <div v-if="order.discount">
@@ -133,7 +133,7 @@
                       </v-row>
                       <v-row class="" no-gutters>
                        <h3 class="font-weight-bold mt-1">
-                          {{ $t("Total") }}: {{ order.total | toCurrency }}
+                          {{ $t("Total") }}: Rs.{{ order.total}}
                         </h3>
                       </v-row>
                       <v-row>

@@ -14,9 +14,9 @@
            <h5 class="secondary--text ml-3 mb-3">{{ menuItem.category.name }}</h5>
         </v-row>
         <v-row justify="space-between" align="center" class="my-5 mx-1">
-          <h3 class="danger--text">{{ menuItem.discountPrice }}€</h3>
+          <h3 class="danger--text">Rs.{{ menuItem.discountPrice }}</h3>
           <h3 class="text-decoration-line-through secondary--text pl-2">
-            {{ menuItem.price }}€
+            Rs.{{ menuItem.price }}
           </h3>
         </v-row>
       </v-card-text>

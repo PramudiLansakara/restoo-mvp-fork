@@ -93,7 +93,7 @@
     <v-navigation-drawer v-model="drawer" app>
       <v-list-item two-line>
         <v-list-item-icon>
-          <img height="45" src="../assets/images/logo.png" />
+          <img height="45" src="../assets/images/logo.jpg" />
         </v-list-item-icon>
 
         <v-list-item-content>

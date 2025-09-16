@@ -7,17 +7,17 @@
 <% items.forEach(function(item){ %>
     <%= item.name %> 
     Größe: <%= item.priceDetails.name %>  
-    x <%= item.priceDetails.quantity %>  <%= item.priceDetails.price %>€
+    x <%= item.priceDetails.quantity %>  Rs.<%= item.priceDetails.price %>
 <%  }); %> 
 
 <% if(discount){ %>
     Rabatt: <%= discount %>%
 <%  }; %>
 <% if(deliveryCharge){ %>
-    Fahrtkosten: <%= deliveryCharge %>€
+    Fahrtkosten: Rs.<%= deliveryCharge %>
 <%  }; %>
     
-    Gesamtkosten (inkl. Mwst): <%= total %>€
+    Gesamtkosten (inkl. Mwst): Rs.<%= total %>
 
     Kunde: <%= customer.name %>
     Telefonnummer: <%= customer.phoneNumber %>

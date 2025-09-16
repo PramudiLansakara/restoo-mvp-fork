@@ -18,10 +18,10 @@
                     <v-row class="mt-2 ml-1">
                       <h5>{{ price.name }}</h5>
                        <h5 class="secondary--text text-decoration-line-through ml-1">
-                        {{ price.amount }}€
+                        Rs.{{ price.amount }}
                       </h5>
                       <h5 class="danger--text ml-2">
-                        {{ price.discountPrice }}€
+                        Rs.{{ price.discountPrice }}
                       </h5>
                     </v-row>
                   </div>
@@ -30,7 +30,7 @@
                   <div v-for="price of menuItem.prices" :key="price.name">
                     <v-row class="mt-2 ml-1">
                       <h5>{{ price.name }}</h5>
-                      <h5 class="danger--text ml-2">{{ price.amount }}€</h5>
+                      <h5 class="danger--text ml-2">Rs.{{ price.amount }}</h5>
                     </v-row>
                   </div>
                 </div>
@@ -60,10 +60,10 @@
                     <v-row class="mt-2 ml-1 ">
                       <h4>{{ price.name }}</h4>
                        <h4 class="secondary--text text-decoration-line-through ml-1">
-                        {{ price.amount }}€
+                        {{ price.amount }}Rs
                       </h4>
                       <h4 class="danger--text ml-2">
-                        {{ price.discountPrice }}€
+                        {{ price.discountPrice }}Rs
                       </h4>
                     </v-row>
                   </div>
@@ -72,7 +72,7 @@
                   <div v-for="price of menuItem.prices" :key="price.name">
                     <v-row class="mt-1 ml-1">
                       <h4>{{ price.name }}</h4>
-                      <h4 class="danger--text ml-2">{{ price.amount }}€</h4>
+                      <h4 class="danger--text ml-2">{{ price.amount }}Rs</h4>
                     </v-row>
                   </div>
                 </div>

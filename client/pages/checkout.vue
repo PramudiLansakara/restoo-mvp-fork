@@ -28,19 +28,19 @@
     <!-- <v-row>
       <v-row justify="space-between" align="center" class="mx-3">
         <h5 class="secondary--text">{{ $t("Subtotal") }}</h5>
-        <h5 class="secondary--text">{{ total }}€</h5>
+        <h5 class="secondary--text">Rs.{{ total }}</h5>
       </v-row>
     </v-row>
     <v-row>
       <v-row justify="space-between" align="center" class="mt-2 mx-3">
         <h5 class="secondary--text">{{ $t("Discount") }}</h5>
-        <h5 class="secondary--text">0€</h5>
+        <h5 class="secondary--text">Rs.0</h5>
       </v-row>
     </v-row> -->
     <v-row>
       <v-row justify="space-between" align="center" class="mt-5 mx-3">
         <h4>{{ $t("Total") }}</h4>
-        <h4>{{ total |toCurrency}}</h4>
+        <h4>Rs.{{ total}}</h4>
       </v-row>
     </v-row>
     <v-row>
