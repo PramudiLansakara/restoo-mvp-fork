@@ -7,8 +7,8 @@ export default {
   ssr: false,
 
   head: {
-    titleTemplate: "%s - Mezomia",
-    title: "Pizza Service",
+    titleTemplate: "",
+    title: "Jumping Beans",
     htmlAttrs: {
       lang: "en"
     },

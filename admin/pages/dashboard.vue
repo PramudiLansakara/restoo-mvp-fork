@@ -6,15 +6,11 @@
       :key="request.userId"
     />
   </v-row>
-   <!-- <v-container fluid>
+  <!-- <v-container fluid>
     <v-row align="center" justify="center" style="height: 90vh">
       <div class="layout column align-center">
               <img height="500" src="../assets/images/logo.jpg" alt="Clean Globe" />
-              <center>
-                <h1 class="my-4">
-                 PIZZA SERVICE
-                </h1>
-              </center>
+
             </div>
     </v-row>
   </v-container> -->

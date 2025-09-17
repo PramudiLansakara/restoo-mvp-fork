@@ -29,7 +29,7 @@ const itemSchema = new Schema({
     },
     currency: {
       type: String,
-      default: 'EUR',
+      default: 'LKR',
     },
   }],
   discountPrice: {

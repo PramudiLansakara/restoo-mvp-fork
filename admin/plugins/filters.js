@@ -29,7 +29,7 @@ Vue.filter('toCurrency', function (value) {
   }
   var formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'EUR'
+      currency: 'LKR'
   });
   return formatter.format(value);
 });

@@ -26,7 +26,7 @@ exports.create = async (req, res, next) => {
 
     const result = await Payment.create({
       totalAmount: placedOrder.total,
-      currency: 'eur',
+      currency: 'lkr',
       status,
       orderId,
       paidAt: new Date(),
@@ -127,7 +127,7 @@ exports.createStripePaymentSession = async (req, res, next) => {
       const unitAmount = product.price * 100;
       return {
         price_data: {
-          currency: 'eur',
+          currency: 'lkr',
           unit_amount: unitAmount,
           product_data: {
             name: product.name,

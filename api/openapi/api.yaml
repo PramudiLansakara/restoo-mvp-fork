@@ -530,7 +530,7 @@ paths:
                   example: '120'
                 currency:
                   type: string
-                  example: eur
+                  example: lkr
                 status:
                   type: string
                   example: unpaid
@@ -1608,7 +1608,7 @@ components:
           example: 12
         currency:
           type: string
-          example: eur
+          example: lkr
         status:
           type: string
           enum:

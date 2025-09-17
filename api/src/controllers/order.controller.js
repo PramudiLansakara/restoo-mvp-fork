@@ -56,7 +56,7 @@ exports.placeOrder = async (req, res, next) => {
       orderType,
       items,
       paymentMethod,
-      currency: 'eur',
+      currency: 'lkr',
       placedAt: new Date(),
       customer,
       total,

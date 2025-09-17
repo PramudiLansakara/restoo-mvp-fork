@@ -178,7 +178,7 @@
     <v-row v-if="this.paymentDetails.orderType === 'delivery'">
       <v-row justify="space-between" align="center" class="mt-2 mx-3">
         <h4>{{ $t("Delivery Charge") }}</h4>
-        <h4>{{ deliveryCharge | toCurrency }}</h4>
+        <h4>Rs.{{ deliveryCharge}}</h4>
       </v-row>
     </v-row>
     <v-row v-if="this.paymentDetails.orderType === 'takeaway'">

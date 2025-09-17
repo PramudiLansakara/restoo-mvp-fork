@@ -124,7 +124,7 @@
                         <div v-if="order.deliveryCharge">
                           <h4>
                             {{ $t("Delivery Charge") }}:
-                            {{ order.deliveryCharge | toCurrency }}
+                            Rs.{{ order.deliveryCharge}}
                           </h4>
                         </div>
                         <div v-if="order.discount">
